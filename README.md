@@ -12,8 +12,8 @@
 Clone the repo locally:
 
 ```sh
-git clone https://github.com/rogerionasc/pingcrm.git pingcrm
-cd pingcrm
+git clone https://github.com/rogerionasc/wcode.git wcode
+cd wcode
 ```
 
 Install PHP dependencies:
