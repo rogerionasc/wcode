@@ -13,7 +13,7 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Login/Index');
+        return Inertia::render('Admin/Login/Index');
     }
 
     /**
@@ -29,7 +29,12 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+//        dd($request);
+//        $request->authenticate();
+//        $request->session()->regenerate();
+//        return redirect()->intended(RouteServiceProvider::HOME);
+
     }
 
     /**
@@ -62,5 +67,22 @@ class LoginController extends Controller
     public function destroy(Login $login)
     {
         //
+    }
+
+    public function auth(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:5',
+        ]);
+
+        if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return Inertia::render('Admin/Login/Dashboard');
+        } else {
+            return Inertia::render('Welcome', [
+                'failed' => "Essas credenciais não correspondem a nenhum dos nossos registros!"
+            ]);
+        }
     }
 }

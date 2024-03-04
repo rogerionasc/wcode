@@ -5,6 +5,7 @@ import '../css/dist/css/tabler-flags.css';
 import '../css/dist/css/tabler-vendors.css';
 import '../css/dist/css/tabler-social.css';
 import '../css/dist/custom.css';
+import '../css/dist/js/tabler.js';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

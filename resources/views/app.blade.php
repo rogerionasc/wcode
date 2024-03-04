@@ -12,7 +12,6 @@
     @vite([
     'resources/js/app.js',
     "resources/js/Pages/{$page['component']}.vue",
-    'resources/css/js/tabler.js'
     ])
     @inertiaHead
 </head>
