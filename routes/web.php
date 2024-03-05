@@ -34,19 +34,18 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-
+Route::get('/', function (){
+    return Inertia::render('Welcome');
+})->name('home.site');
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'auth'])->name('login');
+
 Route::middleware(['auth', 'verified'])->get('admin/dashboard', function () {
     return Inertia::render('Admin/Login/Dashboard');
 })->name('admin.dashboard');
 
-Route::get('/logout', function () {
-    session()->flush();
-    return Inertia::render('Admin/Login/Index');
-});
+Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 
 Route::get('user', function (){
     $user = new \App\Models\User();

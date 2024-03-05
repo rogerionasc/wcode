@@ -58,7 +58,6 @@ const form = useForm({
     password: '',
 });
 const auth = () => {
-    // console.log(form);
     form.post('login');
 }
 
