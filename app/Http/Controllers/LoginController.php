@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-
+        return $this->auth($request);
 //        dd($request);
 //        $request->authenticate();
 //        $request->session()->regenerate();
@@ -69,20 +69,48 @@ class LoginController extends Controller
         //
     }
 
-    public function auth(Request $request)
-    {
-        $this->validate($request, [
+    public function auth(Request $request) {
+        $this->validate($request,[
             'email' => 'required|email',
-            'password' => 'required|min:5',
+            'password' => 'required|min:6',
         ]);
 
-        if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if(auth()->attempt([
+            'password' => $request->password,
+            'email' => $request->email,
+        ])) {
             $request->session()->regenerate();
-            return Inertia::render('Admin/Login/Dashboard');
-        } else {
+//            return redirect()->route('admin/dashboard');
+            return redirect()->route('admin.dashboard');
+        }else {
             return Inertia::render('Welcome', [
                 'failed' => "Essas credenciais não correspondem a nenhum dos nossos registros!"
             ]);
         }
     }
+
+//    public function auth(Request $request)
+//    {
+//        dd($auth);
+//        $this->validate($request, [
+//            'email' => 'required|email',
+//            'password' => 'required|min:5',
+//        ]);
+//
+//        if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+//            $request->session()->regenerate();
+//            return Inertia::render('Admin/Login/Dashboard');
+//        } else {
+//            return Inertia::render('Welcome', [
+//                'failed' => "Essas credenciais não correspondem a nenhum dos nossos registros!"
+//            ]);
+//        }
+//    }
+
+//    public function logout(Request $request) {
+//        auth()->logout();
+//        $request->session()->invalidate();
+//        $request->session()->regenerateToken();
+//        return redirect()->route('login');
+//    }
 }

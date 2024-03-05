@@ -26,9 +26,6 @@ use Inertia\Inertia;
 //    ]);
 //});
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,5 +35,25 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'auth'])->name('login');
+
+
+Route::get('login', [LoginController::class, 'index'])->name('login');
+Route::post('login', [LoginController::class, 'auth'])->name('login');
+Route::middleware(['auth', 'verified'])->get('admin/dashboard', function () {
+    return Inertia::render('Admin/Login/Dashboard');
+})->name('admin.dashboard');
+
+Route::get('/logout', function () {
+    session()->flush();
+    return Inertia::render('Admin/Login/Index');
+});
+
+Route::get('user', function (){
+    $user = new \App\Models\User();
+    $user->name = "Teste Name";
+    $user->email = "teste@email.com";
+    $user->password = "123456";
+    $user->save();
+});
+
+
