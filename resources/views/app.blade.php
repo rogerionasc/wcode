@@ -5,9 +5,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    <!-- CSS files -->
-    <!-- Scripts -->
+{{--    <title inertia>{{ config('app.name', 'WCode') }}</title>--}}
+    <title>WCode</title>
     @routes
     @vite([
     'resources/js/app.js',
@@ -15,7 +14,7 @@
     ])
     @inertiaHead
 </head>
-<body class="d-flex flex-column mt-6">
+<body>
 @inertia
 </body>
 </html>

@@ -1,7 +1,8 @@
-import './bootstrap';
-import '../css/app.css';
+// import './bootstrap';
+// import '../css/app.css';
 import '../css/dist/css/tabler.css';
 import '../css/dist/css/tabler-flags.css';
+import '../css/dist/css/tabler-payments.css';
 import '../css/dist/css/tabler-vendors.css';
 import '../css/dist/css/tabler-social.css';
 import '../css/dist/custom.css';

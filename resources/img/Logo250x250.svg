@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021 (64 Bit) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="21.1666mm" height="17.7786mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 2116.66 1777.86"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:url(#id0);fill-rule:nonzero}
+    .fil0 {fill:url(#id1);fill-rule:nonzero}
+    .fil2 {fill:url(#id2);fill-rule:nonzero}
+    .fil3 {fill:url(#id3);fill-rule:nonzero}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="1501.3" y1="423.32" x2="1768.41" y2="737.32">
+   <stop offset="0" style="stop-opacity:1; stop-color:#A800CD"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#7700A3"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="1354.98" y1="1288.7" x2="2325.68" y2="612.24">
+   <stop offset="0" style="stop-opacity:1; stop-color:#E400FF"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#A800CD"/>
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="400.69" y1="64.41" x2="1371.37" y2="740.87">
+   <stop offset="0" style="stop-opacity:1; stop-color:#008CCD"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#000BA3"/>
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="283.91" y1="1279.05" x2="551.02" y2="965.05">
+  </linearGradient>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_1741099427152">
+   <g>
+    <polygon class="fil0" points="1014,1681.33 2056.96,944.67 1756.8,644.5 1014,1169.15 "/>
+    <polygon class="fil1" points="1756.8,644.5 1577.25,464.96 1577.25,771.32 "/>
+   </g>
+   <polygon class="fil2" points="1102.66,96.67 59.69,833.33 359.86,1133.5 1102.66,608.85 "/>
+   <polygon class="fil3" points="359.86,1133.5 539.4,1313.04 539.4,1006.68 "/>
+  </g>
+ </g>
+</svg>
