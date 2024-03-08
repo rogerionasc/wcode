@@ -11,7 +11,12 @@ body {
     height: 100vh;
 }
 
-.navbar-brand-image {
+.navbar-brand-name {
     /*width: 250px !important;*/
-    height: 48px !important;
+    width: 5em;
+}
+
+.content-logo {
+    display: flex;
+    justify-content: space-between;
 }
