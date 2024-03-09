@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,21 +38,21 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-Route::get('/', function (){
-    return Inertia::render('Welcome');
-})->name('home.site');
 
+// Router User //
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'auth'])->name('login');
-
-Route::middleware(['auth', 'verified'])->get('admin/dashboard', function () {
-    return Inertia::render('Admin/Login/Dashboard');
-})->name('admin.dashboard');
-
 Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 
+// Router User //
+Route::middleware(['auth', 'verified'])->get('/', [HomeController::class, 'Index'])->name('home.admin');
+Route::middleware(['auth', 'verified'])->get('admin/dashboard', [HomeController::class, 'index'])
+    ->name('admin.dashboard');
+Route::middleware(['auth', 'verified'])->get('register/user', [UserController::class, 'index'])
+    ->name('admin.user');
+
 Route::get('user', function (){
-    $user = new \App\Models\User();
+    $user = new User();
     $user->name = "Teste Name";
     $user->email = "teste@email.com";
     $user->password = "123456";

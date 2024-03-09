@@ -2367,7 +2367,7 @@
 	    }
 	  }
 	  /**
-	   * Register options and optgroups
+	   * User options and optgroups
 	   *
 	   */
 
@@ -5500,5 +5500,5 @@
 	return TomSelect;
 
 }));
-var tomSelect=function(el,opts){return new TomSelect(el,opts);} 
+var tomSelect=function(el,opts){return new TomSelect(el,opts);}
 //# sourceMappingURL=tom-select.complete.js.map

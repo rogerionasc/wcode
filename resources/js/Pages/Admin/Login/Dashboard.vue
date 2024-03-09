@@ -1,10 +1,5 @@
 <template>
-<!--    Bem vindo,-->
-<!--    <h3>{{ $page.props.auth.user.name }}</h3>-->
-<!--    <h3>{{ $page.props.auth.user.email }}</h3>-->
-<!--    {user->name}-->
-<!--    <a href="/logout">sair</a>-->
-
+    <Head title="Dashboard"/>
     <layout/>
 </template>
 
@@ -16,8 +11,12 @@
 
 </style>
 <script>
-import Layout from "../../../Layouts/layout.vue";
+import {Head} from "@inertiajs/vue3";
+import Layout from "../../../Layouts/Layout.vue";
 export default {
-    components: {Layout}
+    components: {
+        Layout,
+        Head
+    }
 }
 </script>
