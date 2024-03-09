@@ -634,7 +634,7 @@
       _this.shape = _this._createRegion(path, code, style);
       var text = _this.getLabelText(code, label);
 
-      // If label is passed and render function returns something 
+      // If label is passed and render function returns something
       if (label && text) {
         var bbox = _this.shape.getBBox();
         var offsets = _this.getLabelOffsets(code, label);
@@ -752,7 +752,7 @@
         }
       }
       if (point1 !== false && point2 !== false) {
-        // Register lines with unique keys
+        // User lines with unique keys
         this._lines[getLineUid(config.from, config.to)] = new Line({
           index: index,
           map: this,

@@ -4171,7 +4171,7 @@ const defaults = {
     }
   },
   // Advertisements plugin
-  // Register for an account here: http://vi.ai/publisher-video-monetization/?aid=plyrio
+  // User for an account here: http://vi.ai/publisher-video-monetization/?aid=plyrio
   ads: {
     enabled: false,
     publisherId: '',
@@ -4448,7 +4448,7 @@ class Fullscreen {
     // Checks container is an ancestor, defaults to null
     this.player.elements.fullscreen = player.config.fullscreen.container && closest$1(this.player.elements.container, player.config.fullscreen.container);
 
-    // Register event listeners
+    // User event listeners
     // Handle event (incase user presses escape etc)
     on.call(this.player, document, this.prefix === 'ms' ? 'MSFullscreenChange' : `${this.prefix}fullscreenchange`, () => {
       // TODO: Filter for target??

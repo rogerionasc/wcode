@@ -9,7 +9,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                        <a class="content-logo" href=".">
+                        <a class="content-logo" href="/">
                             <img alt="WCode" class="navbar-brand-image" src="../../img/Logo250x250.svg">
                             <img alt="WCode" class="navbar-brand-name" src="../../img/LogoName210x500.svg">
                         </a>
@@ -207,7 +207,7 @@
                         <div class="container-xl">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="./">
+                                    <a class="nav-link" href="/">
                                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -241,9 +241,9 @@
                                     <div class="dropdown-menu">
                                         <div class="dropdown-menu-columns">
                                             <div class="dropdown-menu-column">
-                                                <a class="dropdown-item" href="./accordion.html">Accordion </a>
-                                                <a class="dropdown-item" href="./blank.html">Blank page </a>
-                                                <a class="dropdown-item" href="./badges.html"> Badges
+                                                <a class="dropdown-item" href="/register/user">Usuário </a>
+                                                <a class="dropdown-item" href="/register/medic">Médico </a>
+                                                <a class="dropdown-item" href="/register/patient"> Paciente
                                                     <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">
                                                         New
                                                     </span>
@@ -311,8 +311,10 @@
                     <div class="container-xl">
                         <div class="row g-2 align-items-center">
                             <div class="col">
+
                                 <!-- Page pre-title -->
-                                <h2 class="page-title">Dashboard</h2>
+                                <PageTitle/>
+
                                 <div class="page-pretitle"> Overview</div>
                             </div>
                             <!-- Page title actions -->
@@ -359,6 +361,7 @@
 
                                 <!-- Page content -->
 
+
                             </div>
                         </div>
                     </div>
@@ -368,18 +371,25 @@
                         <div class="row text-center align-items-center flex-row-reverse">
                             <div class="col-lg-auto ms-lg-auto">
                                 <ul class="list-inline list-inline-dots mb-0">
-                                    <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank"
-                                                                    class="link-secondary"
-                                                                    rel="noopener">Documentation</a></li>
-                                    <li class="list-inline-item"><a href="./license.html"
-                                                                    class="link-secondary">License</a></li>
+                                    <li class="list-inline-item">
+                                        <a href="https://tabler.io/docs" target="_blank" class="link-secondary">
+                                            Documentation
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="./license.html" class="link-secondary">
+                                            License
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                                 <ul class="list-inline list-inline-dots mb-0">
                                     <li class="list-inline-item">
                                         Copyright &copy; 2023
-                                        <a href="." class="link-secondary">Tabler</a>.
+                                        <a href="." class="link-secondary">
+                                            Tabler
+                                        </a>.
                                         All rights reserved.
                                     </li>
                                     <li class="list-inline-item">
@@ -507,11 +517,16 @@
         </div>
     </div>
 </template>
-
 <script>
+
+import PageTitle from "@/Components/PageTitle.vue";
+
 export default {
-    name: "layout"
-}
+    name: 'Layout',
+    components: {
+        PageTitle,
+    },
+};
 </script>
 
 <style scoped>
