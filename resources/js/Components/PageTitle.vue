@@ -1,7 +1,5 @@
 <template>
-    <h2 class="page-title">
-        <slot/>
-    </h2>
+    <h2 class="page-title">{{ pageTitle }}</h2>
 </template>
 
 <script>
@@ -10,13 +8,10 @@ export default {
     props: {
         pageTitle: {
             type: String,
-            default: 'Titulo da Pagína'
-        }
-    },
-    data() {
-        return {};
+            default: 'Valor Padrão',
+        },
     }
-};
+}
 </script>
 
 <style scoped>

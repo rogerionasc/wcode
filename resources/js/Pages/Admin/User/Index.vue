@@ -1,20 +1,34 @@
+
+<!-- Conteúdo da página usuário -->
 <template>
-    <Head title="Usuário"/>
-    <PageTitle/>
-    <Layout/>
+    <Layout title-layout="Usuários">
+        <template v-slot:ButtonCreate>
+            <ButtonCreate />
+        </template>
+        <!-- Conteúdo da página usuário -->
+            Conteudo da página usuário
+
+    </Layout>
+
 </template>
 
 <script>
 
-import {Head} from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
+import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
-import PageTitle from "@/Components/PageTitle.vue";
+
 
 export default {
     components: {
         Head,
-        PageTitle,
-        Layout,
+        ButtonCreate,
+        Layout
+    },
+
+    // layout: Layout,
+    mounted() {
+        // this.$page.props.titleLayout = "Usuário";
     }
 }
 
