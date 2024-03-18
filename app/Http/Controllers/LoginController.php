@@ -41,7 +41,7 @@ class LoginController extends Controller
         auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
-        return redirect()->route('home.site');
+        return redirect()->route('login');
     }
 }
 
