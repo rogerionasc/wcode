@@ -16,4 +16,5 @@
 <body>
 @inertia
 </body>
+{{--<script src="../css/dist/js/tabler.js" defer></script>--}}
 </html>

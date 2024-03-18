@@ -1,12 +1,12 @@
 // import './bootstrap';
 // import '../css/app.css';
-import '../css/dist/css/tabler.css';
-import '../css/dist/css/tabler-flags.css';
-import '../css/dist/css/tabler-payments.css';
-import '../css/dist/css/tabler-vendors.css';
-import '../css/dist/css/tabler-social.css';
+import '../css/dist/css/tabler.min.css';
+// import '../css/dist/css/tabler-flags.min.css';
+// import '../css/dist/css/tabler-payments.min.css';
+import '../css/dist/css/tabler-vendors.min.css';
+// import '../css/dist/css/tabler-social.css';
 import '../css/dist/custom.css';
-import '../css/dist/js/tabler.js';
+import '../css/dist/js/tabler.esm.min.js';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';

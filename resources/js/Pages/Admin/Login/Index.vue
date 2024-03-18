@@ -8,7 +8,7 @@
                 <div class="card card-md">
                     <div class="card-body">
                         <h2 class="h2 text-center mb-4">Faça seu login</h2>
-                        <form @submit.prevent="auth" autocomplete="off" novalidate>
+                        <form @submit.prevent="auth" autocomplete="on" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
                                 <input v-model="form.email" type="email" class="form-control" autocomplete="on"

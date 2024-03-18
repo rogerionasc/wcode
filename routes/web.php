@@ -51,6 +51,9 @@ Route::middleware(['auth', 'verified'])->get('admin/dashboard', [HomeController:
 Route::middleware(['auth', 'verified'])->get('register/user', [UserController::class, 'index'])
     ->name('admin.user');
 
+Route::middleware(['auth', 'verified'])->post('register/user', [UserController::class, 'store'])
+    ->name('register.store');
+
 Route::get('user', function (){
     $user = new User();
     $user->name = "Teste Name";

@@ -1,4 +1,4 @@
-/*@import url('https://rsms.me/inter/inter.css');*/
+@import url('https://rsms.me/inter/inter.css');
 :root {
     --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
 }
@@ -13,10 +13,17 @@ body {
 
 .navbar-brand-name {
     /*width: 250px !important;*/
-    width: 5em;
+    width: 5rem;
 }
 
 .content-logo {
     display: flex;
     justify-content: space-between;
 }
+
+.dropdown-menu {
+    position: absolute;
+    right: 6rem !important;
+    z-index: 100000000 !important;
+}
+
