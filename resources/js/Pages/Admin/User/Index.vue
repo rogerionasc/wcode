@@ -9,9 +9,6 @@
             <!-- Conteúdo da página usuário -->
             <div class="col-12">
                 <div class="card">
-                    <!--                    <div class="card-header">-->
-                    <!--                        <h3 class="card-title">Registros</h3>-->
-                    <!--                    </div>-->
 
                     <div class="table-responsive p-3">
                         <table id="tableUser"
@@ -241,11 +238,15 @@ import $ from "jquery";
 import 'datatables.net-bs5';
 
 onMounted(() => {
+
     const table = $('#tableUser').DataTable({
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
-        }
+        },
+
     });
+
+
 
     // Adicionar a funcionalidade de pesquisa
     $('#searchInput').on('key', function () {

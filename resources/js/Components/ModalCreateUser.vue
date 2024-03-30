@@ -12,7 +12,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nome</label>
-                                    <input type="text" class="form-control" name="example-text-input"
+                                    <input v-model="form.first_name" type="text" class="form-control" name="example-text-input"
                                            placeholder="Seu primeiro nome">
                                 </div>
                             </div>
@@ -20,7 +20,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Sobrenome</label>
-                                    <input type="text" class="form-control" name="example-text-input"
+                                    <input v-model="form.last_name" type="text" class="form-control" name="example-text-input"
                                            placeholder="Seu sobrenome">
                                 </div>
                             </div>
@@ -141,16 +141,18 @@
 </template>
 
 <script setup>
-import {useForm} from "@inertiajs/inertia-vue3";
-const name = "ModalCreateUser"
+import { useForm } from "@inertiajs/inertia-vue3";
+import { ref, watch } from 'vue';
 
+const name = "ModalCreateUser";
 const form = useForm({
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
 });
 
 const store = () => {
-    console.log(form);
     form.post('/register/user');
 }
 </script>
