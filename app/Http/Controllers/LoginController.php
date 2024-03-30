@@ -13,7 +13,7 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Login/Index');
+        return Inertia::render('Login/Index');
     }
 
     public function auth(Request $request)
