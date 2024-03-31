@@ -246,8 +246,6 @@ onMounted(() => {
 
     });
 
-
-
     // Adicionar a funcionalidade de pesquisa
     $('#searchInput').on('key', function () {
         table.search(this.value).draw();
@@ -256,27 +254,27 @@ onMounted(() => {
 </script>
 <style>
 #dt-search-0 {
-    font-size: 14px;
-    line-height: 20px;
-    padding: 7px 12px;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    padding: 7px 12px !important;
 }
 
 .me-auto {
-    display: none;
+    display: none !important;
 }
 
 label {
-    font-size: 16px;
-    margin-right: 1rem;
+    font-size: 16px !important;
+    margin-right: 1rem !important;
 }
 
 .dt-search {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .btn-icon {
-    margin: auto 0.3rem;
+    margin: auto 0.3rem !important;
 }
 </style>
 
