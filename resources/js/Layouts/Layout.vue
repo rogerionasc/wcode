@@ -85,7 +85,7 @@
                                     <div class="dropdown-menu">
                                         <div class="dropdown-menu-columns">
                                             <div class="dropdown-menu-column">
-                                                <Link class="dropdown-item" href="/register/user">Usuário </Link>
+                                                <a class="dropdown-item" href="/register/user">Usuário </a>
                                                 <Link class="dropdown-item" href="/register/medic">Médico </Link>
                                                 <a class="dropdown-item" href="/register/patient"> Paciente
                                                     <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">
@@ -231,7 +231,7 @@ import pageTitle from "@/Components/PageTitle.vue";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import ModalCreateUser from "@/Components/ModalCreateUser.vue";
 import FlashMessage from "@/Components/FlashMessage.vue";
-import {Link} from "@inertiajs/vue3";
+import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
     name: 'layout',
