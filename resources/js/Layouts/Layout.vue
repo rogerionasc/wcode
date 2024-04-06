@@ -230,7 +230,6 @@ import PageTitle from "@/Components/PageTitle.vue";
 import pageTitle from "@/Components/PageTitle.vue";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import ModalCreateUser from "@/Components/ModalCreateUser.vue";
-import FlashMessage from "@/Components/FlashMessage.vue";
 import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
@@ -239,7 +238,6 @@ export default {
         ModalCreateUser,
         PageTitle,
         ButtonCreate,
-        FlashMessage,
         Link,
     },
     props: {
