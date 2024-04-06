@@ -11,12 +11,12 @@
                         <form @submit.prevent="auth" autocomplete="on" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input v-model="form.email" type="email" class="form-control" autocomplete="on" placeholder="Seu email">
+                                <input v-model="form.email" type="email" class="form-control" autocomplete="on" placeholder="Seu email.">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Senha</label>
                                 <div class="input-group input-group-flat">
-                                    <input v-model="form.password" type="password" autocomplete="on" class="form-control" placeholder="Sua senha aqui">
+                                    <input v-model="form.password" type="password" autocomplete="on" class="form-control" placeholder="Sua senha.">
                                     <span class="input-group-text">
                                         <a href="#" class="link-secondary" title="Mostrar sua senha"
                                            data-bs-toggle="tooltip">
