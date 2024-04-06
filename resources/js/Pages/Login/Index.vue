@@ -11,8 +11,7 @@
                         <form @submit.prevent="auth" autocomplete="on" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input v-model="form.email" type="email" class="form-control" autocomplete="on"
-                                       value="teste@email.com" placeholder="Seu email">
+                                <input v-model="form.email" type="email" class="form-control" autocomplete="on" placeholder="Seu email">
                             </div>
                             <div class="mb-2">
                                 <label class="form-label">Senha</label>

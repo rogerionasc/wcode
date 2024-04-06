@@ -246,35 +246,9 @@ onMounted(() => {
 
     });
 
-    // Adicionar a funcionalidade de pesquisa
-    $('#searchInput').on('key', function () {
+    $('#searchInput').on('keyup', function () {
         table.search(this.value).draw();
     });
 });
 </script>
-<style>
-#dt-search-0 {
-    font-size: 14px !important;
-    line-height: 20px !important;
-    padding: 7px 12px !important;
-}
-
-.me-auto {
-    display: none !important;
-}
-
-label {
-    font-size: 16px !important;
-    margin-right: 1rem !important;
-}
-
-.dt-search {
-    display: flex !important;
-    align-items: center !important;
-}
-
-.btn-icon {
-    margin: auto 0.3rem !important;
-}
-</style>
 
