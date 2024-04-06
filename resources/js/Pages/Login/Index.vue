@@ -16,9 +16,7 @@
                             <div class="mb-2">
                                 <label class="form-label">Senha</label>
                                 <div class="input-group input-group-flat">
-                                    <input v-model="form.password" type="password" autocomplete="on" value="123456"
-                                           class="form-control"
-                                           placeholder="Sua senha">
+                                    <input v-model="form.password" type="password" autocomplete="on" class="form-control" placeholder="Sua senha aqui">
                                     <span class="input-group-text">
                                         <a href="#" class="link-secondary" title="Mostrar sua senha"
                                            data-bs-toggle="tooltip">
