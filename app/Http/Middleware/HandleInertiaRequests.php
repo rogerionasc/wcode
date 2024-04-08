@@ -38,8 +38,11 @@ class HandleInertiaRequests extends Middleware
                         'id' => $request->user()->id,
                         'first_name' => $request->user()->first_name,
                         'last_name' => $request->user()->last_name,
+                        'status' => $request->user()->status,
                         'email' => $request->user()->email,
+                        'password' => $request->user()->password,
                         'owner' => $request->user()->owner,
+
 //                        'permission_gerenciar_usuario' => Auth::user()->hasPermissionTo('gerenciar_usuario'),
 //                        'account' => ['id' => $request->user()->account->id, 'name' => $request->user()->account->name, ],
                     ] : null,

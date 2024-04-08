@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Login;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class LoginController extends Controller
@@ -18,21 +18,31 @@ class LoginController extends Controller
 
     public function auth(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
-
-        if (auth()->attempt([
-            'password' => $request->password,
-            'email' => $request->email,
-        ])) {
-            $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
-        } else {
-            return Inertia::render('Welcome', [
-                'failed' => "Senha ou email incorretos"
+        try {
+            $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required|min:6',
             ]);
+
+            if (auth()->attempt([
+                'password' => $request->password,
+                'email' => $request->email,
+            ])) {
+                if (auth()->user()->account->status === 'active') {
+                    $request->session()->regenerate();
+                    return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
+                } else {
+                    auth()->logout(); // Desconectar usuário se a conta estiver inativa
+                    session()->invalidate();
+                    session()->regenerateToken();
+                    return Redirect::route('login')->with('warning', 'Sua conta está inativa. Entre em contato com o suporte.');
+                }
+            } else {
+                return Redirect::route('login')->with('error', 'Verifique sua senha e email.');
+            }
+
+        } catch (\Exception $exception) {
+            return Redirect::route('login')->with('error', 'Error interno contate o administrador do sistema.');
         }
     }
 
@@ -44,4 +54,3 @@ class LoginController extends Controller
         return redirect()->route('login');
     }
 }
-

@@ -5,6 +5,7 @@
                 <div class="text-center mb-4">
                     <a href="" class="navbar-brand navbar-brand-autodark"><img src="" height="36" alt=""></a>
                 </div>
+                <FlashMessage class="mb-2"/>
                 <div class="card card-md">
                     <div class="card-body">
                         <h2 class="h2 text-center mb-4">Faça seu login</h2>
@@ -50,7 +51,8 @@
 </template>
 
 <script setup>
-import {useForm} from '@inertiajs/inertia-vue3';
+import {useForm} from '@inertiajs/inertia-vue3'
+import FlashMessage from "@/Components/FlashMessage.vue";
 
 const form = useForm({
     email: '',
