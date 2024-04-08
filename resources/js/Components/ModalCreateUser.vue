@@ -57,9 +57,9 @@
                             <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label class="form-label">Situação</label>
-                                    <select class="form-select">
-                                        <option value="ativo" selected>Ativo</option>
-                                        <option value="inativo">Inativo</option>
+                                    <select class="form-select" v-model="form.status">
+                                        <option value="active" selected>Ativo</option>
+                                        <option value="inactive">Inativo</option>
                                     </select>
                                 </div>
                             </div>
@@ -84,12 +84,12 @@
 
                         </div>
                         <label class="form-label">Tipo de conta</label>
-                        <div class="form-selectgroup-boxes row mb-3">
+                        <div class="form-selectgroup-boxes row row-deck">
                             <div class="col-lg-6">
-                                <label class="form-selectgroup-item h-100">
-                                    <input type="radio" name="report-type" value="1" class="form-selectgroup-input"
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="report-type" value="1" class="form-selectgroup-input card"
                                            checked>
-                                    <span class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <span class="form-selectgroup-label d-flex align-items-center flex-grow-1 p-3">
                                             <span class="me-3">
                                                 <span class="form-selectgroup-check">
                                                 </span>
@@ -106,7 +106,7 @@
                                 </label>
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-selectgroup-item h-100">
+                                <label class="form-selectgroup-item flex-grow-1">
                                     <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
                                     <span class="form-selectgroup-label d-flex align-items-center p-3">
                                             <span class="me-3">
@@ -150,6 +150,7 @@ const form = useForm({
     last_name: '',
     email: '',
     password: '',
+    status: 'active',
 });
 
 const store = () => {

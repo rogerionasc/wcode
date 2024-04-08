@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -34,13 +36,16 @@ class UserController extends Controller
     {
 
         try {
+            DB::beginTransaction();
             // Validação dos dados do formulário
             $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8', // Pode ajustar conforme suas regras de senha
+                'password' => 'required|string|min:8',
+                'status' => 'required|string'
             ]);
+
             // Criação de um novo usuário
             $user = User::create([
                 'first_name' => $request->first_name,
@@ -48,10 +53,24 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
+            if (!$user) {
+                throw new \Exception('Erro ao criar usuário.');
+            }
 
+            $account = Account::create([
+                'user_id' => $user->id,
+                'status' => $request->status,
+            ]);
+
+            if (!$account) {
+                throw new \Exception('Erro ao criar conta.');
+            }
+
+            DB::commit();
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
 
         } catch (\Exception $exception) {
+            DB::rollBack();
             return Redirect::route('admin.user')->with('error', 'Não foi possível cadastrar o usuário!');
         }
 

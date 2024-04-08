@@ -42,7 +42,7 @@ require __DIR__.'/auth.php';
 
 // Router User Login //
 Route::get('login', [LoginController::class, 'index'])->name('login');
-Route::post('login', [LoginController::class, 'auth'])->name('login');
+Route::post('login', [LoginController::class, 'auth']);
 Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 
 // Router User Admin//
