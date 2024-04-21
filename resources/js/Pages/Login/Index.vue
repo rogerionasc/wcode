@@ -60,5 +60,6 @@ const form = useForm({
 });
 const auth = () => {
     form.post('login');
+
 }
 </script>

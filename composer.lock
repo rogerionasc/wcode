@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "965ffbd3457622c5c5eec251b21dd016",
+    "content-hash": "d03b54d4eeeb97525abe9df68ef5b8aa",
     "packages": [
         {
             "name": "brick/math",
@@ -2465,6 +2465,60 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "paradisesessions/validator-cpf-cnpj",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paradisesessions/validator-cpf-cnpj.git",
+                "reference": "08b5e75e6cab2da38305610d57cfc43fbe659307"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paradisesessions/validator-cpf-cnpj/zipball/08b5e75e6cab2da38305610d57cfc43fbe659307",
+                "reference": "08b5e75e6cab2da38305610d57cfc43fbe659307",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ParadiseSessions\\Validator\\": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matheus Bastos",
+                    "email": "matsince1993@yahoo.com",
+                    "homepage": "https://matsince1993.vercel.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A very simple class for validate CPF|CNPJ.",
+            "homepage": "https://github.com/paradisesessions/validator-cpf-cnpj",
+            "keywords": [
+                "cnpj",
+                "cpf",
+                "document",
+                "documento",
+                "validador",
+                "validator"
+            ],
+            "support": {
+                "issues": "https://github.com/paradisesessions/validator-cpf-cnpj/issues",
+                "source": "https://github.com/paradisesessions/validator-cpf-cnpj/tree/v1.0.1"
+            },
+            "time": "2023-04-15T14:11:27+00:00"
         },
         {
             "name": "phpoption/phpoption",
