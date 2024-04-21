@@ -16,14 +16,6 @@
 
 </head>
 <body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-</script>
 @inertia
 </body>
 {{--<script src="../css/dist/js/tabler.js" defer></script>--}}
