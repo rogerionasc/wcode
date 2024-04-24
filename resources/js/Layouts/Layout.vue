@@ -188,13 +188,13 @@
                             <div class="col-lg-auto ms-lg-auto">
                                 <ul class="list-inline list-inline-dots mb-0">
                                     <li class="list-inline-item">
-                                        <a href="https://tabler.io/docs" target="_blank" class="link-secondary">
-                                            Documentation
+                                        <a href="" target="_blank" class="link-secondary">
+                                            Documentação
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="./license.html" class="link-secondary">
-                                            License
+                                            Licensa
                                         </a>
                                     </li>
                                 </ul>
@@ -203,14 +203,15 @@
                                 <ul class="list-inline list-inline-dots mb-0">
                                     <li class="list-inline-item">
                                         Copyright &copy; 2023
-                                        <a href="." class="link-secondary">
-                                            Tabler
-                                        </a>.
-                                        All rights reserved.
+
                                     </li>
                                     <li class="list-inline-item">
+                                        <a href="." class="link-secondary">
+                                            WCode
+                                        </a>
+                                        <span > - </span>
                                         <a href="./changelog.html" class="link-secondary" rel="noopener">
-                                            v1.0.0-beta19
+                                            v1.0.0-beta
                                         </a>
                                     </li>
                                 </ul>
@@ -243,9 +244,5 @@ export default {
     props: {
         titleLayout: pageTitle
     },
-    mounted() {
-        console.log(this.$page.props.flash);
-    }
-
 };
 </script>
