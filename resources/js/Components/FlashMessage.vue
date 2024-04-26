@@ -57,6 +57,8 @@ export default {
                     } else {
                         this.show = false;
                     }
+                    console.log(this.$page.props.errors);
+                    console.log(this.$page.props.flash);
                     this.flash = flash;
                 }
             },

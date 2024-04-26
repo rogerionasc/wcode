@@ -12,24 +12,35 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nome</label>
-                                    <input v-model="form.first_name" type="text" class="form-control" name="example-text-input"
+                                    <input v-model="form.first_name" type="text" class="form-control"
+                                           :class="{ 'is-invalid': $page.props.errors.first_name }"
+                                           name="example-text-input"
                                            placeholder="Seu primeiro nome">
+                                    <small class="invalid-feedback" >{{$page.props.errors.first_name}}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Sobrenome</label>
-                                    <input v-model="form.last_name" type="text" class="form-control" name="example-text-input"
+                                    <input v-model="form.last_name" type="text" class="form-control"
+                                           :class="{ 'is-invalid': $page.props.errors.last_name }"
+                                           name="example-text-input"
                                            placeholder="Seu sobrenome">
+                                    <small class="invalid-feedback" >{{$page.props.errors.last_name}}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">CPF</label>
-                                    <input type="text" class="form-control" name="example-text-input"
+                                    <input v-model="form.document" type="text" class="form-control"
+                                           :class="{ 'is-invalid': $page.props.errors.document }"
+                                           name="example-text-input"
                                            placeholder="00.000.000-00">
+                                    <small class="invalid-feedback" >{{$page.props.errors.document}}</small>
+<!--                                    <input v-model="form.document" @input="formatCPF" type="text" class="form-control" name="example-text-input"-->
+<!--                                           placeholder="00.000.000-00">-->
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -48,10 +59,11 @@
                             <div class="col-lg-8">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input v-model="form.email" type="email" class="form-control"
-                                           autocomplete="on"
-                                           name="email-input"
-                                           placeholder="Seu email">
+                                    <input v-model="form.email" @input="validateEmail" type="email"
+                                           class="form-control"
+                                           :class="{ 'is-invalid': $page.props.errors.email }"
+                                           autocomplete="on" name="email" placeholder="Seu email">
+                                    <small class="invalid-feedback" >{{$page.props.errors.email}}</small>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -87,8 +99,8 @@
                         <div class="form-selectgroup-boxes row row-deck">
                             <div class="col-lg-6">
                                 <label class="form-selectgroup-item">
-                                    <input type="radio" name="report-type" value="1" class="form-selectgroup-input card"
-                                           checked>
+                                    <input type="radio" name="report-type" value="1"
+                                           class="form-selectgroup-input card" checked>
                                     <span class="form-selectgroup-label d-flex align-items-center flex-grow-1 p-3">
                                             <span class="me-3">
                                                 <span class="form-selectgroup-check">
@@ -142,12 +154,17 @@
 
 <script setup>
 import { useForm } from "@inertiajs/inertia-vue3";
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
+import mix from "@/mix.js";
+import axios from 'axios';
+
+const { validateCPF, validateEmailFormat } = mix.methods;
 
 const name = "ModalCreateUser";
 const form = useForm({
     first_name: '',
     last_name: '',
+    document: '',
     email: '',
     password: '',
     status: 'active',
@@ -156,5 +173,38 @@ const form = useForm({
 const store = () => {
     form.post('/register/user');
 }
-</script>
 
+const formatCPF = (event) => {
+    let cpf = event.target.value.replace(/\D/g, '');
+
+    // Garante que o CPF tenha exatamente 11 dígitos
+    if (cpf.length !== 11) {
+        cpf = cpf.slice(0, 11);
+    }
+
+    // Verifica se o CPF é válido
+    if (validateCPF(cpf)) {
+        const formattedCPF = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        console.log('É um cpf valido');
+        form.document = formattedCPF;
+        event.target.classList.remove('is-invalid');
+    } else {
+        console.log('Não é um cpf valido');
+        form.document = cpf;
+        event.target.classList.add('is-invalid');
+    }
+}
+
+const validateEmail = (event) => {
+    const email = event.target.value;
+
+    if (validateEmailFormat(email)) {
+        event.target.classList.remove('is-invalid');
+    } else {
+        event.target.classList.add('is-invalid');
+    }
+
+    // const isValidEmail = validateEmailFormat(email);
+    // form.isInvalidEmail = !isValidEmail;
+}
+</script>

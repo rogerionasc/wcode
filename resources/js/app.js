@@ -12,8 +12,8 @@ import axios from 'axios';
 
 const appName = import.meta.env.VITE_APP_NAME;
 
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
-    .getAttribute('content');
+// axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
+//     .getAttribute('content');
 
 createInertiaApp({
     title: (title) => `${appName} - ${title}`,
