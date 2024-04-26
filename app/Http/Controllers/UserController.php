@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $customMessages = [
             'required' => 'O campo é obrigatório.',
-            'alpha'    => 'O campo deve ser uma palavra.',
+            'string'    => 'O campo deve ser palavras!',
             'max'      => 'O campo não pode ter mais de :max caracteres.',
             'unique'   => 'O valor do campo :attribute já está em uso.',
             'min'      => 'O campo deve ter :min caracteres.',
@@ -58,7 +58,7 @@ class UserController extends Controller
             // Validação dos dados do formulário
             $request->validate([
                 'first_name' => 'required|alpha|max:255',
-                'last_name'  => 'required|alpha|max:255',
+                'last_name'  => 'required|string|max:255',
                 'document'   => ['string','min:11','max:14', new ValidatorDocument()],
                 'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
                 'password'   => 'required|string|min:6',

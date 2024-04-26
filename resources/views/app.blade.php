@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title inertia>{{ config('app.name', 'WCode') }}</title>
+
+    {{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
 {{--    <title inertia>{{ config('app.name', 'WCode') }}</title>--}}
     @routes
     @vite([
@@ -16,7 +19,9 @@
 
 </head>
 <body>
+
 @inertia
+{{--{{dd(  config( config(csrf_token())))}}--}}
 </body>
 {{--<script src="../css/dist/js/tabler.js" defer></script>--}}
 </html>

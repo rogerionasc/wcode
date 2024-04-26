@@ -22,36 +22,20 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-//Route::get('/', function () {
-//    return Inertia::render('Welcome', [
-//        'canLogin' => Route::has('login'),
-//        'canRegister' => Route::has('register'),
-//        'laravelVersion' => Application::VERSION,
-//        'phpVersion' => PHP_VERSION,
-//    ]);
-//});
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// Router User Login //
+// Router Login //
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'auth']);
 Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
 
-// Router User Admin//
-Route::middleware(['auth', 'verified'])->get('/', [HomeController::class, 'Index'])->name('home.admin');
-Route::middleware(['auth', 'verified'])->get('admin/dashboard', [HomeController::class, 'index'])
-    ->name('admin.dashboard');
-
-Route::middleware(['auth', 'verified'])->get('register/user', [UserController::class, 'index'])
-    ->name('admin.user');
-Route::middleware(['auth', 'verified'])->post('register/user', [UserController::class, 'store'])
-    ->name('register.store');
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Router Admin//
+    Route::get('/', [HomeController::class, 'Index'])->name('home.admin');
+    Route::get('admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+    Route::prefix('/admin/register')->group(function () {
+        Route::get('user', [UserController::class, 'index'])->name('admin.user');
+        Route::post('user', [UserController::class, 'store'])->name('register.store');
+    });
+});
 
 Route::get('user', function (){
 //    $user = new User();

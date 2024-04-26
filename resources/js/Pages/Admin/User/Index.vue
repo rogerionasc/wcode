@@ -234,12 +234,12 @@ import {onMounted} from 'vue';
 import {Head} from "@inertiajs/inertia-vue3";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
-import $ from "jquery";
+import jquery from "jquery";
 import 'datatables.net-bs5';
 
 onMounted(() => {
 
-    const table = $('#tableUser').DataTable({
+    const table = jquery('#tableUser').DataTable({
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
         },
