@@ -67,13 +67,11 @@ class UserController extends Controller
                 'status'     => 'required|alpha'
             ], $customMessages, $aliases);
 
-
-
             // Criação de um novo usuário
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'document'   => $request->document,
+                'document'   =>  str_replace(['.', '-'], '', $request->document),
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
             ]);
@@ -87,11 +85,10 @@ class UserController extends Controller
                 'status'  => $request->status,
             ]);
 
-
-
             if (!$account) {
                 throw new \Exception('Erro ao criar conta.');
             }
+
             DB::commit();
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
         } catch (ValidationException $e) {
