@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+
 
 class LoginController extends Controller
 {
@@ -16,7 +21,7 @@ class LoginController extends Controller
         return Inertia::render('Login/Index');
     }
 
-    public function auth(Request $request)
+    public function auth(Request $request): RedirectResponse
     {
 //        dd($request);
         $messageEmailPwd = [];
@@ -49,24 +54,25 @@ class LoginController extends Controller
             // Verificar se existe um token de sessão
             if ($request->hasSession()) {
                 // Verificar se já existe uma sessão válida
-                if (auth()->check()) {
+                if (Auth::check()) {
                     return Redirect::route('admin.dashboard')->with('info', 'Você já está logado.');
                 } else {
                     $this->logout();
                 }
             }
 
-            if (auth()->attempt([
+
+            if (Auth::attempt([
                 'email' => $request->email,
                 'password' => $request->password,
             ])) {
-                if (auth()->user()->account->status === 'active') {
-                    $request->session()->regenerate();
+                if (Auth::user()->account->status === 'active') {
+                    Session::regenerate();
                     return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
                 } else {
-                    auth()->logout(); // Desconectar usuário se a conta estiver inativa
-                    session()->invalidate();
-                    session()->regenerateToken();
+                    Auth::logout(); // Desconectar usuário se a conta estiver inativa
+                    Session::invalidate();
+                    Session::regenerateToken();
                     return Redirect::route('login')->with('warning', 'Sua conta está inativa. Entre em contato com o suporte.');
                 }
             } else {
@@ -78,11 +84,12 @@ class LoginController extends Controller
     }
 
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
-        auth()->logout();
-        session()->invalidate();
-        session()->regenerateToken();
-        return redirect()->route('login');
+        Auth::logout();
+        Session::invalidate();
+        Session::regenerateToken();
+
+        return Redirect::route('login');
     }
 }

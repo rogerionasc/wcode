@@ -171,7 +171,7 @@ const form = useForm({
 });
 
 const store = () => {
-    form.post('/register/user');
+    form.post('/admin/register/user');
 }
 
 const formatCPF = (event) => {
