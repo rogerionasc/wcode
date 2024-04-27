@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\User;
 use App\Rules\ValidatorDocument;
 use Composer\Json\JsonValidationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -36,8 +37,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
+
         $customMessages = [
             'required' => 'O campo é obrigatório.',
             'string'    => 'O campo deve ser palavras!',
@@ -69,10 +71,11 @@ class UserController extends Controller
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'document'   => $request->document,
+                'document'   =>  str_replace(['.', '-'], '', $request->document),
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
             ]);
+
             if (!$user) {
                 throw new \Exception('Erro ao criar usuário.');
             }
@@ -85,12 +88,14 @@ class UserController extends Controller
             if (!$account) {
                 throw new \Exception('Erro ao criar conta.');
             }
+
             DB::commit();
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
         } catch (ValidationException $e) {
+
             DB::rollBack();
             $errors = $e->errors();
-            return redirect()->back()->withErrors($errors)->with('error', 'Não foi possível cadastrar o usuário!');
+            return Redirect::back()->withErrors($errors)->with('error', 'Não foi possível cadastrar o usuário!');
         }
 
     }
