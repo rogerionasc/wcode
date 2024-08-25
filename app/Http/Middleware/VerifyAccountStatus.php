@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\LoginController;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,8 @@ class VerifyAccountStatus
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->account->status !== 'active') {
-            auth()->logout();
-            session()->invalidate();
-            session()->regenerateToken();
-            return redirect()->route('login');
+            $loginController = new LoginController();
+            return $loginController->logout($request);
         }
         return $next($request);
     }

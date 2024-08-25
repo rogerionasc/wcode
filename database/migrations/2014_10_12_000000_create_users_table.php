@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('last_name', 25);
             $table->string('document', 11)->unique();
             $table->string('email')->unique();
+            $table->string('role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('owner')->default(false);
             $table->string('photo_path', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();

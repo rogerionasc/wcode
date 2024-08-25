@@ -22,12 +22,18 @@ class DatabaseSeeder extends Seeder
             'last_name' => 'Nascimento',
             'document' => '38041715087',
             'email' => 'rogerio@example.com',
+            'role' => 'dev',
             'password' => 'roger@2014',
-            'owner' => true,
+
         ]);
 
         $account = Account::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'owner' => true,
         ]);
+
+        $this->call(RolesTableSeeder::class);
+
+        $this->call(PermissionSeeder::class);
     }
 }

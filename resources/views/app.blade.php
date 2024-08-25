@@ -18,7 +18,7 @@
     @inertiaHead
 
 </head>
-<body>
+<body class="">
 
 @inertia
 {{--{{dd(  config( config(csrf_token())))}}--}}

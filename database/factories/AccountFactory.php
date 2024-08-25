@@ -19,6 +19,7 @@ class AccountFactory extends Factory
     {
         return [
             'status' => 'active',
+            'owner' => false
             // Outros atributos e valores padrão podem ser adicionados aqui
         ];
     }

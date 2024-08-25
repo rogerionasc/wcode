@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -38,10 +39,12 @@ class HandleInertiaRequests extends Middleware
                         'id' => $request->user()->id,
                         'first_name' => $request->user()->first_name,
                         'last_name' => $request->user()->last_name,
-                        'status' => $request->user()->status,
+                        'status' => $request->user()->account->status,
                         'email' => $request->user()->email,
                         'password' => $request->user()->password,
-                        'owner' => $request->user()->owner,
+                        'owner' => $request->user()->account->owner,
+                        'role' => $request->user()->role,
+                        'title_role' => app(UserController::class)->getRole($request),
 
 //                        'permission_gerenciar_usuario' => Auth::user()->hasPermissionTo('gerenciar_usuario'),
 //                        'account' => ['id' => $request->user()->account->id, 'name' => $request->user()->account->name, ],

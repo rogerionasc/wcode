@@ -1,5 +1,5 @@
 <template>
-    <div class="layout">
+    <div class="layout layout-fluid">
         <div class="page">
             <!-- Navbar -->
 
@@ -22,7 +22,7 @@
 
                                 <div class=" m-2 d-none d-xl-block ps-2">
                                     <div>{{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</div>
-                                    <div class="mt-1 small text-muted">Develop</div>
+                                    <div class="mt-1 small text-muted">{{ $page.props.auth.user.title_role }}</div>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout"
                                      width="24" height="24" viewBox="0 0 22 22" stroke-width="2" stroke="currentColor"
@@ -194,7 +194,7 @@
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="./license.html" class="link-secondary">
-                                            Licensa
+                                            Licença
                                         </a>
                                     </li>
                                 </ul>
@@ -244,5 +244,8 @@ export default {
     props: {
         titleLayout: pageTitle
     },
+    mounted() {
+        console.log(this.$page.props.auth.user);
+    }
 };
 </script>

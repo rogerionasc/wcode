@@ -13,7 +13,8 @@ class Account extends Model
 
     protected $fillable = [
         'user_id',
-        'status'
+        'status',
+        'owner'
     ];
 
     public function user(): BelongsTo

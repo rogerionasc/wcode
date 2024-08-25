@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Role;
 use App\Models\User;
 use App\Rules\ValidatorDocument;
 use Composer\Json\JsonValidationException;
@@ -74,6 +75,7 @@ class UserController extends Controller
                 'document'   =>  str_replace(['.', '-'], '', $request->document),
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
+
             ]);
 
             if (!$user) {
@@ -98,6 +100,14 @@ class UserController extends Controller
             return Redirect::back()->withErrors($errors)->with('error', 'Não foi possível cadastrar o usuário!');
         }
 
+    }
+
+    public function getRole(Request $request) {
+        $user = $request->user();
+        $role = Role::where('tag_permission', $user->role)->first();
+        $user->setAttribute('title_role', $role ? $role->title : 'N/A');
+
+        return $user->title_role;
     }
 
     /**

@@ -37,12 +37,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 });
 
-Route::get('user', function (){
-//    $user = new User();
-//    $user->name = "Teste Name";
-//    $user->email = "teste@email.com";
-//    $user->password = "123456";
-//    $user->save();
-});
+Route::get('user', [UserController::class, 'getRole']);
 
 

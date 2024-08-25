@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -67,13 +68,22 @@ class LoginController extends Controller
                 'password' => $request->password,
             ])) {
                 if (Auth::user()->account->status === 'active') {
+
+                    $status = Auth::user()->account->status;
+
                     Session::regenerate();
+
+                    // Atualiza o status na nova sessão
+                    Session::put('status', $status);
+
+//                    dd(Session::all());
+
                     return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
                 } else {
                     Auth::logout(); // Desconectar usuário se a conta estiver inativa
                     Session::invalidate();
                     Session::regenerateToken();
-                    return Redirect::route('login')->with('warning', 'Sua conta está inativa. Entre em contato com o suporte.');
+                    return Redirect::route('login')->with('warning', 'Conta inativa. Entre em contato com o suporte.');
                 }
             } else {
                 return Redirect::route('login')->with('error', 'Verifique sua senha e email.');
@@ -86,7 +96,8 @@ class LoginController extends Controller
 
     public function logout(): RedirectResponse
     {
-        Auth::logout();
+//        Auth::logout(); --> Não funciona, com o uso do middleware sanctum na rota não é possivel
+        Auth::guard('web')->logout();
         Session::invalidate();
         Session::regenerateToken();
 
