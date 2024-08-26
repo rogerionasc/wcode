@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,25 +17,49 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             [
                 'tag' => 'admin',
-                'module' => 'geral',
-                'read' => true,
-                'write' => true,
-                'edit' => true,
-                'delete' => true,
+                'module' => json_encode([
+                    'home' => [
+                        'read' => true,
+                        'write' => true,
+                        'edit' => true,
+                        'delete' => true,
+                    ],
+                    'config' => [
+                        'read' => true,
+                        'write' => true,
+                        'edit' => true,
+                        'delete' => true,
+                    ],
+                ]),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
-                'tag' => 'receptionist',
-                'module' => 'usuario',
-                'read' => true,
-                'write' => false,
-                'edit' => false,
-                'delete' => false,
+                'tag' => 'dev',
+                'module' => json_encode([
+                    'home' => [
+                        'read' => true,
+                        'write' => true,
+                        'edit' => true,
+                        'delete' => true,
+                    ],
+                ]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'tag' => 'visitant',
+                'module' => json_encode([
+                    'user' => [
+                        'read' => false,
+                        'write' => false,
+                        'edit' => false,
+                        'delete' => false,
+                    ],
+                ]),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
         ]);
-
     }
 }

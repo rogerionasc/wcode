@@ -15,10 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('tag'); // Nome do recurso ou entidade, ex: 'user', 'post'
             $table->string('module'); // Nome do modulo que tem permissão
-            $table->boolean('read')->default(false);
-            $table->boolean('write')->default(false);
-            $table->boolean('edit')->default(false);
-            $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }

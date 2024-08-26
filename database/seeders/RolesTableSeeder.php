@@ -21,7 +21,7 @@ class RolesTableSeeder extends Seeder
             ['tag_permission' => 'admin', 'title' => 'Administrador', 'created_at' => $now, 'updated_at' => $now],
             ['tag_permission' => 'dev', 'title' => 'Desenvolvedor', 'created_at' => $now, 'updated_at' => $now],
             ['tag_permission' => 'manager', 'title' => 'Gerente', 'created_at' => $now, 'updated_at' => $now],
-            ['tag_permission' => 'receptionist', 'title' => 'Recepcionista', 'created_at' => $now, 'updated_at' => $now],
+            ['tag_permission' => 'visitant', 'title' => 'Visitante', 'created_at' => $now, 'updated_at' => $now],
         ]);
     }
 }

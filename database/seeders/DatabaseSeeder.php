@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'last_name' => 'Nascimento',
             'document' => '38041715087',
             'email' => 'rogerio@example.com',
-            'role' => 'dev',
+            'role' => 'admin',
             'password' => 'roger@2014',
 
         ]);
