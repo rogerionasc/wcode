@@ -24,7 +24,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/User/Index');
+        $users = $this->getAllUsers();
+        return Inertia::render('Admin/User/Index',['users' => $users]);
     }
 
     /**
@@ -108,6 +109,13 @@ class UserController extends Controller
         $user->setAttribute('title_role', $role ? $role->title : 'N/A');
 
         return $user->title_role;
+    }
+
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+
     }
 
     /**
