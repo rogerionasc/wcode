@@ -1,5 +1,5 @@
 <template>
-    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,16 +151,50 @@
         </div>
     </div>
 </template>
-
 <script setup>
-import { useForm } from "@inertiajs/inertia-vue3";
-import {ref, watch} from 'vue';
-import mix from "@/mix.js";
-import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import { Head, Inertia, useForm } from "@inertiajs/inertia-vue3";
+import jquery from "jquery";
+import 'datatables.net-bs5';
+import ButtonCreate from "@/Components/ButtonCreate.vue";
+import Layout from "@/Layouts/Layout.vue";
+import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
 
+// Funções e variáveis relacionadas às validações
 const { validateCPF, validateEmailFormat } = mix.methods;
 
-const name = "ModalCreateUser";
+const emit = defineEmits(['updateTable']);
+
+// Função para formatar CPF
+const formatCPF = (event) => {
+    let cpf = event.target.value.replace(/\D/g, '');
+
+    if (cpf.length !== 11) {
+        cpf = cpf.slice(0, 11);
+    }
+
+    if (validateCPF(cpf)) {
+        const formattedCPF = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        form.document = formattedCPF;
+        event.target.classList.remove('is-invalid');
+    } else {
+        form.document = cpf;
+        event.target.classList.add('is-invalid');
+    }
+}
+
+// Função para validar Email
+const validateEmail = (event) => {
+    const email = event.target.value;
+
+    if (validateEmailFormat(email)) {
+        event.target.classList.remove('is-invalid');
+    } else {
+        event.target.classList.add('is-invalid');
+    }
+}
+
+// Formulário de criação de usuário
 const form = useForm({
     first_name: '',
     last_name: '',
@@ -170,41 +204,14 @@ const form = useForm({
     status: 'active',
 });
 
+// Função para criar um novo usuário
+
+
 const store = () => {
-    form.post('/admin/register/user');
-}
-
-const formatCPF = (event) => {
-    let cpf = event.target.value.replace(/\D/g, '');
-
-    // Garante que o CPF tenha exatamente 11 dígitos
-    if (cpf.length !== 11) {
-        cpf = cpf.slice(0, 11);
-    }
-
-    // Verifica se o CPF é válido
-    if (validateCPF(cpf)) {
-        const formattedCPF = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        console.log('É um cpf valido');
-        form.document = formattedCPF;
-        event.target.classList.remove('is-invalid');
-    } else {
-        console.log('Não é um cpf valido');
-        form.document = cpf;
-        event.target.classList.add('is-invalid');
-    }
-}
-
-const validateEmail = (event) => {
-    const email = event.target.value;
-
-    if (validateEmailFormat(email)) {
-        event.target.classList.remove('is-invalid');
-    } else {
-        event.target.classList.add('is-invalid');
-    }
-
-    // const isValidEmail = validateEmailFormat(email);
-    // form.isInvalidEmail = !isValidEmail;
-}
+    form.post('/admin/register/user', {
+        onSuccess: () => {
+            emit('updateTable');
+        }
+    });
+};
 </script>

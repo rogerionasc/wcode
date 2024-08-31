@@ -31,8 +31,10 @@ Route::middleware(['auth:sanctum', 'check.permission'])->group(function () {
     // Router Admin//
     Route::get('admin/', [HomeController::class, 'Index'])->name('admin.home');
     Route::get('admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+
     Route::prefix('/admin/register')->group(function () {
         Route::get('user', [UserController::class, 'index'])->name('admin.user');
+        Route::get('users', [UserController::class, 'fetchUsers'])->name('admin.register.users');
         Route::post('user', [UserController::class, 'store']);
     });
 });

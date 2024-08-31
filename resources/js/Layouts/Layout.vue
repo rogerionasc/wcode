@@ -222,7 +222,7 @@
             </div>
         </div>
         <!-- Modal Form -->
-        <ModalCreateUser/>
+        <!-- <ModalCreateUser/> -->
     </div>
 </template>
 

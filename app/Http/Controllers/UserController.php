@@ -25,7 +25,7 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->getAllUsers();
-        return Inertia::render('Admin/User/Index',['users' => $users]);
+        return Inertia::render('Admin/User/Index', ['users' => $users]);
     }
 
     /**
@@ -93,7 +93,11 @@ class UserController extends Controller
             }
 
             DB::commit();
+
+
+            // return response()->json($users);
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
+
         } catch (ValidationException $e) {
 
             DB::rollBack();
@@ -113,9 +117,31 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        $users = User::all();
-        return response()->json($users);
+        // $users = User::all();
 
+        // foreach ($users as $user) {
+        //     $role = Role::where('tag_permission', $user->role)->first();
+        //     $user->setAttribute('title_role', $role ? $role->title : 'N/A');
+        // }
+
+        $users = DB::table('users')
+            ->join('accounts', 'users.id', '=', 'accounts.user_id')
+            ->select('users.*', 'accounts.status')
+            ->orderBy('users.created_at', 'asc')
+            ->get();
+
+        foreach ($users as $user) {
+            $role = Role::where('tag_permission', $user->role)->first();
+            $user->title_role = $role ? $role->title : 'N/A'; // Define o atributo title_role diretamente
+        }
+
+        return $users;
+    }
+
+    public function fetchUsers()
+    {
+        $users = $this->getAllUsers();
+        return response()->json($users);
     }
 
     /**
