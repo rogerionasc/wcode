@@ -85,7 +85,7 @@
                                     <div class="dropdown-menu">
                                         <div class="dropdown-menu-columns">
                                             <div class="dropdown-menu-column">
-                                                <a class="dropdown-item" href="/admin/register/user">Usuário </a>
+                                                <a class="dropdown-item" href="/admin/user">Usuário </a>
                                                 <Link class="dropdown-item" href="/register/medic">Médico </Link>
                                                 <a class="dropdown-item" href="/register/patient"> Paciente
                                                     <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">

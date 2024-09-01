@@ -208,7 +208,7 @@ const form = useForm({
 
 
 const store = () => {
-    form.post('/admin/register/user', {
+    form.post('/admin/user', {
         onSuccess: () => {
             emit('updateTable');
         }

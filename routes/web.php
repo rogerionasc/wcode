@@ -22,31 +22,39 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-// Router Login //
+
+// Rotas de Login
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'auth']);
-Route::get('/logout',[LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['auth:sanctum', 'check.permission'])->group(function () {
-    // Router Admin//
+
+    // Rotas Admin
     Route::get('admin/', [HomeController::class, 'Index'])->name('admin.home');
     Route::get('admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
 
-    Route::prefix('/admin/register')->group(function () {
+    // Rotas de Usuários
+    Route::prefix('admin')->group(function () {
         Route::get('user', [UserController::class, 'index'])->name('admin.user');
-        Route::get('users', [UserController::class, 'fetchUsers'])->name('admin.register.users');
+        Route::get('users', [UserController::class, 'fetchUsers'])->name('admin.users');
         Route::post('user', [UserController::class, 'store']);
+        Route::delete('user/delete/{id}', [UserController::class, 'deleteUser'])->name('admin.user.delete');
     });
+
 });
+
 
 
 
 
 //Routas testes
 
-Route::get('user', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("getRole");
-Route::get('config/', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("config");
-Route::get('config/1/2', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("config");
-Route::get('/', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("home");
+// Route::get('user', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("getRole");
+// Route::get('config/', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("config");
+// Route::get('config/1/2', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("config");
+// Route::get('/', [UserController::class, 'getRole'])->middleware(['check.permission'])->name("home");
+// // Route::delete('admin/user/delete/{id}', [UserController::class, 'deleteUser'])->name("user.delete");
 
 

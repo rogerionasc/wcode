@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use App\Rules\ValidatorEmail;
+use App\Http\Controllers\ExceptionFound;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -171,8 +173,27 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function deleteUser(string $id)
     {
-        //
+        try {
+            $authenticatedUserId = auth()->id();
+        
+            // Verifica se o ID do usuário autenticado é o mesmo que o ID a ser excluído
+            if ($authenticatedUserId == $id) {
+                return redirect()->back()->with('error', 'Você não pode excluir a si mesmo.');
+            }
+
+
+            // Busca o usuário pelo ID
+            $user = User::findOrFail($id);
+    
+            $user->delete();
+
+            return redirect()->back()->with('success', 'Usuário excluído com sucesso.');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Usuário não encontrado.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao excluir o usuário.');
+        }
     }
 }

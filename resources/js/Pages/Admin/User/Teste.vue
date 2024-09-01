@@ -38,7 +38,7 @@
             </div>
             <!-- Modal Form -->
             <ModalCreateUser @updateTable="updateTable"/>
-            <ModalDeleteUser :userId="userIdToDelete" :updateTable="updateTable"/>
+            <ModalDeleteUser />
         </Layout>
     </div>
 </template>
