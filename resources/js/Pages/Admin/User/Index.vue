@@ -38,7 +38,7 @@
             </div>
             <!-- Modal Form -->
             <ModalCreateUser @updateTable="updateTable"/>
-            <ModalDeleteUser :userId="userIdToDelete" :updateTable="updateTable"/>
+            <ModalDeleteUser :user="userToDelete" :updateTable="updateTable"/>
         </Layout>
     </div>
 </template>
@@ -56,7 +56,7 @@ import 'datatables.net-bs5';
 const props = defineProps(['users']);
 const usersList = ref(props.users);
 let dataTableInstance = null; // Variável para armazenar a instância do DataTable
-const userIdToDelete = ref(null); // ID do usuário a ser excluído
+const userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
 
 onMounted(() => {
     initializeDataTable();
@@ -80,23 +80,23 @@ const initializeDataTable = () => {
                 data: null, className: 'text-center', render: (data) => `
                     <a href="#" class="btn btn-icon edit-btn" aria-label="Button">
                         <!-- SVG de editar -->
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"/>
-        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"/>
-        <path d="M16 5l3 3"/>
-    </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"/>
+                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"/>
+                            <path d="M16 5l3 3"/>
+                        </svg>
                     </a>
                     <a href="#" class="btn btn-danger btn-icon delete-btn"  data-bs-toggle="modal" data-bs-target="#deleteUser" aria-label="Button">
                         <!-- SVG de excluir -->
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M4 7l16 0"/>
-        <path d="M10 11l0 6"/>
-        <path d="M14 11l0 6"/>
-        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-    </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 7l16 0"/>
+                            <path d="M10 11l0 6"/>
+                            <path d="M14 11l0 6"/>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
+                        </svg>
                     </a>
                 `
             }
@@ -109,7 +109,7 @@ const initializeDataTable = () => {
 const setupEventListeners = () => {
     jquery('#tableUser').on('click', '.delete-btn', function() {
         const row = dataTableInstance.row(jquery(this).closest('tr')).data();
-        setUserIdToDelete(row.id);
+        setUserToDelete(row);
     });
 };
 
@@ -126,9 +126,9 @@ const updateTable = async () => {
     }
 };
 
-const setUserIdToDelete = (id) => {
-    userIdToDelete.value = id;
-    console.log("ID do usuário para exclusão:", userIdToDelete.value); // Adiciona a depuração aqui
+const setUserToDelete = (user) => {
+    userToDelete.value = user || {}; // Garantia de que não será null
+    console.log("Usuário para exclusão:", userToDelete.value); // Debugging
 };
 </script>
 
