@@ -39,6 +39,7 @@
             <!-- Modal Form -->
             <ModalCreateUser @updateTable="updateTable"/>
             <ModalDeleteUser :user="userToDelete" :updateTable="updateTable"/>
+            <ModalEditUser />
         </Layout>
     </div>
 </template>
@@ -50,6 +51,7 @@ import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
 import ModalCreateUser from "@/Components/ModalCreateUser.vue";
 import ModalDeleteUser from "@/pages/Admin/User/Delete.vue";
+import ModalEditUser from "@/pages/Admin/User/Edit.vue";
 import jquery from "jquery";
 import 'datatables.net-bs5';
 
@@ -78,7 +80,7 @@ const initializeDataTable = () => {
             { data: 'status', className: 'text-center', render: (data) => data === 'active' ? '<span class="badge bg-green-lt">Ativo</span>' : '<span class="badge bg-red-lt">Inativo</span>' },
             {
                 data: null, className: 'text-center', render: (data) => `
-                    <a href="#" class="btn btn-icon edit-btn" aria-label="Button">
+                    <a href="#" class="btn edit-btn btn-icon "  data-bs-toggle="modal" data-bs-target="#editUser" aria-label="Button">
                         <!-- SVG de editar -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -132,7 +134,7 @@ const setUserToDelete = (user) => {
 };
 </script>
 
-<style scoped>
+<style>
 .dt-empty {
   text-align: center !important; /* Centraliza o texto horizontalmente */
 }

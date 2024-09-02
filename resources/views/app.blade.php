@@ -24,4 +24,7 @@
 {{--{{dd(  config( config(csrf_token())))}}--}}
 </body>
 {{--<script src="../css/dist/js/tabler.js" defer></script>--}}
+<script>
+    console.log("Path test: {{ asset('resources/js/Pages/Loader/PageLoader.vue') }}");
+  </script>
 </html>

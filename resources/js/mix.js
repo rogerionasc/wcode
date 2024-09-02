@@ -1,4 +1,8 @@
 export default {
+    mounted() {
+        
+    },
+
     methods: {
         validateEmailFormat (email) {
             // Regex para validar o formato de e-mail

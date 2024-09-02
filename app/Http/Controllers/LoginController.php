@@ -79,6 +79,7 @@ class LoginController extends Controller
 //                    dd(Session::all());
 
                     return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
+                    
                 } else {
                     Auth::logout(); // Desconectar usuário se a conta estiver inativa
                     Session::invalidate();

@@ -180,7 +180,7 @@ class UserController extends Controller
         
             // Verifica se o ID do usuário autenticado é o mesmo que o ID a ser excluído
             if ($authenticatedUserId == $id) {
-                return redirect()->back()->with('error', 'Você não pode excluir a si mesmo.');
+                return redirect()->back()->with('warning', 'Você não pode excluir a si mesmo.');
             }
 
 

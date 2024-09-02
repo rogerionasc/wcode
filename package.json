@@ -24,6 +24,7 @@
         "@tabler/core": "^1.0.0-beta20",
         "datatables.net-bs5": "^2.0.2",
         "jquery": "^3.7.1",
+        "litepicker": "^2.0.12",
         "pg": "^8.11.4",
         "sequelize": "^6.37.2",
         "sequelize-cockroachdb": "^6.0.5"

@@ -43,12 +43,18 @@
 <!--                                           placeholder="00.000.000-00">-->
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Data de nascimento</label>
-                                    <input type="date" class="form-control">
-                                </div>
+                            <div class="col-sm-6 col-md-6">
+                          <div class="mb-12">
+                            <label class="form-label">Nascimento</label>
+                            <!-- <input type="text" class="form-control" placeholder="(xx) xxxxx-xxxx" value=""> -->
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M4 11h16"></path><path d="M11 15h1"></path><path d="M12 15v3"></path></svg>
+                              </span>
+                              <input class="form-control" placeholder="Select a date" id="datepicker-create-user" value="2020-06-20">
                             </div>
+                          </div>
+                        </div>
                         </div>
                     </div>
                     <div class="modal-header">
@@ -127,7 +133,7 @@
                                             <span class="form-selectgroup-label-content">
                                                 <span class="form-selectgroup-title strong mb-1">Administrador</span>
                                                 <span class="d-block text-muted">
-                                                    Conta administradora possui privilégios especiais, responsável por
+                                                    Conta Administrador possui privilégios especiais, responsável por
                                                     gerenciar e configurar o sistema.
                                                 </span>
                                             </span>
@@ -152,18 +158,27 @@
     </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import { Head, Inertia, useForm } from "@inertiajs/inertia-vue3";
-import jquery from "jquery";
+
+import { useForm } from "@inertiajs/inertia-vue3";
+import { onMounted } from 'vue';
 import 'datatables.net-bs5';
-import ButtonCreate from "@/Components/ButtonCreate.vue";
-import Layout from "@/Layouts/Layout.vue";
 import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
+import Litepicker from 'litepicker';
 
 // Funções e variáveis relacionadas às validações
 const { validateCPF, validateEmailFormat } = mix.methods;
 
 const emit = defineEmits(['updateTable']);
+
+onMounted(() => {
+    new Litepicker({
+        element: document.getElementById('datepicker-create-user'),
+        buttonText: {
+            previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+            nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+        },
+    });
+});
 
 // Função para formatar CPF
 const formatCPF = (event) => {
