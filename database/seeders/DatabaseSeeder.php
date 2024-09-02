@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use App\Models\Account;
-
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,25 +13,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
+        // Cria um usuário específico com informações fornecidas
         $user = User::factory()->create([
             'first_name' => 'Rogério',
             'last_name' => 'Nascimento',
             'document' => '38041715087',
             'email' => 'rogerio@example.com',
+            'birth_date' => '1993-02-06',
             'role' => 'admin',
-            'password' => 'roger@2014',
-
+            'password' => \Illuminate\Support\Facades\Hash::make('roger@2014'),
         ]);
 
-        $account = Account::factory()->create([
+        // Cria uma conta associada ao usuário específico
+        Account::factory()->create([
             'user_id' => $user->id,
             'owner' => true,
+            'status' => 'active',
         ]);
 
-        $this->call(RolesTableSeeder::class);
+        // Cria 9 usuários adicionais aleatórios e suas contas
+        User::factory(1)->create()->each(function ($user) {
+            Account::factory()->create([
+                'user_id' => $user->id,
+                'owner' => false, // Defina o valor conforme necessário
+                'status' => 'active',
+            ]);
+        });
 
+        // Chama outros seeders, se necessário
+        $this->call(RolesTableSeeder::class);
         $this->call(PermissionSeeder::class);
     }
 }

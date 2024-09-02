@@ -18,9 +18,8 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => 'active',
-            'owner' => false
-            // Outros atributos e valores padrão podem ser adicionados aqui
+            'user_id' => \App\Models\User::factory(), // Associa um usuário aleatório
+            'owner' => $this->faker->boolean,
         ];
     }
 }

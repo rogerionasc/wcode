@@ -49,9 +49,10 @@ import { onMounted, ref } from 'vue';
 import { Head } from "@inertiajs/inertia-vue3";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
-import ModalCreateUser from "@/Components/ModalCreateUser.vue";
-import ModalDeleteUser from "@/pages/Admin/User/Delete.vue";
-import ModalEditUser from "@/pages/Admin/User/Edit.vue";
+// import ModalCreateUser from "@/Components/ModalCreateUser.vue";
+import ModalCreateUser from "@/Pages/Admin/User/Create.vue";
+import ModalDeleteUser from "@/Pages/Admin/User/Delete.vue";
+import ModalEditUser from "@/Pages/Admin/User/Edit.vue";
 import jquery from "jquery";
 import 'datatables.net-bs5';
 

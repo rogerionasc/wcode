@@ -6,17 +6,15 @@ use App\Models\Account;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\ValidatorDocument;
-use Composer\Json\JsonValidationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use App\Rules\ValidatorEmail;
-use App\Http\Controllers\ExceptionFound;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
@@ -43,6 +41,7 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // dd($request->all());
 
         $customMessages = [
             'required' => 'O campo é obrigatório.',
@@ -50,6 +49,7 @@ class UserController extends Controller
             'max'      => 'O campo não pode ter mais de :max caracteres.',
             'unique'   => 'O valor do campo :attribute já está em uso.',
             'min'      => 'O campo deve ter :min caracteres.',
+            'date_format' => 'O formato da data deve ser :format.',
         ];
 
         $aliases = [
@@ -61,6 +61,7 @@ class UserController extends Controller
 
         try {
             DB::beginTransaction();
+
             // Validação dos dados do formulário
             $request->validate([
                 'first_name' => 'required|alpha|max:255',
@@ -68,17 +69,27 @@ class UserController extends Controller
                 'document'   => ['string','min:11','max:14', new ValidatorDocument()],
                 'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
                 'password'   => 'required|string|min:6',
+                'birth_date' => 'required|date_format:d/m/Y', // Formato da data no request
                 'status'     => 'required|alpha'
             ], $customMessages, $aliases);
+
+            // dd([
+            //     'first_name' => $request->first_name,
+            //     'last_name'  => $request->last_name,
+            //     'document'   => str_replace(['.', '-'], '', $request->document),
+            //     'birth_date' => Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d H:i:s'),
+            //     'email'      => $request->email,
+            //     'password'   => Hash::make($request->password),
+            // ]);
 
             // Criação de um novo usuário
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'document'   =>  str_replace(['.', '-'], '', $request->document),
+                'document'   => str_replace(['.', '-'], '', $request->document),
+                'birth_date' => Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d'),
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
-
             ]);
 
             if (!$user) {
@@ -96,17 +107,15 @@ class UserController extends Controller
 
             DB::commit();
 
-
-            // return response()->json($users);
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
-
         } catch (ValidationException $e) {
-
             DB::rollBack();
             $errors = $e->errors();
             return Redirect::back()->withErrors($errors)->with('error', 'Não foi possível cadastrar o usuário!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with('error', 'Erro ao criar o usuário. Cod:');
         }
-
     }
 
     public function getRole(Request $request) {
@@ -119,13 +128,6 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        // $users = User::all();
-
-        // foreach ($users as $user) {
-        //     $role = Role::where('tag_permission', $user->role)->first();
-        //     $user->setAttribute('title_role', $role ? $role->title : 'N/A');
-        // }
-
         $users = DB::table('users')
             ->join('accounts', 'users.id', '=', 'accounts.user_id')
             ->select('users.*', 'accounts.status')
@@ -182,7 +184,6 @@ class UserController extends Controller
             if ($authenticatedUserId == $id) {
                 return redirect()->back()->with('warning', 'Você não pode excluir a si mesmo.');
             }
-
 
             // Busca o usuário pelo ID
             $user = User::findOrFail($id);

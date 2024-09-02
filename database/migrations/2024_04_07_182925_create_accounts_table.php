@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('status');
+            $table->string('status')->default('active');
             $table->boolean('owner')->default(false);
 //            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('user_id')
