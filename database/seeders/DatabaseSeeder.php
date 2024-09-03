@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()->create([
             'first_name' => 'Rogério',
             'last_name' => 'Nascimento',
-            'document' => '38041715087',
+            'document' => '380.417.150-87',
             'email' => 'rogerio@example.com',
             'birth_date' => '1993-02-06',
             'role' => 'admin',

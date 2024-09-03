@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum', 'check.permission'])->group(function () {
 
     // Rotas Admin
     Route::get('admin/', [HomeController::class, 'Index'])->name('admin.home');
+    Route::get('/', [HomeController::class, 'Index']);
     Route::get('admin/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
     // Route::get('pageloader', [HomeController::class, 'pageloader'])->name('pageloader');
 

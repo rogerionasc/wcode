@@ -47,9 +47,10 @@ class UserController extends Controller
             'required' => 'O campo é obrigatório.',
             'string'    => 'O campo deve ser palavras!',
             'max'      => 'O campo não pode ter mais de :max caracteres.',
-            'unique'   => 'O valor do campo :attribute já está em uso.',
+            'unique'   => 'Este :attribute já está em uso.',
             'min'      => 'O campo deve ter :min caracteres.',
             'date_format' => 'O formato da data deve ser :format.',
+            'same' => 'As senhas informadas devem coincidir.',
         ];
 
         $aliases = [
@@ -57,6 +58,8 @@ class UserController extends Controller
             'last_name'  => 'sobrenome',
             'email'      => 'e-mail',
             'password'   => 'senha',
+            'document'   => 'documento',
+            'confirmPassword' => 'confirmação de senha',
         ];
 
         try {
@@ -66,12 +69,15 @@ class UserController extends Controller
             $request->validate([
                 'first_name' => 'required|alpha|max:255',
                 'last_name'  => 'required|string|max:255',
-                'document'   => ['string','min:11','max:14', new ValidatorDocument()],
-                'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
+                'document'   => ['required', 'min:11', 'max:14', 'unique:users', new ValidatorDocument], // 'unique' antes da regra personalizada
+                'email'      => ['required', 'max:255', 'unique:users', new ValidatorEmail], // 'unique' antes da regra personalizada
                 'password'   => 'required|string|min:6',
-                'birth_date' => 'required|date_format:d/m/Y', // Formato da data no request
+                'confirmPassword' => 'required|same:password',
+                'birth_date' => 'required|date_format:d/m/Y',
                 'status'     => 'required|alpha'
             ], $customMessages, $aliases);
+            
+
 
             // dd([
             //     'first_name' => $request->first_name,
@@ -86,7 +92,8 @@ class UserController extends Controller
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'document'   => str_replace(['.', '-'], '', $request->document),
+                // 'document'   => str_replace(['.', '-'], '', $request->document),
+                'document'   =>  $request->document,
                 'birth_date' => Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d'),
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
@@ -114,7 +121,7 @@ class UserController extends Controller
             return Redirect::back()->withErrors($errors)->with('error', 'Não foi possível cadastrar o usuário!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return Redirect::back()->with('error', 'Erro ao criar o usuário. Cod:');
+            return Redirect::back()->with('error', 'Erro ao criar o usuário.');
         }
     }
 

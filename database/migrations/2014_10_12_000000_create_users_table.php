@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name', 25);
             $table->string('last_name', 25);
-            $table->string('document', 14);
+            $table->string('document', 14)->unique();
             $table->string('email')->unique();
             $table->string('role')->default('visitant');
             $table->timestamp('email_verified_at')->nullable();

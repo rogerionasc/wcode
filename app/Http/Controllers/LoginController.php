@@ -81,16 +81,16 @@ class LoginController extends Controller
                     return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
                     
                 } else {
-                    Auth::logout(); // Desconectar usuário se a conta estiver inativa
+                    $this->logout(); // Desconectar usuário se a conta estiver inativa
                     Session::invalidate();
                     Session::regenerateToken();
-                    return Redirect::route('login')->with('warning', 'Conta inativa. Entre em contato com o suporte.');
+                    return Redirect::route('login')->with('warning', 'Conta inativa. Contate o suporte.');
                 }
             } else {
                 return Redirect::route('login')->with('error', 'Verifique sua senha e email.');
             }
         } catch (\Exception $exception) {
-            return Redirect::route('login')->with('error', 'Erro interno. Contate o administrador do sistema.');
+            return Redirect::route('login')->with('error', 'Erro interno. Contate o suporte.');
         }
     }
 

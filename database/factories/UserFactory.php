@@ -32,7 +32,7 @@ class UserFactory extends Factory
         return [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
-            'document' => $this->faker->unique()->numerify('###########'),
+            'document' => $this->faker->unique()->numerify('###.###.###-##'),
             'email' => $this->faker->unique()->safeEmail(),
             'role' => 'visitant',
             'birth_date' => $this->faker->date('Y-m-d'), // 'Y-m-d' é o formato padrão para data no Faker

@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Nome</label>
+                                    <label class="form-label required">Nome</label>
                                     <input v-model="form.first_name" type="text" class="form-control"
                                            :class="{ 'is-invalid': $page.props.errors.first_name }"
                                            name="first_name"
@@ -22,7 +22,7 @@
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Sobrenome</label>
+                                    <label class="form-label required">Sobrenome</label>
                                     <input v-model="form.last_name" type="text" class="form-control"
                                            :class="{ 'is-invalid': $page.props.errors.last_name }"
                                            name="last_name"
@@ -33,7 +33,7 @@
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">CPF</label>
+                                    <label class="form-label required">CPF</label>
                                     <input v-model="form.document" @input="formatCPF" type="text" class="form-control"
                                            :class="{ 'is-invalid': $page.props.errors.document }"
                                            name="document"
@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="mb-3">
-                                    <label class="form-label">Email</label>
+                                    <label class="form-label required">Email</label>
                                     <input v-model="form.email" @input="validateEmail" type="email"
                                            class="form-control"
                                            :class="{ 'is-invalid': $page.props.errors.email }"
@@ -90,19 +90,23 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Senha</label>
+                                    <label class="form-label required">Senha</label>
                                     <input v-model="form.password" type="password" class="form-control"
                                            autocomplete="on"
                                            name="password-input"
+                                           :class="{ 'is-invalid': $page.props.errors.password }"
                                            placeholder="Digite sua senha">
+                                    <small class="invalid-feedback">{{$page.props.errors.password}}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Confirme sua senha</label>
-                                    <input type="password" class="form-control" name="confirm-password"
+                                    <label class="form-label required">Confirme sua senha</label>
+                                    <input v-model="form.confirmPassword" type="password" class="form-control" name="confirm-password"
+                                           :class="{ 'is-invalid': $page.props.errors.confirmPassword }"
                                            placeholder="Confirme sua senha">
+                                    <small class="invalid-feedback">{{$page.props.errors.confirmPassword}}</small>
                                 </div>
                             </div>
                         </div>
@@ -174,6 +178,7 @@ const form = useForm({
     document: '',
     email: '',
     password: '',
+    confirmPassword: '',
     birth_date: '',
     status: 'active',
 });

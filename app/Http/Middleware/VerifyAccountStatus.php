@@ -18,7 +18,7 @@ class VerifyAccountStatus
     {
         if (auth()->check() && auth()->user()->account->status !== 'active') {
             $loginController = new LoginController();
-            return $loginController->logout($request);
+            return $loginController->logout()->with('warning', 'Conta inativa. Contate o suporte.');
         }
         return $next($request);
     }
