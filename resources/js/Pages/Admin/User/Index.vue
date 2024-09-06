@@ -39,7 +39,7 @@
             <!-- Modal Form -->
             <ModalCreateUser @updateTable="updateTable"/>
             <ModalDeleteUser :user="userToDelete" :updateTable="updateTable"/>
-            <ModalEditUser />
+            <ModalEditUser :user="userToEdit"/>
         </Layout>
     </div>
 </template>
@@ -60,10 +60,12 @@ const props = defineProps(['users']);
 const usersList = ref(props.users);
 let dataTableInstance = null; // Variável para armazenar a instância do DataTable
 const userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
+const userToEdit = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
 
 onMounted(() => {
     initializeDataTable();
     setupEventListeners();
+    // console.log(props.users);
 });
 
 // Função para inicializar o DataTable
@@ -110,10 +112,16 @@ const initializeDataTable = () => {
 
 // Função para configurar eventos após inicializar o DataTable
 const setupEventListeners = () => {
-    jquery('#tableUser').on('click', '.delete-btn', function() {
+    jquery('#tableUser').on('click', '.delete-btn, .edit-btn', function() {
         const row = dataTableInstance.row(jquery(this).closest('tr')).data();
-        setUserToDelete(row);
+        userSelect(row);
     });
+};
+
+const userSelect = (user) => {
+    userToDelete.value = user || {}; // Garantia de que não será null
+    userToEdit.value = user || {}; // Garantia de que não será null
+    console.log("Usuário para selecionado:", userToDelete.value); // Debugging
 };
 
 // Função para atualizar a tabela
@@ -129,10 +137,7 @@ const updateTable = async () => {
     }
 };
 
-const setUserToDelete = (user) => {
-    userToDelete.value = user || {}; // Garantia de que não será null
-    console.log("Usuário para exclusão:", userToDelete.value); // Debugging
-};
+
 </script>
 
 <style>

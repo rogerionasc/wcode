@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Cria 9 usuários adicionais aleatórios e suas contas
-        User::factory(1)->create()->each(function ($user) {
+        User::factory(5)->create()->each(function ($user) {
             Account::factory()->create([
                 'user_id' => $user->id,
                 'owner' => false, // Defina o valor conforme necessário

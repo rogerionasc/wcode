@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('photo_path', 100)->nullable();
-            $table->date('birth_date'); // Change this to dateTime if needed
+            $table->date('birth_date')->default('2010-01-01'); // Change this to dateTime if needed
             $table->rememberToken();
             $table->timestamps();
         });

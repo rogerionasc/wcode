@@ -62,15 +62,32 @@ class UserController extends Controller
             'confirmPassword' => 'confirmação de senha',
         ];
 
+        $defaultBirthDate = '2010-01-01';
+
+        // Verifica se a data de nascimento foi fornecida; se não, usa a data padrão
+        $birthDate = $request->birth_date 
+            ? Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d') 
+            : $defaultBirthDate;
+
+        // dd([
+        //     'first_name' => $request->first_name,
+        //     'last_name'  => $request->last_name,
+        //     'document'   => $request->document,
+        //     'birth_date' => $birthDate,
+        //     'email'      => $request->email,
+        //     'password'   => Hash::make($request->password),
+        // ]);
+
         try {
             DB::beginTransaction();
+
 
             // Validação dos dados do formulário
             $request->validate([
                 'first_name' => 'required|alpha|max:255',
                 'last_name'  => 'required|string|max:255',
-                'document'   => ['required', 'min:11', 'max:14', 'unique:users', new ValidatorDocument], // 'unique' antes da regra personalizada
-                'email'      => ['required', 'max:255', 'unique:users', new ValidatorEmail], // 'unique' antes da regra personalizada
+                'document'   => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users'], // 'unique' antes da regra personalizada
+                'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users'], // 'unique' antes da regra personalizada
                 'password'   => 'required|string|min:6',
                 'confirmPassword' => 'required|same:password',
                 'birth_date' => 'required|date_format:d/m/Y',
@@ -78,23 +95,12 @@ class UserController extends Controller
             ], $customMessages, $aliases);
             
 
-
-            // dd([
-            //     'first_name' => $request->first_name,
-            //     'last_name'  => $request->last_name,
-            //     'document'   => str_replace(['.', '-'], '', $request->document),
-            //     'birth_date' => Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d H:i:s'),
-            //     'email'      => $request->email,
-            //     'password'   => Hash::make($request->password),
-            // ]);
-
             // Criação de um novo usuário
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                // 'document'   => str_replace(['.', '-'], '', $request->document),
                 'document'   =>  $request->document,
-                'birth_date' => Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d'),
+                'birth_date' => $birthDate,
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
             ]);
