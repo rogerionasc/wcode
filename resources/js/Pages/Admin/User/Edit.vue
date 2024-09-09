@@ -6,7 +6,7 @@
           <h5 class="modal-title">Editar Usuário</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form>
+        <form @submit.prevent="updateUser">
           <div class="modal-body">
             <div class="row">
               <div class="col-lg-6">
@@ -97,158 +97,157 @@
             <div class="card-body px-0">
               <div class="tab-content">
                 <div class="tab-pane active show" id="tabs-address-1" role="tabpanel">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Informação de endereço</h5>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-lg-5">
-                        <div class="mb-3">
-                          <label class="form-label">CEP</label>
-                          <input type="text" class="form-control" autocomplete="on" name="street_address" placeholder="CEP">
-                          <small class="invalid-feedback"></small>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <div class="mb-3">
-                          <label class="form-label">Logradouro</label>
-                          <input type="text" class="form-control" autocomplete="on" name="street_address" placeholder="Logadouro (Ex: Rua nove)">
-                          <small class="invalid-feedback"></small>
-                        </div>
-                      </div>
-                      <div class="col-lg-2">
-                        <div class="mb-3">
-                          <label class="form-label">Numero</label>
-                          <input type="text" class="form-control" autocomplete="on" name="number" placeholder="Numero">
-                          <small class="invalid-feedback"></small>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="mb-3">
-                          <label class="form-label">Bairro</label>
-                          <input type="text" class="form-control" name="neighborhood" placeholder="Bairo">
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="mb-3">
-                          <label class="form-label">Cidade</label>
-                          <input type="text" class="form-control" autocomplete="on" name="city" placeholder="Cidade">
-                          <small class="invalid-feedback"></small>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="mb-3">
-                          <label class="form-label">Estado</label>
-                          <input type="text" class="form-control" autocomplete="on" name="state" placeholder="Estado">
-                        </div>
-                      </div> 
-                      <div class="col-lg-12">
-                        <div class="mb-3">
-                          <label class="form-label">Complemento</label>
-                          <input type="text" class="form-control" autocomplete="on" name="complement" placeholder="Complemento">
-                        </div>
-                      </div>                      
-                    </div>
-                  </div>
+                <div class="modal-header">
+                  <h5 class="modal-title">Informação de endereço</h5>
                 </div>
-                <div class="tab-pane" id="tabs-account-2" role="tabpanel">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Informação de conta</h5>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-lg-8">
-                        <div class="mb-3">
-                          <label class="form-label">Email</label>
-                          <input v-model="user.email" type="email" class="form-control" name="account-name" placeholder="Seu email">
-                          <small class="invalid-feedback"></small>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="mb-3">
-                          <label class="form-label">Status</label>
-                          <select v-model="user.status" class="form-select">
-                            <option value="active" selected>Ativo</option>
-                            <option value="inactive">Inativo</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="mb-3">
-                          <label class="form-label">Alterar senha</label>
-                          <div class="input-group">
-                            <input type="password" class="form-control">
-                            <button type="button" class="btn">Mostrar</button>
-                            
-                          </div>
-                        </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <div class="mb-3">
+                        <label class="form-label">CEP</label>
+                        <input v-if="user.address" v-model="user.address.post_code" :class="{ 'is-invalid': cepError }" type="text" class="form-control" autocomplete="on" id="post_code" name="post_code" placeholder="CEP" @blur="searchCEP">
+                        <small v-if="cepError" class="invalid-feedback">{{ cepError }}</small>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="tabs-permission-3" role="tabpanel">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Permissões da conta</h5>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row form-fieldset">
-                      <label class="col-3 col-form-label pt-0">Usuário</label>
-                      <div class="col">
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Ler</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <span class="form-check-label">Escrever</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Editar</span>
-                        </label>
+                    <div class="col-lg-5">
+                      <div class="mb-3">
+                        <label class="form-label">Logradouro</label>
+                        <input v-if="user.address" v-model="user.address.street" type="text" class="form-control" autocomplete="on" id="street" name="street" placeholder="Logradouro (Ex: Rua nove)">
+                        <small class="invalid-feedback"></small>
                       </div>
                     </div>
-                    <div class="row form-fieldset">
-                      <label class="col-3 col-form-label pt-0">Financeiro</label>
-                      <div class="col">
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Ler</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <span class="form-check-label">Escrever</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Editar</span>
-                        </label>
+                    <div class="col-lg-2">
+                      <div class="mb-3">
+                        <label class="form-label">Número</label>
+                        <input v-if="user.address" v-model="user.address.number" type="text" class="form-control" autocomplete="on" id="number" name="number" placeholder="Número">
+                        <small class="invalid-feedback"></small>
                       </div>
                     </div>
-                    <div class="row form-fieldset">
-                      <label class="col-3 col-form-label pt-0">Configuração</label>
-                      <div class="col">
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Ler</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox">
-                          <span class="form-check-label">Escrever</span>
-                        </label>
-                        <label class="form-check">
-                          <input class="form-check-input" type="checkbox" checked="">
-                          <span class="form-check-label">Editar</span>
-                        </label>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Bairro</label>
+                        <input v-if="user.address" v-model="user.address.neighborhood" type="text" class="form-control" id="neighborhood" name="neighborhood" placeholder="Bairro">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Cidade</label>
+                        <input disabled v-if="user.address" v-model="user.address.city" type="text" class="form-control" autocomplete="on" id="city" name="city" placeholder="Cidade">
+                        <small class="invalid-feedback"></small>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Estado</label>
+                        <input disabled v-if="user.address" v-model="user.address.state" type="text" class="form-control" autocomplete="on" id="state" name="state" placeholder="Estado">
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="mb-3">
+                        <label class="form-label">Complemento</label>
+                        <input v-if="user.address" v-model="user.address.complement" type="text" class="form-control" autocomplete="on" id="complement" name="complement" placeholder="Complemento">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="tab-pane" id="tabs-account-2" role="tabpanel">
+                <div class="modal-header">
+                  <h5 class="modal-title">Informação de conta</h5>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input v-model="user.email" type="email" class="form-control" name="account-name" placeholder="Seu email">
+                        <small class="invalid-feedback"></small>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select v-model="user.status" class="form-select">
+                          <option value="active" selected>Ativo</option>
+                          <option value="inactive">Inativo</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label class="form-label">Alterar senha</label>
+                        <div class="input-group">
+                          <input :type="showPassword ? 'text' : 'password'" type="password" class="form-control">
+                          <button @click="togglePassword" type="button" class="btn">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tabs-permission-3" role="tabpanel">
+                <div class="modal-header">
+                  <h5 class="modal-title">Permissões da conta</h5>
+                </div>
+                <div class="modal-body">
+                  <div class="row form-fieldset">
+                    <label class="col-3 col-form-label pt-0">Usuário</label>
+                    <div class="col">
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Ler</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <span class="form-check-label">Escrever</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Editar</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row form-fieldset">
+                    <label class="col-3 col-form-label pt-0">Financeiro</label>
+                    <div class="col">
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Ler</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <span class="form-check-label">Escrever</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Editar</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row form-fieldset">
+                    <label class="col-3 col-form-label pt-0">Configuração</label>
+                    <div class="col">
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Ler</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <span class="form-check-label">Escrever</span>
+                      </label>
+                      <label class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="">
+                        <span class="form-check-label">Editar</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar alterações</button>
           </div>
         </form>
@@ -258,17 +257,23 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineEmits } from 'vue';
 import Litepicker from 'litepicker';
 import 'litepicker/dist/css/litepicker.css';
 import axios from 'axios';
 
+const showPassword = ref(false);
 const props = defineProps(['user', 'updateTable']);
 const roles = ref([]);
+const cepError = ref('');
+
+function togglePassword() {
+  showPassword.value = !showPassword.value;
+}
 
 onMounted(() => {
+  // console.log(this.FlashMessage);
   fetchRoles();
-  console.log(props.user);
     const datePicker = new Litepicker({
         element: document.getElementById('datepicker-edit-user'),
         format: "DD/MM/YYYY",
@@ -288,13 +293,70 @@ onMounted(() => {
 
 const fetchRoles = async () => {
   try {
-    const response = await axios.get('/getAll/fetchRoles');
+    const response = await axios.get('/admin/roles/fetchRoles');
     roles.value = response.data;
   } catch (error) {
     console.error('Erro ao buscar cargos:', error);
   }
 };
 
+async function searchCEP(event) {
+    const cepInput = props.user.address.post_code;
+    const cep_cidade = cepInput.replace('-', '');
+
+    if (!cep_cidade) {
+      cepError.value = 'Por favor, insira um CEP.';
+      event.target.classList.add('is-invalid');
+      return;
+    }
+
+    try {
+        const response = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep_cidade}`);
+        if (!response.ok) {
+          cepError.value = 'CEP não encontrado.';
+          event.target.classList.add('is-invalid');
+          return;
+        }
+
+        const data = await response.json();
+
+        // Atualizar os campos de endereço no estado do Vue.js
+        props.user.address.street = data.street || props.user.address.street;
+        props.user.address.neighborhood = data.neighborhood || props.user.address.neighborhood;
+        props.user.address.city = data.city || props.user.address.city;
+        props.user.address.state = data.state || props.user.address.state;
+        props.user.address.complement = data.complement || props.user.address.complement;
+        
+        // Remover a classe is-invalid se o CEP for encontrado com sucesso
+        cepError.value = '';
+        event.target.classList.remove('is-invalid');
+        
+    } catch (error) {
+        console.error(error);
+        cepError.value = 'Não foi possível obter os dados do CEP.';
+        event.target.classList.add('is-invalid');
+    }
+}
+
+async function updateUser() {
+  try {
+    const response = await axios.put(`/admin/user/update/${props.user.id}`, {
+      first_name: props.user.first_name,
+      last_name: props.user.last_name,
+      document: props.user.document,
+      birth_date: props.user.birth_date,
+      title_role: props.user.title_role,
+      email: props.user.email,
+      status: props.user.status,
+    });
+    // location.reload();
+    console.log(response.data.flash);
+  
+  } catch (error) {
+    console.error(error);
+    
+  }
+}
 
 </script>
 

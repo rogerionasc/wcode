@@ -8,12 +8,8 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import FlashMessage from '../js/Components/FlashMessage.vue';
-import axios from 'axios';
 
 const appName = import.meta.env.VITE_APP_NAME;
-
-// axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
-//     .getAttribute('content');
 
 createInertiaApp({
     title: (title) => `${appName} - ${title}`,
@@ -24,7 +20,6 @@ createInertiaApp({
             .use(ZiggyVue)
             .component('FlashMessage', FlashMessage)
             .mount(el);
-
     },
     progress: {
         color: '#4B5563',

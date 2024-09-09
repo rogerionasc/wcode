@@ -39,21 +39,20 @@
             <!-- Modal Form -->
             <ModalCreateUser @updateTable="updateTable"/>
             <ModalDeleteUser :user="userToDelete" :updateTable="updateTable"/>
-            <ModalEditUser :user="userToEdit"/>
+            <ModalEditUser :user="userToEdit" @user-updated="updateTable"/>
         </Layout>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import { Head } from "@inertiajs/inertia-vue3";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
-// import ModalCreateUser from "@/Components/ModalCreateUser.vue";
 import ModalCreateUser from "@/Pages/Admin/User/Create.vue";
 import ModalDeleteUser from "@/Pages/Admin/User/Delete.vue";
 import ModalEditUser from "@/Pages/Admin/User/Edit.vue";
-import jquery from "jquery";
+import jquery from 'jquery';
 import 'datatables.net-bs5';
 
 const props = defineProps(['users']);
@@ -118,16 +117,17 @@ const setupEventListeners = () => {
     });
 };
 
-const userSelect = (user) => {
+const userSelect = async (user) => {
     userToDelete.value = user || {}; // Garantia de que não será null
     userToEdit.value = user || {}; // Garantia de que não será null
-    console.log("Usuário para selecionado:", userToDelete.value); // Debugging
+    console.log("Usuário selecionado:", user); // Debugging
+    // console.log(user.address);
 };
 
 // Função para atualizar a tabela
 const updateTable = async () => {
     try {
-        const response = await fetch('/admin/users');
+        const response = await fetch('/admin/user/fetchUsers');
         const data = await response.json();
         dataTableInstance.clear();
         dataTableInstance.rows.add(data);
@@ -142,7 +142,7 @@ const updateTable = async () => {
 
 <style>
 .dt-empty {
-  text-align: center !important; /* Centraliza o texto horizontalmente */
+  text-align: center !important;
 }
 
 .dt-column-title h4 {

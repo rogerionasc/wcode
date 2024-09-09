@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Address;
 use App\Models\Account;
 use Illuminate\Database\Seeder;
 
@@ -31,6 +32,17 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
 
+        Address::factory()->create([
+            'user_id' => $user->id,
+            'post_code' => '59149110',
+            'street' => 'Rio Ipojuca',
+            'number' => '29',
+            'neighborhood' => 'Parque Industrial',
+            'city' => 'Parnamirim',
+            'state' => 'RN',
+            'complement' => 'Club CPSERN'
+        ]);
+
         // Cria 9 usuários adicionais aleatórios e suas contas
         User::factory(5)->create()->each(function ($user) {
             Account::factory()->create([
@@ -38,7 +50,12 @@ class DatabaseSeeder extends Seeder
                 'owner' => false, // Defina o valor conforme necessário
                 'status' => 'active',
             ]);
+            Address::factory()->create([
+                'user_id' => $user->id
+            ]);
         });
+
+        
 
         // Chama outros seeders, se necessário
         $this->call(RolesTableSeeder::class);

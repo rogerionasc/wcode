@@ -185,7 +185,7 @@ const form = useForm({
 
 // Função para criar um novo usuário
 const store = () => {
-    form.post('/admin/user', {
+    form.post('/admin/user/store', {
         onSuccess: () => {
             emit('updateTable');
         }

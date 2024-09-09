@@ -8,23 +8,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title inertia>{{ config('app.name', 'WCode') }}</title>
 
-    {{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
-{{--    <title inertia>{{ config('app.name', 'WCode') }}</title>--}}
     @routes
     @vite([
-    'resources/js/app.js',
-    "resources/js/Pages/{$page['component']}.vue",
+        'resources/js/app.js',
+        "resources/js/Pages/{$page['component']}.vue",
     ])
     @inertiaHead
-
 </head>
-<body class="">
 
-@inertia
-{{--{{dd(  config( config(csrf_token())))}}--}}
+<body class="">
+    @inertia
 </body>
-{{--<script src="../css/dist/js/tabler.js" defer></script>--}}
-<script>
-    console.log("Path test: {{ asset('resources/js/Pages/Loader/PageLoader.vue') }}");
-  </script>
+
 </html>
