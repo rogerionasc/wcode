@@ -170,46 +170,55 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'document' => 'required|string|max:14',
-            'birth_date' => 'required|date_format:Y-m-d',
-            'status' => 'required|string',
-            'title_role' => 'required|string',
-        ], $this->customMessages(), $this->fieldAliases());
-
-        // Se houver erros de validação
-        if ($validator->fails()) {
-            return Redirect::back()
-                ->withErrors($validator)
-                ->with('error', 'Impossível atualizar. Verifique os campos e tente novamente.');
-        }
+        // dd($request);        
+        $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
         try {
             
             $user = User::find($id);
             if (!$user) {
                 return Redirect::back()->with('error','Usuário não existe.');
             }
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'alpha|max:255',
+                'last_name'  => 'string|max:255',
+                'document'   => ['min:11', 'max:14', new ValidatorDocument, 'unique:users,document,' . $user->id],
+                'email'      => ['max:255', new ValidatorEmail, 'unique:users,email,' . $user->id],
+                'password'   => 'string|min:6',
+                'birth_date' => 'date_format:d/m/Y',
+                'status'     => 'alpha'
+            ], $this->customMessages(), $this->fieldAliases());
+    
+            if ($validator->fails()) {
+                return Redirect::back()
+                    ->withErrors($validator, 'update')
+                    ->withInput()
+                    ->with('error', 'Não foi possível atualizar o usuário.');
+                }
 
             $user->update([
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
                 'email' => $request->input('email'),
                 'document' => $request->input('document'),
-                'birth_date' => $request->input('birth_date'),
+                'birth_date' => $birthDate,
+                // 'birth_date' => $request->input('birth_date'),
                 'status' => $request->input('status'),
-                'title_role' => $request->input('title_role'),
+                // 'title_role' => $request->input('title_role'),
             ]);
 
+
             return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
+            // session()->flash('success', 'Usuário atualizado com sucesso. JSON.');
+            // return response()->json([
+            //     'flash' => [
+            //         'success' => session('success')
+            //     ]
+            // ], 200);
 
         } catch (\Exception $e) {
             
             return Redirect::route('admin.user')
-                ->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.');
+                ->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.'. $e->getMessage());
         }
     }
 

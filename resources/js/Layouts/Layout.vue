@@ -278,7 +278,9 @@
     props: {
       titleLayout: String,
     },
+    
   };
+  // Manter o espaço durante a animação de saída
   
   </script>
   

@@ -32,16 +32,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+// import { emit } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 
-const props = defineProps(['user', 'updateTable']);
+const props = defineProps(['user']);
+const emit = defineEmits(['updateTable']);
 
 const confirmDelete = () => {
   if (props.user && props.user.id) {
     Inertia.delete(`user/delete/${props.user.id}`, {
       onSuccess: () => {
-        props.updateTable();
+        emit('updateTable');
       },
       onError: (error) => {
         console.error('Erro ao excluir o usuário:', error);

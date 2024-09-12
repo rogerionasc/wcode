@@ -59,7 +59,7 @@
                         <path d="M12 15v3"></path>
                       </svg>
                     </span>
-                    <input v-model="user.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-edit-user">
+                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-edit-user">
 
                   </div>
                 </div>
@@ -248,7 +248,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar alterações</button>
+            <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Salvar alterações</button>
           </div>
         </form>
       </div>
@@ -258,12 +258,16 @@
 
 <script setup>
 import { onMounted, ref, defineEmits } from 'vue';
+import { useForm, usePage } from "@inertiajs/inertia-vue3";
 import Litepicker from 'litepicker';
 import 'litepicker/dist/css/litepicker.css';
 import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia';
+import $ from 'jquery';
 
+const emit = defineEmits(['updateTable']);
 const showPassword = ref(false);
-const props = defineProps(['user', 'updateTable']);
+const props = defineProps(['user']);
 const roles = ref([]);
 const cepError = ref('');
 
@@ -276,7 +280,7 @@ onMounted(() => {
   fetchRoles();
     const datePicker = new Litepicker({
         element: document.getElementById('datepicker-edit-user'),
-        format: "DD/MM/YYYY",
+        format: "dd/mm/yyyy",
         lang: "pt-BR",
         singleMode: true,
         buttonText: {
@@ -340,7 +344,8 @@ async function searchCEP(event) {
 
 async function updateUser() {
   try {
-    const response = await axios.put(`/admin/user/update/${props.user.id}`, {
+    Inertia.put(`/admin/user/update/${props.user.id}`, {
+      _method: 'PUT',
       first_name: props.user.first_name,
       last_name: props.user.last_name,
       document: props.user.document,
@@ -348,9 +353,11 @@ async function updateUser() {
       title_role: props.user.title_role,
       email: props.user.email,
       status: props.user.status,
+    }, {
+      onSuccess: () => {        
+        emit('updateTable');
+      }
     });
-    // location.reload();
-    console.log(response.data.flash);
   
   } catch (error) {
     console.error(error);

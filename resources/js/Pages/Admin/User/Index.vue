@@ -37,15 +37,15 @@
                 </div>
             </div>
             <!-- Modal Form -->
-            <ModalCreateUser @updateTable="updateTable"/>
-            <ModalDeleteUser :user="userToDelete" :updateTable="updateTable"/>
-            <ModalEditUser :user="userToEdit" @user-updated="updateTable"/>
+            <ModalCreateUser  @updateTable="handleUpdateTable"/>
+            <ModalDeleteUser :user="userToDelete" @updateTable="handleUpdateTable"/>
+            <ModalEditUser :user="userToEdit" @updateTable="handleUpdateTable"/>
         </Layout>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref, nextTick } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { Head } from "@inertiajs/inertia-vue3";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
 import Layout from "@/Layouts/Layout.vue";
@@ -56,24 +56,26 @@ import jquery from 'jquery';
 import 'datatables.net-bs5';
 
 const props = defineProps(['users']);
-const usersList = ref(props.users);
-let dataTableInstance = null; // Variável para armazenar a instância do DataTable
-const userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
-const userToEdit = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
+const usersList = reactive(props.users);
+
+let dataTableInstance = null;
+let userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
+let userToEdit = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
 
 onMounted(() => {
     initializeDataTable();
     setupEventListeners();
-    // console.log(props.users);
+    // console.log(props.users.error);
 });
 
-// Função para inicializar o DataTable
+// Inicializar o DataTable
 const initializeDataTable = () => {
     dataTableInstance = jquery('#tableUser').DataTable({
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json'
         },
-        data: usersList.value, // Inicializa com dados
+        
+        data: usersList, // Inicializa com dados
         columns: [
             { data: 'id', className: 'text-muted'},
             { data: 'first_name', className: 'text-muted', render: (data, type, row) => `${data} ${row.last_name}` },
@@ -109,7 +111,7 @@ const initializeDataTable = () => {
     });
 };
 
-// Função para configurar eventos após inicializar o DataTable
+// Configurar eventos após inicializar o DataTable
 const setupEventListeners = () => {
     jquery('#tableUser').on('click', '.delete-btn, .edit-btn', function() {
         const row = dataTableInstance.row(jquery(this).closest('tr')).data();
@@ -117,15 +119,15 @@ const setupEventListeners = () => {
     });
 };
 
-const userSelect = async (user) => {
+const userSelect = (user) => {
     userToDelete.value = user || {}; // Garantia de que não será null
     userToEdit.value = user || {}; // Garantia de que não será null
-    console.log("Usuário selecionado:", user); // Debugging
+    console.log("Usuário selecionado:", user);
     // console.log(user.address);
 };
 
-// Função para atualizar a tabela
-const updateTable = async () => {
+// Atualizar a tabela
+const handleUpdateTable = async () => {
     try {
         const response = await fetch('/admin/user/fetchUsers');
         const data = await response.json();

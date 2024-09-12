@@ -88,7 +88,7 @@ export default {
                 setTimeout(() => {
                     this.show = false; // Esconde a mensagem após o fade-out
                 }, 1000); // Espera o tempo da transição CSS
-            }, 6000); // Mostra a mensagem por 6 segundos antes de iniciar o fade
+            }, 10000); // Mostra a mensagem por 6 segundos antes de iniciar o fade
         }
     },
 }

@@ -57,7 +57,7 @@
                                                 <path d="M12 15v3"></path>
                                             </svg>
                                         </span>
-                                        <input v-model="form.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-create-user" autocomplete="off" value="01/02/2010">
+                                        <input v-model="form.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-create-user" autocomplete="off" data-date-format="mm/dd/yyyy">
                                     
                                     </div>
                                 </div>
@@ -172,6 +172,7 @@ const { validateCPF, validateEmailFormat } = mix.methods;
 
 const emit = defineEmits(['updateTable']);
 
+
 const form = useForm({
     first_name: '',
     last_name: '',
@@ -222,6 +223,8 @@ const validateEmail = (event) => {
 }
 
 onMounted(() => {
+    // console.log(props.errors);
+   
     const datePicker = new Litepicker({
         element: document.getElementById('datepicker-create-user'),
         format: "DD/MM/YYYY",
