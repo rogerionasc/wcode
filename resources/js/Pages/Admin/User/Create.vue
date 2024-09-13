@@ -45,7 +45,7 @@
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nascimento</label>
-                                    <div class="input-icon">
+                                    <!-- <div class="input-icon">
                                         <span class="input-icon-addon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -57,9 +57,38 @@
                                                 <path d="M12 15v3"></path>
                                             </svg>
                                         </span>
-                                        <input v-model="form.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-create-user" autocomplete="off" data-date-format="mm/dd/yyyy">
-                                    
-                                    </div>
+                                        <input 
+                                        :class="{'is-invalid': $page.props.errors.birth_date}"
+                                        v-model="form.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-create-user" autocomplete="off" data-date-format="mm/dd/yyyy">
+                                        <small class="invalid-feedback">{{$page.props.errors.birth_date}}</small>
+                                    </div> -->
+                                    <div class="input-icon d-flex flex-column">
+    <div class="d-flex align-items-center">
+        <span class="input-icon-addon me-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
+                <path d="M16 3v4"></path>
+                <path d="M8 3v4"></path>
+                <path d="M4 11h16"></path>
+                <path d="M11 15h1"></path>
+                <path d="M12 15v3"></path>
+            </svg>
+        </span>
+        <input 
+            :class="{'is-invalid': $page.props.errors.birth_date}"
+            v-model="form.birth_date" 
+            type="text" 
+            class="form-control" 
+            placeholder="Selecione uma data" 
+            id="datepicker-create-user" 
+            autocomplete="off" 
+            data-date-format="mm/dd/yyyy"
+        >
+    </div>
+    <small class="invalid-feedback">{{$page.props.errors.birth_date}}</small>
+</div>
+
                                 </div>
                             </div>
                         </div>
@@ -243,3 +272,8 @@ onMounted(() => {
 });
 
 </script>
+<style>
+.input-icon-addon {
+    top: 0 !important;
+}
+</style>

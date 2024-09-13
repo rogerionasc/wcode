@@ -123,6 +123,7 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
+        
         $users = DB::table('users')
             ->join('accounts', 'users.id', '=', 'accounts.user_id')
             ->select('users.*', 'accounts.status')
@@ -133,6 +134,9 @@ class UserController extends Controller
             $role = Role::where('tag_permission', $user->role)->first();
             unset($user->password);
             unset($user->remember_token);
+            if (!empty($user->birth_date)) {
+                $user->birth_date = Carbon::createFromFormat('Y-m-d', $user->birth_date)->format('d/m/Y');
+            }
             $address = DB::table('addresses')->where('user_id', $user->id)->first();
             $user->address = $address ? (array) $address : [];
             $user->title_role = $role ? $role->title : 'N/A'; // Define o atributo title_role diretamente
