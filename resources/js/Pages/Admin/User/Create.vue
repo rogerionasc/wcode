@@ -273,7 +273,5 @@ onMounted(() => {
 
 </script>
 <style>
-.input-icon-addon {
-    top: 0 !important;
-}
+
 </style>

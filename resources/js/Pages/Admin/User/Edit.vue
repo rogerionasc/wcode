@@ -47,15 +47,7 @@
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">Nascimento</label>
-                  <div class="input-icon">
-                    <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M4 11h16"></path><path d="M11 15h1"></path><path d="M12 15v3"></path></svg>
-                    </span>
-                    <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend" value="2020-06-20">
-                  </div>
-
-                  Olde o debaixo
-
+                  
                   <div class="input-icon">
                     <span class="input-icon-addon">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
@@ -68,7 +60,7 @@
                         <path d="M12 15v3"></path>
                       </svg>
                     </span>
-                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="datetime" class="form-control" placeholder="Selecione uma data" id="datepicker-edit-user">
+                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="date" class="form-control" id="datepicker-edit-user" placeholder="Selecione uma data">
                   </div>
                 </div>
               </div>
@@ -297,7 +289,7 @@ onMounted(() => {
         },
         setup: (picker) => {
             picker.on('selected', (date) => {
-              props.user.birth_date = date.format("DD/MM/YYYY");
+              formUpdate.birth_date = date.format("DD/MM/YYYY");
             });
         }
     });
@@ -388,5 +380,10 @@ async function updateUser() {
 </script>
 
 <style scoped>
-/* Adicione seus estilos aqui */
+.form-control {
+  position: relative;
+}
+.litepicker {
+  position: absolute;
+}
 </style>

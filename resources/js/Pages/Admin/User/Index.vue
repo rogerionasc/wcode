@@ -144,11 +144,11 @@ const handleUpdateTable = async () => {
 
 <style>
 .dt-empty {
-  text-align: center !important;
+  text-align: center;
 }
 
 .dt-column-title h4 {
-    margin: 0 !important;
-    margin-top: 1em !important;
+    margin: 0;
+    margin-top: 1em;
 }
 </style>
