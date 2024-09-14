@@ -46,12 +46,8 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $defaultBirthDate = '2010-01-01';
-
-        // Verifica se a data de nascimento foi fornecida; se não, usa a data padrão
-        $birthDate = $request->birth_date 
-            ? Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d') 
-            : $defaultBirthDate;
+         // // Verifica se a data de nascimento foi fornecida; se não, usa a data padrão
+        $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
 
         try {
             DB::beginTransaction();         
@@ -171,33 +167,33 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    */
+    public function update(Request $request, string $id): RedirectResponse
     {
-        // dd($request);        
-        $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
+    // dd($request);
+    $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
         try {
-            
             $user = User::find($id);
             if (!$user) {
-                return Redirect::back()->with('error','Usuário não existe.');
+                return Redirect::back()->with('error', 'Usuário não existe.');
             }
+                // dd($request);
+
             $validator = Validator::make($request->all(), [
-                'first_name' => 'alpha|max:255',
-                'last_name'  => 'string|max:255',
-                'document'   => ['min:11', 'max:14', new ValidatorDocument, 'unique:users,document,' . $user->id],
-                'email'      => ['max:255', new ValidatorEmail, 'unique:users,email,' . $user->id],
-                'password'   => 'string|min:6',
-                'birth_date' => 'date_format:d/m/Y',
-                'status'     => 'alpha'
+                'first_name' => 'required|alpha|max:255',
+                'last_name'  => 'required|string|max:255',
+                'document'   => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,'. strval($user->id)],
+                'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,'. strval($user->id)],
+                'birth_date' => 'required|date_format:d/m/Y',
+                'status'     => 'required|alpha'
             ], $this->customMessages(), $this->fieldAliases());
-    
+
             if ($validator->fails()) {
                 return Redirect::back()
                     ->withErrors($validator, 'update')
                     ->withInput()
-                    ->with('error', 'Não foi possível atualizar o usuário.');
-                }
+                    ->with('error', 'Não foi possível atualizar o usuário. Verifique os campos');
+            }
 
             $user->update([
                 'first_name' => $request->input('first_name'),
@@ -205,26 +201,17 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'document' => $request->input('document'),
                 'birth_date' => $birthDate,
-                // 'birth_date' => $request->input('birth_date'),
                 'status' => $request->input('status'),
-                // 'title_role' => $request->input('title_role'),
             ]);
 
-
             return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
-            // session()->flash('success', 'Usuário atualizado com sucesso. JSON.');
-            // return response()->json([
-            //     'flash' => [
-            //         'success' => session('success')
-            //     ]
-            // ], 200);
 
         } catch (\Exception $e) {
-            
-            return Redirect::route('admin.user')
-                ->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.'. $e->getMessage());
-        }
+                return Redirect::route('admin.user')
+                    ->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
+            }
     }
+
 
     /**
      * Remove the specified resource from storage.

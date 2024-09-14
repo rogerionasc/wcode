@@ -12,21 +12,21 @@
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Nome</label>
-                  <input v-model="user.first_name" type="text" class="form-control" name="first-name" placeholder="Seu primeiro nome">
+                  <input v-model="formUpdate.first_name" type="text" class="form-control" name="first-name" placeholder="Seu primeiro nome">
                   <small class="invalid-feedback"></small>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Sobrenome</label>
-                  <input v-model="user.last_name" type="text" class="form-control" name="last-name" placeholder="Seu sobrenome">
+                  <input v-model="formUpdate.last_name" type="text" class="form-control" name="last-name" placeholder="Seu sobrenome">
                   <small class="invalid-feedback"></small>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">CPF</label>
-                  <input v-model="user.document" type="text" class="form-control" name="cpf" placeholder="xxx.xxx.xxx-xx">
+                  <input v-model="formUpdate.document" type="text" class="form-control" name="cpf" placeholder="xxx.xxx.xxx-xx">
                   <small class="invalid-feedback"></small>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                   <label class="form-label">Cargo/Função</label>
                   <!-- <input type="text" class="form-control" name="position"> -->
                   
-                  <select v-model="user.title_role" class="form-select">
+                  <select v-model="formUpdate.title_role" class="form-select">
                       <option v-for="role in roles" :key="role.tag_permission" :value="role.title">
                         {{ role.title }}
                       </option>
@@ -48,6 +48,15 @@
                 <div class="mb-4">
                   <label class="form-label">Nascimento</label>
                   <div class="input-icon">
+                    <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M4 11h16"></path><path d="M11 15h1"></path><path d="M12 15v3"></path></svg>
+                    </span>
+                    <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend" value="2020-06-20">
+                  </div>
+
+                  Olde o debaixo
+
+                  <div class="input-icon">
                     <span class="input-icon-addon">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -59,8 +68,7 @@
                         <path d="M12 15v3"></path>
                       </svg>
                     </span>
-                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-edit-user">
-
+                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="datetime" class="form-control" placeholder="Selecione uma data" id="datepicker-edit-user">
                   </div>
                 </div>
               </div>
@@ -257,8 +265,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref, defineEmits } from 'vue';
-import { useForm, usePage } from "@inertiajs/inertia-vue3";
+import { ref, onMounted, defineEmits, defineProps, watch } from 'vue';
+import { useForm } from "@inertiajs/inertia-vue3";
 import Litepicker from 'litepicker';
 import 'litepicker/dist/css/litepicker.css';
 import axios from 'axios';
@@ -294,6 +302,27 @@ onMounted(() => {
         }
     });
 });
+
+const formUpdate = useForm({
+  first_name: '',
+  last_name: '',
+  document: '',
+  birth_date: '',
+  title_role: '',
+  email: '',
+  status: '',
+  address: {}, // Inclua o endereço, se necessário
+});
+
+watch(() => props.user, (newUser) => {
+    formUpdate.first_name = newUser.first_name;
+    formUpdate.last_name = newUser.last_name;
+    formUpdate.document = newUser.document;
+    formUpdate.birth_date = newUser.birth_date;
+    formUpdate.title_role = newUser.title_role;
+    formUpdate.email = newUser.email;
+    formUpdate.status = newUser.status;
+}, { immediate: true });
 
 const fetchRoles = async () => {
   try {
@@ -344,19 +373,10 @@ async function searchCEP(event) {
 
 async function updateUser() {
   try {
-    Inertia.put(`/admin/user/update/${props.user.id}`, {
-      _method: 'PUT',
-      first_name: props.user.first_name,
-      last_name: props.user.last_name,
-      document: props.user.document,
-      birth_date: props.user.birth_date,
-      title_role: props.user.title_role,
-      email: props.user.email,
-      status: props.user.status,
-    }, {
-      onSuccess: () => {        
+    formUpdate.put(`/admin/user/update/${props.user.id}`, {
+      onSuccess: () => {
         emit('updateTable');
-      }
+      },
     });
   
   } catch (error) {

@@ -21,9 +21,10 @@ class ValidatorDocument implements ValidationRule
         }
 
         $document = new Cpf($value);
-
+        // dd($document);
         if (!$document->isValid()) {
             $fail('O CPF deve ser válido!');
+            return;
         }
     }
 }
