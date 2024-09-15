@@ -46,11 +46,14 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-         // // Verifica se a data de nascimento foi fornecida; se não, usa a data padrão
-        $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
 
         try {
-            DB::beginTransaction();         
+              
+            if ($request->has('birth_date') && !empty($request->birth_date)) {
+                $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
+                $request->merge(['birth_date' => $birthDate]);
+                // dd($birthDate);
+            }       
 
             $validator = Validator::make($request->all(), [
                 'first_name' => 'required|alpha|max:255',
@@ -59,13 +62,15 @@ class UserController extends Controller
                 'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
                 'password'   => 'required|string|min:6',
                 'confirmPassword' => 'required|same:password',
-                'birth_date' => 'required|date_format:d/m/Y',
+                'birth_date' => 'required|date_format:Y-m-d',
                 'status'     => 'required|alpha'
             ], $this->customMessages(), $this->fieldAliases());
 
             if ($validator->fails()) {
+                session()->forget('update');
+                // dd($request->all());
                 return Redirect::back()
-                    ->withErrors($validator)
+                    ->withErrors($validator, 'created')
                     ->withInput()
                     ->with('error', 'Não foi possível cadastrar o usuário. Verifique os campos e tente novamente.');
             }
@@ -96,15 +101,10 @@ class UserController extends Controller
                 throw new \Exception('Erro ao criar conta.');
             }
 
-            DB::commit();
-
             return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
         } catch (ValidationException $e) {
-            DB::rollBack();
-            $errors = $e->errors();
             return Redirect::route('admin.user')->with('error', 'Não foi possível cadastrar o usuário!');
         } catch (\Exception $e) {
-            DB::rollBack();
             return Redirect::route('admin.user')->with('error', 'Erro ao criar o usuário.');
         }
     }
@@ -130,12 +130,16 @@ class UserController extends Controller
             $role = Role::where('tag_permission', $user->role)->first();
             unset($user->password);
             unset($user->remember_token);
-            if (!empty($user->birth_date)) {
-                $user->birth_date = Carbon::createFromFormat('Y-m-d', $user->birth_date)->format('d/m/Y');
+            if (!empty($request->birth_date)) {
+                $birthDate = Carbon::createFromFormat('Y-m-d', $user->birth_date)->format('d/m/Y');
+                $user->merge(['birth_date' => $birthDate]);
+                // dd($birthDate);
             }
+            $user->title_role = $role ? $role->title : 'N/A'; // Define o atributo title_role diretamente
+
             $address = DB::table('addresses')->where('user_id', $user->id)->first();
             $user->address = $address ? (array) $address : [];
-            $user->title_role = $role ? $role->title : 'N/A'; // Define o atributo title_role diretamente
+            
         }
 
         // dd($users);
@@ -171,28 +175,39 @@ class UserController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
     // dd($request);
-    $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
+    
+    // $birthDate = Carbon::createFromFormat('d/m/Y', $request->birth_date)->format('Y-m-d');
+    
         try {
+            if ($request->has('birth_date') && !empty($request->birth_date)) {
+                $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
+                $request->merge(['birth_date' => $birthDate]);
+                // dd($birthDate);
+            }
+            
             $user = User::find($id);
             if (!$user) {
                 return Redirect::back()->with('error', 'Usuário não existe.');
             }
-                // dd($request);
+                // dd("Y-m-d: ".$request->birth_date);
 
             $validator = Validator::make($request->all(), [
                 'first_name' => 'required|alpha|max:255',
                 'last_name'  => 'required|string|max:255',
                 'document'   => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,'. strval($user->id)],
                 'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,'. strval($user->id)],
-                'birth_date' => 'required|date_format:d/m/Y',
+                'birth_date' => 'required|date_format:Y-m-d',
                 'status'     => 'required|alpha'
             ], $this->customMessages(), $this->fieldAliases());
+
+            // dd();
 
             if ($validator->fails()) {
                 return Redirect::back()
                     ->withErrors($validator, 'update')
                     ->withInput()
-                    ->with('error', 'Não foi possível atualizar o usuário. Verifique os campos');
+                    ->with('error', 'Não foi possível atualizar o usuário. Verifique os campos')
+                    ->with('userUpdate_id', $user->id);
             }
 
             $user->update([
@@ -201,17 +216,21 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'document' => $request->input('document'),
                 'birth_date' => $birthDate,
-                'status' => $request->input('status'),
+                'role' => $request->input('role'),
+            ]);
+
+            $account = Account::find($id);
+
+            $account->update([
+                'status'   => $request->status,
             ]);
 
             return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
 
         } catch (\Exception $e) {
-                return Redirect::route('admin.user')
-                    ->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
-            }
+            return Redirect::route('admin.user')->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -223,9 +242,8 @@ class UserController extends Controller
         
             // Verifica se o ID do usuário autenticado é o mesmo que o ID a ser excluído
             if ($authenticatedUserId == $id) {
-                return redirect()->back()->with('warning', 'Você não pode excluir a si mesmo.');
+                return redirect()->back()->with('error', 'Você não pode excluir a si mesmo.');
             }
-
             // Busca o usuário pelo ID
             $user = User::findOrFail($id);
     
@@ -246,7 +264,7 @@ class UserController extends Controller
             'max'      => 'O campo não pode ter mais de :max caracteres.',
             'unique'   => 'Este :attribute já está em uso.',
             'min'      => 'O campo deve ter :min caracteres.',
-            'date_format' => 'O formato da data deve ser :format.',
+            'date_format' => 'O formato data deve ser :format.',
             'same' => 'As senhas informadas devem coincidir.',
         ];
     }

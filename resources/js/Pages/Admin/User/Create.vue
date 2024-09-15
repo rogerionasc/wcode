@@ -12,82 +12,50 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Nome</label>
-                                    <input v-model="form.first_name" type="text" class="form-control"
-                                           :class="{ 'is-invalid': $page.props.errors.first_name }"
+                                    <input v-model="formCreate.first_name" type="text" class="form-control"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.first_name }"
                                            name="first_name"
                                            placeholder="Seu primeiro nome">
-                                    <small class="invalid-feedback" >{{$page.props.errors.first_name}}</small>
+                                    <small 
+                                    v-if="formCreate.errors.created && formCreate.errors.created.first_name"
+                                    class="invalid-feedback" >{{ formCreate.errors.created.first_name }}</small>
+                                    <!-- <small class="invalid-feedback" >{{formCreate.errors.created.first_name}}</small> -->
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Sobrenome</label>
-                                    <input v-model="form.last_name" type="text" class="form-control"
-                                           :class="{ 'is-invalid': $page.props.errors.last_name }"
+                                    <input v-model="formCreate.last_name" type="text" class="form-control"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.last_name }"
                                            name="last_name"
                                            placeholder="Seu sobrenome">
-                                    <small class="invalid-feedback" >{{$page.props.errors.last_name}}</small>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.last_name"
+                                    class="invalid-feedback" >{{ formCreate.errors.last_name }}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">CPF</label>
-                                    <input v-model="form.document" @input="formatCPF" type="text" class="form-control"
-                                           :class="{ 'is-invalid': $page.props.errors.document }"
+                                    <input v-model="formCreate.document" @input="formatCPF" type="text" class="form-control"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.document }"
                                            name="document"
                                            placeholder="00.000.000-00">
-                                    <small class="invalid-feedback" >{{$page.props.errors.document}}</small>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.document"
+                                    class="invalid-feedback" >{{formCreate.errors.created.document}}</small>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-md-6">
+                            <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Nascimento</label>
-                                    <!-- <div class="input-icon">
-                                        <span class="input-icon-addon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
-                                                <path d="M16 3v4"></path>
-                                                <path d="M8 3v4"></path>
-                                                <path d="M4 11h16"></path>
-                                                <path d="M11 15h1"></path>
-                                                <path d="M12 15v3"></path>
-                                            </svg>
-                                        </span>
-                                        <input 
-                                        :class="{'is-invalid': $page.props.errors.birth_date}"
-                                        v-model="form.birth_date" type="text" class="form-control" placeholder="Selecione uma data" id="datepicker-create-user" autocomplete="off" data-date-format="mm/dd/yyyy">
-                                        <small class="invalid-feedback">{{$page.props.errors.birth_date}}</small>
-                                    </div> -->
-                                    <div class="input-icon d-flex flex-column">
-    <div class="d-flex align-items-center">
-        <span class="input-icon-addon me-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
-                <path d="M16 3v4"></path>
-                <path d="M8 3v4"></path>
-                <path d="M4 11h16"></path>
-                <path d="M11 15h1"></path>
-                <path d="M12 15v3"></path>
-            </svg>
-        </span>
-        <input 
-            :class="{'is-invalid': $page.props.errors.birth_date}"
-            v-model="form.birth_date" 
-            type="text" 
-            class="form-control" 
-            placeholder="Selecione uma data" 
-            id="datepicker-create-user" 
-            autocomplete="off" 
-            data-date-format="mm/dd/yyyy"
-        >
-    </div>
-    <small class="invalid-feedback">{{$page.props.errors.birth_date}}</small>
-</div>
+                                    <label class="form-label required">Nascimento</label>
+                                    <Datepicker :class="{'is-invalid': formCreate.errors.created && formCreate.errors.created.birth_date}" class="custom-date" v-model="formCreate.birth_date"/>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.birth_date"
+                                    class="invalid-feedback">{{formCreate.errors.created.birth_date}}</small>
 
                                 </div>
                             </div>
@@ -101,17 +69,19 @@
                             <div class="col-lg-8">
                                 <div class="mb-3">
                                     <label class="form-label required">Email</label>
-                                    <input v-model="form.email" @input="validateEmail" type="email"
+                                    <input v-model="formCreate.email" @input="validateEmail" type="email"
                                            class="form-control"
-                                           :class="{ 'is-invalid': $page.props.errors.email }"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.email }"
                                            autocomplete="on" name="email" placeholder="Seu email">
-                                    <small class="invalid-feedback" >{{$page.props.errors.email}}</small>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.email"
+                                    class="invalid-feedback" >{{formCreate.errors.created.email}}</small>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label class="form-label">Situação</label>
-                                    <select class="form-select" v-model="form.status">
+                                    <select class="form-select" v-model="formCreate.status">
                                         <option value="active" selected>Ativo</option>
                                         <option value="inactive">Inativo</option>
                                     </select>
@@ -120,22 +90,26 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Senha</label>
-                                    <input v-model="form.password" type="password" class="form-control"
+                                    <input v-model="formCreate.password" type="password" class="form-control"
                                            autocomplete="on"
                                            name="password-input"
-                                           :class="{ 'is-invalid': $page.props.errors.password }"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.password }"
                                            placeholder="Digite sua senha">
-                                    <small class="invalid-feedback">{{$page.props.errors.password}}</small>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.password"
+                                    class="invalid-feedback">{{formCreate.errors.created.password}}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Confirme sua senha</label>
-                                    <input v-model="form.confirmPassword" type="password" class="form-control" name="confirm-password"
-                                           :class="{ 'is-invalid': $page.props.errors.confirmPassword }"
+                                    <input v-model="formCreate.confirmPassword" type="password" class="form-control" name="confirm-password"
+                                           :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.confirmPassword }"
                                            placeholder="Confirme sua senha">
-                                    <small class="invalid-feedback">{{$page.props.errors.confirmPassword}}</small>
+                                    <small
+                                    v-if="formCreate.errors.created && formCreate.errors.created.confirmPassword"
+                                    class="invalid-feedback">{{formCreate.errors.created.confirmPassword}}</small>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +168,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
-import Litepicker from 'litepicker';
+import Datepicker from '@/Components/Datepicker.vue';
 import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
 
 const { validateCPF, validateEmailFormat } = mix.methods;
@@ -202,7 +176,7 @@ const { validateCPF, validateEmailFormat } = mix.methods;
 const emit = defineEmits(['updateTable']);
 
 
-const form = useForm({
+const formCreate = useForm({
     first_name: '',
     last_name: '',
     document: '',
@@ -215,9 +189,12 @@ const form = useForm({
 
 // Função para criar um novo usuário
 const store = () => {
-    form.post('/admin/user/store', {
+    formCreate.post('/admin/user/store', {
         onSuccess: () => {
             emit('updateTable');
+        },
+        onError: () => {
+            console.log(formCreate.errors.created); // Loga o objeto inteiro de erros
         }
     });
 };
@@ -252,23 +229,7 @@ const validateEmail = (event) => {
 }
 
 onMounted(() => {
-    // console.log(props.errors);
-   
-    const datePicker = new Litepicker({
-        element: document.getElementById('datepicker-create-user'),
-        format: "DD/MM/YYYY",
-        lang: "pt-BR",
-        singleMode: true,
-        buttonText: {
-            previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-            nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-        },
-        setup: (picker) => {
-            picker.on('selected', (date) => {
-                form.birth_date = date.format("DD/MM/YYYY");
-            });
-        }
-    });
+
 });
 
 </script>

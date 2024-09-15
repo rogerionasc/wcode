@@ -12,56 +12,57 @@
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Nome</label>
-                  <input v-model="formUpdate.first_name" type="text" class="form-control" name="first-name" placeholder="Seu primeiro nome">
-                  <small class="invalid-feedback"></small>
+                  <input v-model="formUpdate.first_name" type="text" class="form-control" name="first-name" 
+                  :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.first_name }"
+                  placeholder="Seu primeiro nome">
+                  <small
+                  v-if="formUpdate.errors.update && formUpdate.errors.update.first_name"
+                  class="invalid-feedback">{{ formUpdate.errors.update.first_name }}</small>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Sobrenome</label>
-                  <input v-model="formUpdate.last_name" type="text" class="form-control" name="last-name" placeholder="Seu sobrenome">
-                  <small class="invalid-feedback"></small>
+                  <input v-model="formUpdate.last_name" type="text" class="form-control" name="last-name"
+                  :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.last_name }"
+                  placeholder="Seu sobrenome">
+                  <small
+                  v-if="formUpdate.errors.update && formUpdate.errors.update.last_name"
+                  class="invalid-feedback">{{ formUpdate.errors.update.last_name }}</small>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">CPF</label>
-                  <input v-model="formUpdate.document" type="text" class="form-control" name="cpf" placeholder="xxx.xxx.xxx-xx">
-                  <small class="invalid-feedback"></small>
+                  <input v-model="formUpdate.document" type="text" class="form-control" name="cpf"
+                  :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.document }"
+                  placeholder="xxx.xxx.xxx-xx">
+                  <small
+                  v-if="formUpdate.errors.update && formUpdate.errors.update.document"
+                  class="invalid-feedback">{{ formUpdate.errors.update.document }}</small>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">Cargo/Função</label>
-                  <!-- <input type="text" class="form-control" name="position"> -->
-                  
                   <select v-model="formUpdate.title_role" class="form-select">
-                      <option v-for="role in roles" :key="role.tag_permission" :value="role.title">
-                        {{ role.title }}
-                      </option>
-                    </select>
+                    <option v-for="role in roles" :key="role.tag_permission" :value="role.title">
+                      {{ role.title }}
+                    </option>
+                  </select>
                    
-                  <small class="invalid-feedback"></small>
+                  <!-- <small
+                  v-if="formUpdate.errors.update && formUpdate.errors.update."
+                  class="invalid-feedback">{{ formUpdate.errors.update.}}</small> -->
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">Nascimento</label>
-                  
-                  <div class="input-icon">
-                    <span class="input-icon-addon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
-                        <path d="M16 3v4"></path>
-                        <path d="M8 3v4"></path>
-                        <path d="M4 11h16"></path>
-                        <path d="M11 15h1"></path>
-                        <path d="M12 15v3"></path>
-                      </svg>
-                    </span>
-                    <input v-model="user.birth_date" data-date-format="mm/dd/yyyy" type="date" class="form-control" id="datepicker-edit-user" placeholder="Selecione uma data">
-                  </div>
+                  <Datepicker :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.birth_date }" class="custom-date" v-model="formUpdate.birth_date"/>
+                  <small
+                  v-if="formUpdate.errors.update && formUpdate.errors.update.birth_date"
+                  class="invalid-feedback">{{ formUpdate.errors.update.birth_date}}</small>
                 </div>
               </div>
             </div>
@@ -127,6 +128,7 @@
                       <div class="mb-3">
                         <label class="form-label">Bairro</label>
                         <input v-if="user.address" v-model="user.address.neighborhood" type="text" class="form-control" id="neighborhood" name="neighborhood" placeholder="Bairro">
+                        <small class="invalid-feedback"></small>
                       </div>
                     </div>
                     <div class="col-lg-4">
@@ -140,12 +142,14 @@
                       <div class="mb-3">
                         <label class="form-label">Estado</label>
                         <input disabled v-if="user.address" v-model="user.address.state" type="text" class="form-control" autocomplete="on" id="state" name="state" placeholder="Estado">
+                        <small class="invalid-feedback"></small>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="mb-3">
                         <label class="form-label">Complemento</label>
                         <input v-if="user.address" v-model="user.address.complement" type="text" class="form-control" autocomplete="on" id="complement" name="complement" placeholder="Complemento">
+                        <small class="invalid-feedback"></small>
                       </div>
                     </div>
                   </div>
@@ -160,14 +164,18 @@
                     <div class="col-lg-8">
                       <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input v-model="user.email" type="email" class="form-control" name="account-name" placeholder="Seu email">
-                        <small class="invalid-feedback"></small>
+                        <input
+                        :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.email }"
+                        v-model="formUpdate.email" type="email" class="form-control" name="account-name" placeholder="Seu email">
+                        <small
+                        v-if="formUpdate.errors.update && formUpdate.errors.update.email"
+                        class="invalid-feedback" >{{formUpdate.errors.update.email}}</small>                      
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="mb-3">
                         <label class="form-label">Status</label>
-                        <select v-model="user.status" class="form-select">
+                        <select v-model="formUpdate.status" class="form-select">
                           <option value="active" selected>Ativo</option>
                           <option value="inactive">Inativo</option>
                         </select>
@@ -262,6 +270,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import Litepicker from 'litepicker';
 import 'litepicker/dist/css/litepicker.css';
 import axios from 'axios';
+import Datepicker from '@/Components/Datepicker.vue';
 import { Inertia } from '@inertiajs/inertia';
 import $ from 'jquery';
 
@@ -278,21 +287,6 @@ function togglePassword() {
 onMounted(() => {
   // console.log(this.FlashMessage);
   fetchRoles();
-    const datePicker = new Litepicker({
-        element: document.getElementById('datepicker-edit-user'),
-        format: "dd/mm/yyyy",
-        lang: "pt-BR",
-        singleMode: true,
-        buttonText: {
-            previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-            nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-        },
-        setup: (picker) => {
-            picker.on('selected', (date) => {
-              formUpdate.birth_date = date.format("DD/MM/YYYY");
-            });
-        }
-    });
 });
 
 const formUpdate = useForm({
@@ -300,6 +294,7 @@ const formUpdate = useForm({
   last_name: '',
   document: '',
   birth_date: '',
+  role: '',
   title_role: '',
   email: '',
   status: '',
@@ -307,19 +302,30 @@ const formUpdate = useForm({
 });
 
 watch(() => props.user, (newUser) => {
+    formUpdate.errors.update = {};
     formUpdate.first_name = newUser.first_name;
     formUpdate.last_name = newUser.last_name;
     formUpdate.document = newUser.document;
     formUpdate.birth_date = newUser.birth_date;
+    formUpdate.role = newUser.role;
     formUpdate.title_role = newUser.title_role;
     formUpdate.email = newUser.email;
     formUpdate.status = newUser.status;
 }, { immediate: true });
 
+// Watch para sincronizar title_role com roles
+watch(() => formUpdate.title_role, (newTitleRole) => {
+  const selectedRole = roles.value.find(role => role.title === newTitleRole);
+  if (selectedRole) {
+    formUpdate.role = selectedRole.tag_permission;
+  }
+});
+
 const fetchRoles = async () => {
   try {
     const response = await axios.get('/admin/roles/fetchRoles');
     roles.value = response.data;
+    // roles.value = response.data;
   } catch (error) {
     console.error('Erro ao buscar cargos:', error);
   }
@@ -369,10 +375,14 @@ async function updateUser() {
       onSuccess: () => {
         emit('updateTable');
       },
+      onError: () => {
+        console.log(formUpdate.errors.update);
+      }
     });
   
   } catch (error) {
     console.error(error);
+    
     
   }
 }
@@ -380,10 +390,5 @@ async function updateUser() {
 </script>
 
 <style scoped>
-.form-control {
-  position: relative;
-}
-.litepicker {
-  position: absolute;
-}
+
 </style>

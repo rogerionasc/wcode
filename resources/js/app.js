@@ -8,7 +8,8 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import FlashMessage from '../js/Components/FlashMessage.vue';
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'; // Certifique-se de que o CSS foi importado
 
 const appName = import.meta.env.VITE_APP_NAME;
 
@@ -20,7 +21,8 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .component('FlashMessage', FlashMessage)
-            .mount(el);
+            .component('VueDatePicker', VueDatePicker)
+            .mount(el)
     },
     progress: {
         color: '#4B5563',
