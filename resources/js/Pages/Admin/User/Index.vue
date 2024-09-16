@@ -5,6 +5,11 @@
             <template #ButtonCreate>
                 <ButtonCreate/>
             </template>
+            <!-- Modal Form -->
+            <ModalCreateUser class="modal-open mt-0"  @updateTable="handleUpdateTable"/>
+            <ModalDeleteUser class="modal-open mt-0" :user="userToDelete" @updateTable="handleUpdateTable"/>
+            <ModalEditUser class="modal-open mt-0" :user="userToEdit" @updateTable="handleUpdateTable"/>
+
             <!-- Conteúdo da página usuário -->
             <div class="col-12">
                 <div class="card">
@@ -18,7 +23,7 @@
                                     <th><h4>E-mail</h4></th>
                                     <th><h4>Cargo</h4></th>
                                     <th class="text-center"><h4>Status</h4></th>
-                                    <th class="text-center"><h4>Ação</h4></th>
+                                    <th class="text-center pe-0"><h4>Ação</h4></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,17 +34,13 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
+                                    <td class="pe-0"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- Modal Form -->
-            <ModalCreateUser  @updateTable="handleUpdateTable"/>
-            <ModalDeleteUser :user="userToDelete" @updateTable="handleUpdateTable"/>
-            <ModalEditUser :user="userToEdit" @updateTable="handleUpdateTable"/>
         </Layout>
     </div>
 </template>

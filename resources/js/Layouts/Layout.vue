@@ -282,5 +282,7 @@
   };
   // Manter o espaço durante a animação de saída
   
-  </script>
+  </script scoped>
+  <style>
+</style>
   

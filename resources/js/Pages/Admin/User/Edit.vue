@@ -1,13 +1,17 @@
 <template>
-  <div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
+  <div class="modal modal-blur fade" id="editUser" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Editar Usuário</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <h5 class="modal-title me-2">Editar Usuário</h5>
+              <span class="me-2">&gt;</span>
+              <span class="badge mb-0 "> {{ user.first_name }} {{ user.last_name }}</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form @submit.prevent="updateUser">
-          <div class="modal-body">
+          <div class="modal-body pb-0">
             <div class="row">
               <div class="col-lg-6">
                 <div class="mb-3">
@@ -286,7 +290,6 @@
 <script setup>
 import { ref, onMounted, defineEmits, defineProps, watch } from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
-import 'litepicker/dist/css/litepicker.css';
 import axios from 'axios';
 import Datepicker from '@/Components/Datepicker.vue';
 
