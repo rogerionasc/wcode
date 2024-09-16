@@ -14,12 +14,9 @@
                                     <label class="form-label required">Nome</label>
                                     <input v-model="formCreate.first_name" type="text" class="form-control"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.first_name }"
-                                           name="first_name"
-                                           placeholder="Seu primeiro nome">
-                                    <small 
-                                    v-if="formCreate.errors.created && formCreate.errors.created.first_name"
-                                    class="invalid-feedback" >{{ formCreate.errors.created.first_name }}</small>
-                                    <!-- <small class="invalid-feedback" >{{formCreate.errors.created.first_name}}</small> -->
+                                           name="first_name" placeholder="Seu primeiro nome">
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.first_name"
+                                    class="invalid-feedback">{{ formCreate.errors.created.first_name }}</small>
                                 </div>
                             </div>
 
@@ -28,11 +25,9 @@
                                     <label class="form-label required">Sobrenome</label>
                                     <input v-model="formCreate.last_name" type="text" class="form-control"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.last_name }"
-                                           name="last_name"
-                                           placeholder="Seu sobrenome">
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.last_name"
-                                    class="invalid-feedback" >{{ formCreate.errors.last_name }}</small>
+                                           name="last_name" placeholder="Seu sobrenome">
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.last_name"
+                                    class="invalid-feedback">{{ formCreate.errors.last_name }}</small>
                                 </div>
                             </div>
 
@@ -41,22 +36,19 @@
                                     <label class="form-label required">CPF</label>
                                     <input v-model="formCreate.document" @input="formatCPF" type="text" class="form-control"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.document }"
-                                           name="document"
-                                           placeholder="00.000.000-00">
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.document"
-                                    class="invalid-feedback" >{{formCreate.errors.created.document}}</small>
+                                           name="document" placeholder="00.000.000-00">
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.document"
+                                    class="invalid-feedback">{{ formCreate.errors.created.document }}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Nascimento</label>
-                                    <Datepicker :class="{'is-invalid': formCreate.errors.created && formCreate.errors.created.birth_date}" class="custom-date" v-model="formCreate.birth_date"/>
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.birth_date"
-                                    class="invalid-feedback">{{formCreate.errors.created.birth_date}}</small>
-
+                                    <Datepicker :class="{'is-invalid': formCreate.errors.created && formCreate.errors.created.birth_date}" 
+                                    class="custom-date" v-model="formCreate.birth_date"/>
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.birth_date"
+                                    class="invalid-feedback">{{ formCreate.errors.created.birth_date }}</small>
                                 </div>
                             </div>
                         </div>
@@ -73,9 +65,8 @@
                                            class="form-control"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.email }"
                                            autocomplete="on" name="email" placeholder="Seu email">
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.email"
-                                    class="invalid-feedback" >{{formCreate.errors.created.email}}</small>
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.email"
+                                    class="invalid-feedback">{{ formCreate.errors.created.email }}</small>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -91,25 +82,23 @@
                                 <div class="mb-3">
                                     <label class="form-label required">Senha</label>
                                     <input v-model="formCreate.password" type="password" class="form-control"
-                                           autocomplete="on"
-                                           name="password-input"
+                                           autocomplete="on" name="password-input"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.password }"
                                            placeholder="Digite sua senha">
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.password"
-                                    class="invalid-feedback">{{formCreate.errors.created.password}}</small>
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.password"
+                                    class="invalid-feedback">{{ formCreate.errors.created.password }}</small>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Confirme sua senha</label>
-                                    <input v-model="formCreate.confirmPassword" type="password" class="form-control" name="confirm-password"
+                                    <input v-model="formCreate.confirmPassword" type="password" class="form-control" 
+                                           name="confirm-password"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.confirmPassword }"
                                            placeholder="Confirme sua senha">
-                                    <small
-                                    v-if="formCreate.errors.created && formCreate.errors.created.confirmPassword"
-                                    class="invalid-feedback">{{formCreate.errors.created.confirmPassword}}</small>
+                                    <small v-if="formCreate.errors.created && formCreate.errors.created.confirmPassword"
+                                    class="invalid-feedback">{{ formCreate.errors.created.confirmPassword }}</small>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +164,6 @@ const { validateCPF, validateEmailFormat } = mix.methods;
 
 const emit = defineEmits(['updateTable']);
 
-
 const formCreate = useForm({
     first_name: '',
     last_name: '',
@@ -209,10 +197,10 @@ const formatCPF = (event) => {
 
     if (validateCPF(cpf)) {
         const formattedCPF = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        form.document = formattedCPF;
+        formCreate.document = formattedCPF;
         event.target.classList.remove('is-invalid');
     } else {
-        form.document = cpf;
+        formCreate.document = cpf;
         event.target.classList.add('is-invalid');
     }
 }
@@ -231,8 +219,8 @@ const validateEmail = (event) => {
 onMounted(() => {
 
 });
-
 </script>
+
 <style>
 
 </style>

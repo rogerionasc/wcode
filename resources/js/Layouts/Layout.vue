@@ -247,7 +247,7 @@
                     <li class="list-inline-item">
                       <a href="." class="link-secondary">WCode</a>
                       <span>-</span>
-                      <a href="./changelog.html" class="link-secondary" rel="noopener">v1.0.0-beta</a>
+                      <a href="./changelog.html" class="link-secondary" rel="noopener">beta</a>
                     </li>
                   </ul>
                 </div>

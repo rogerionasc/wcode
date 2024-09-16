@@ -18,9 +18,6 @@ use App\Rules\ValidatorEmail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Log;
-
 
 class UserController extends Controller
 {
@@ -196,6 +193,7 @@ class UserController extends Controller
                 'last_name'  => 'required|string|max:255',
                 'document'   => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,'. strval($user->id)],
                 'email'      => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,'. strval($user->id)],
+                'password'   => 'string|min:6',
                 'birth_date' => 'required|date_format:Y-m-d',
                 'status'     => 'required|alpha'
             ], $this->customMessages(), $this->fieldAliases());
@@ -210,20 +208,28 @@ class UserController extends Controller
                     ->with('userUpdate_id', $user->id);
             }
 
-            $user->update([
-                'first_name' => $request->input('first_name'),
-                'last_name' => $request->input('last_name'),
-                'email' => $request->input('email'),
-                'document' => $request->input('document'),
-                'birth_date' => $birthDate,
-                'role' => $request->input('role'),
-            ]);
+        // Atualiza o usuário
+        $updateData = [
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'document' => $request->input('document'),
+            'birth_date' => $birthDate,
+            'role' => $request->input('role'),
+        ];
 
-            $account = Account::find($id);
+        if (!empty($request->input('password'))) {
+            $updateData['password'] = Hash::make($request->input('password'));
+        }
 
+        $user->update($updateData);
+
+        $account = Account::find($id);
+        if ($account) {
             $account->update([
-                'status'   => $request->status,
+                'status' => $request->status,
             ]);
+        }
 
             return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
 
@@ -259,6 +265,7 @@ class UserController extends Controller
     protected function customMessages()
     {
         return [
+            'alpha' => 'É permitido apenas letras',
             'required' => 'O campo é obrigatório.',
             'string'    => 'O campo deve ser palavras!',
             'max'      => 'O campo não pode ter mais de :max caracteres.',

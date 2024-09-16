@@ -139,7 +139,6 @@ const handleUpdateTable = async () => {
     }
 };
 
-
 </script>
 
 <style>
