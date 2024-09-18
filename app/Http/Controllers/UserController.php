@@ -68,8 +68,8 @@ class UserController extends Controller
                 // dd($request->all());
                 return Redirect::back()
                     ->withErrors($validator, 'created')
-                    ->withInput()
-                    ->with('error', 'Não foi possível cadastrar o usuário. Verifique os campos e tente novamente.');
+                    ->withInput();
+                    // ->with('error', 'Não foi possível cadastrar o usuário. Verifique os campos e tente novamente.');
             }
             
 
@@ -204,7 +204,7 @@ class UserController extends Controller
                 return Redirect::back()
                     ->withErrors($validator, 'update')
                     ->withInput()
-                    ->with('error', 'Não foi possível atualizar o usuário. Verifique os campos')
+                    // ->with('error', 'Não foi possível atualizar o usuário. Verifique os campos')
                     ->with('userUpdate_id', $user->id);
             }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal modal-blur fade" id="editUser" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
+  <div class="modal modal-blur fade" id="editUser" tabindex="-2" aria-labelledby="editUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-between align-items-center">
@@ -392,6 +392,7 @@ async function updateUser() {
       },
       onError: () => {
         console.log(formUpdate.errors.update);
+        $('#editUser').modal('show');
       }
     });
   } catch (error) {

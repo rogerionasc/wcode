@@ -1,23 +1,15 @@
 @import url('https://rsms.me/inter/inter.css');
-:root {
+/* :root {
     --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-}
+} */
+
+:root {
+    --tblr-font-sans-serif: 'Inter';
+  }
 
 body {
     font-feature-settings: "cv03", "cv04", "cv11";
 }
-
-/* .dp--menu-wrapper {
- 
-    left: -49.9062px !important;
-}
-
-.custom-date {
-    --dp-font-size: .875rem;
-    --dp-cell-padding: .4375rem .75rem;
-
-  
-  } */
 
 .layout {
     height: 100vh;

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal modal-blur fade" id="deleteUser" tabindex="-1" aria-labelledby="deleteUserLabel" aria-hidden="true">
+  <div class="modal modal-blur fade" id="deleteUser" tabindex="-3" aria-labelledby="deleteUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
       <div class="modal-content">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

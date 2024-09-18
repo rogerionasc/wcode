@@ -1,5 +1,5 @@
 <template>
-    <div class="modal modal-blur fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-hidden="true">
+    <div v-if="!isVisibleModal" class="modal modal-blur fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -25,9 +25,9 @@
                                     <label class="form-label required">Sobrenome</label>
                                     <input v-model="formCreate.last_name" type="text" class="form-control"
                                            :class="{ 'is-invalid': formCreate.errors.created && formCreate.errors.created.last_name }"
-                                           name="last_name" placeholder="Seu sobrenome">
-                                    <small v-if="formCreate.errors.created && formCreate.errors.created.last_name"
-                                    class="invalid-feedback">{{ formCreate.errors.last_name }}</small>
+                                           name="last_name" placeholder="Seu primeiro nome">
+                                        <small v-if="formCreate.errors.created && formCreate.errors.created.last_name"
+                                        class="invalid-feedback">{{ formCreate.errors.created.last_name }}</small>
                                 </div>
                             </div>
 
@@ -155,7 +155,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
 import Datepicker from '@/Components/Datepicker.vue';
 import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
@@ -163,6 +163,8 @@ import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
 const { validateCPF, validateEmailFormat } = mix.methods;
 
 const emit = defineEmits(['updateTable']);
+
+const isVisibleModal = ref(false);
 
 const formCreate = useForm({
     first_name: '',
@@ -182,6 +184,7 @@ const store = () => {
             emit('updateTable');
         },
         onError: () => {
+            $('#modalCreateUser').modal('show');
             console.log(formCreate.errors.created); // Loga o objeto inteiro de erros
         }
     });
