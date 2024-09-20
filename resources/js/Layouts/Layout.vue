@@ -204,25 +204,17 @@
           </div>
         </header>
         <div class="page-wrapper">
-          <!-- Page header -->
-          <div class="page-header d-print-none mb-2">
-            <div class="container-xl mt-0">
               <!-- Flash Message -->
-              <FlashMessage class="mt-0"/>
-              <div class="row g-2 align-items-center">
-                <div class="col">
-                  <!-- Page pre-title -->
-                  <PageTitle :pageTitle="titleLayout"/>
-                </div>
-                <!-- Page title actions -->
-                <slot name="ButtonCreate"/>
-              </div>
-            </div>
-          </div>
+            <FlashMessage class="mt-1"/>
+
           <!-- Page body -->
           <div class="page-body">
             <div class="container-xl">
               <div class="row row-cards">
+                <div class="col-auto g-2 mt-0 d-flex">
+                  <!-- Page pre-title -->
+                  <PageTitle :pageTitle="titleLayout"/>
+                </div>
                 <!-- Page content -->
                 <slot/>
               </div>
@@ -256,21 +248,21 @@
           </footer>
         </div>
       </div>
-      <!-- Modal Form -->
-      <!-- <ModalCreateUser/> -->
+
     </div>
   </template>
   
   <script>
   import PageTitle from "@/Components/PageTitle.vue";
   import ButtonCreate from "@/Components/ButtonCreate.vue";
-  import ModalCreateUser from "@/Pages/Admin/User/Create.vue";
+  // import ModalCreateUser from "@/Pages/Admin/User/Create.vue";
   import { Link } from '@inertiajs/inertia-vue3';
-  
+  import { ref } from 'vue';
+
   export default {
     name: 'layout',
     components: {
-      ModalCreateUser,
+
       PageTitle,
       ButtonCreate,
       Link,
@@ -280,7 +272,6 @@
     },
     
   };
-  // Manter o espaço durante a animação de saída
   
   </script>
   <style>

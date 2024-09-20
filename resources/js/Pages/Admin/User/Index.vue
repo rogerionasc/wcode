@@ -1,12 +1,11 @@
 <template>
-    <div>
+
         <Head :title="'Usuários'"/>
         <Layout :titleLayout="'Usuários'">
-            <template #ButtonCreate>
-                <ButtonCreate/>
-            </template>
+            <ButtonCreate @toggleModal="isVisibleModal = !isVisibleModal" />
+
             <!-- Modal Form -->
-            <ModalCreateUser class="modal-open mt-0"  @updateTable="handleUpdateTable"/>
+            <ModalCreateUser  v-model:isVisibleModal="isVisibleModal" class="modal-open mt-0"  @updateTable="handleUpdateTable"/>
             <ModalDeleteUser class="modal-open mt-0" :user="userToDelete" @updateTable="handleUpdateTable"/>
             <ModalEditUser class="modal-open mt-0" :user="userToEdit" @updateTable="handleUpdateTable"/>
 
@@ -42,7 +41,6 @@
                 </div>
             </div>
         </Layout>
-    </div>
 </template>
 
 <script setup>
@@ -58,6 +56,7 @@ import 'datatables.net-bs5';
 
 const props = defineProps(['users']);
 const usersList = reactive(props.users);
+const isVisibleModal = ref(false);
 
 let dataTableInstance = null;
 let userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
@@ -68,6 +67,7 @@ onMounted(() => {
     setupEventListeners();
     // console.log(props.users.error);
 });
+
 
 // Inicializar o DataTable
 const initializeDataTable = () => {

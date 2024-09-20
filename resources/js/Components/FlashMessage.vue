@@ -3,6 +3,7 @@
         v-if="show"
         :class="['alert alert-dismissible alert-' + alertClass, { 'fade-out': isFading }]"
         role="alert"
+        class="mx-3"
     >
         <div class="d-flex">
             <div>

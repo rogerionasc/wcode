@@ -1,10 +1,10 @@
 <template>
-    <div v-if="!isVisibleModal" class="modal modal-blur fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-hidden="true">
+    <div v-show="!isVisibleModal" @update:isVisibleModal="isVisibleModal = $event" class="modal modal-blur fade" id="modalCreateUser" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Novo usuário</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" @click="hideModal" aria-label="Close"></button>
                 </div>
                 <form @submit.prevent="store">
                     <div class="modal-body pb-0">
@@ -141,10 +141,10 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        <a href="#" class="btn btn-link link-secondary" @click="hideModal">
                             Cancelar
                         </a>
-                        <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <button type="submit" class="btn btn-primary ms-auto">
                             Salvar
                         </button>
                     </div>
@@ -155,16 +155,44 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, defineProps, ref, watch } from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
 import Datepicker from '@/Components/Datepicker.vue';
-import mix from "@/mix.js"; // Se precisar das validações de CPF/Email
+import mix from "@/mix.js";
 
 const { validateCPF, validateEmailFormat } = mix.methods;
 
-const emit = defineEmits(['updateTable']);
+const props = defineProps({
+  isVisibleModal: Boolean,
+});
 
-const isVisibleModal = ref(false);
+const emit = defineEmits(['updateTable', 'update:isVisibleModal']);
+
+const isVisibleModal = ref(props.isVisibleModal);
+
+watch(() => props.isVisibleModal, (newVal) => {
+    if (newVal === true) {
+        showModal();
+    }
+    if (newVal === false) {
+        hideModal();
+    }
+});
+
+const showModal = () => {
+    setTimeout(() => {
+        isVisibleModal.value = true;
+        $('#modalCreateUser').modal('show');
+    }, 200); // Ajuste o valor conforme necessário
+};
+
+const hideModal = () => {
+    $('#modalCreateUser').modal('hide');
+
+    setTimeout(() => {
+        emit('update:isVisibleModal', false);
+    }, 200); // Ajuste o valor conforme necessário
+};
 
 const formCreate = useForm({
     first_name: '',
@@ -181,16 +209,16 @@ const formCreate = useForm({
 const store = () => {
     formCreate.post('/admin/user/store', {
         onSuccess: () => {
+            hideModal();
             emit('updateTable');
         },
         onError: () => {
-            $('#modalCreateUser').modal('show');
+            showModal();
             console.log(formCreate.errors.created); // Loga o objeto inteiro de erros
         }
     });
 };
 
-// Função para formatar CPF
 const formatCPF = (event) => {
     let cpf = event.target.value.replace(/\D/g, '');
 
@@ -208,7 +236,6 @@ const formatCPF = (event) => {
     }
 }
 
-// Função para validar Email
 const validateEmail = (event) => {
     const email = event.target.value;
 
@@ -220,10 +247,11 @@ const validateEmail = (event) => {
 }
 
 onMounted(() => {
-
+    // Código para garantir que o modal é acessível após a montagem do componente
 });
+
 </script>
 
 <style>
-
+/* Estilos aqui... */
 </style>

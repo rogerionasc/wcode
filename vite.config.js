@@ -47,6 +47,7 @@ export default defineConfig({
         }),
     ],
     build: {
+        sourcemap: true, // Ativa source maps
         rollupOptions: {
             output: {
                 manualChunks(id) {
