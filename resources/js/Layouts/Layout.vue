@@ -255,9 +255,7 @@
   <script>
   import PageTitle from "@/Components/PageTitle.vue";
   import ButtonCreate from "@/Components/ButtonCreate.vue";
-  // import ModalCreateUser from "@/Pages/Admin/User/Create.vue";
   import { Link } from '@inertiajs/inertia-vue3';
-  import { ref } from 'vue';
 
   export default {
     name: 'layout',

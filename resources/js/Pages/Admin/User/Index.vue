@@ -1,46 +1,45 @@
 <template>
+    <Head :title="'Usuários'"/>
+    <Layout :titleLayout="'Usuários'">
+        <ButtonCreate @toggleModal="isVisibleModal = !isVisibleModal" />
 
-        <Head :title="'Usuários'"/>
-        <Layout :titleLayout="'Usuários'">
-            <ButtonCreate @toggleModal="isVisibleModal = !isVisibleModal" />
+        <!-- Modal Form -->
+        <ModalCreateUser  v-model:isVisibleModal="isVisibleModal" class="modal-open mt-0"  @updateTable="handleUpdateTable"/>
+        <ModalDeleteUser class="modal-open mt-0" :user="userToDelete" @updateTable="handleUpdateTable"/>
+        <ModalEditUser class="modal-open mt-0" :user="userToEdit" @updateTable="handleUpdateTable"/>
 
-            <!-- Modal Form -->
-            <ModalCreateUser  v-model:isVisibleModal="isVisibleModal" class="modal-open mt-0"  @updateTable="handleUpdateTable"/>
-            <ModalDeleteUser class="modal-open mt-0" :user="userToDelete" @updateTable="handleUpdateTable"/>
-            <ModalEditUser class="modal-open mt-0" :user="userToEdit" @updateTable="handleUpdateTable"/>
-
-            <!-- Conteúdo da página usuário -->
-            <div class="col-12">
-                <div class="card">
-                    <div class="table-responsive p-3">
-                        <table id="tableUser"
-                               class="table w-100 card-table table-vcenter text-nowrap datatable dataTables_scrollBody">
-                            <thead>
-                                <tr>
-                                    <th><h4>ID</h4></th>
-                                    <th><h4>Nome</h4></th>
-                                    <th><h4>E-mail</h4></th>
-                                    <th><h4>Cargo</h4></th>
-                                    <th class="text-center"><h4>Status</h4></th>
-                                    <th class="text-center pe-0"><h4>Ação</h4></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Iteração sobre os usuários -->
-                                <tr v-for="user in usersList" :key="user.id">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="pe-0"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <!-- Conteúdo da página usuário -->
+        <div class="col-12">
+            <div class="card">
+                <div class="table-responsive p-3">
+                    <table id="tableUser"
+                            class="table w-100 card-table table-vcenter text-nowrap datatable dataTables_scrollBody">
+                        <thead>
+                            <tr>
+                                <th><h4>ID</h4></th>
+                                <th><h4>Nome</h4></th>
+                                <th><h4>E-mail</h4></th>
+                                <th><h4>Cargo</h4></th>
+                                <th class="text-center"><h4>Status</h4></th>
+                                <th class="text-center pe-0"><h4>Ação</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iteração sobre os usuários -->
+                            <tr v-for="user in usersList" :key="user.id">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="pe-0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </Layout>
+        </div>
+    </Layout>
 </template>
 
 <script setup>
@@ -67,7 +66,6 @@ onMounted(() => {
     setupEventListeners();
     // console.log(props.users.error);
 });
-
 
 // Inicializar o DataTable
 const initializeDataTable = () => {

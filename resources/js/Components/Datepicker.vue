@@ -2,6 +2,7 @@
     <VueDatePicker 
     :aria-labels="ariaLabelsPtBr"
     :format-locale="ptBR"
+    :format="format"
     :enable-time-picker="false"
     :action-row="{ showNow: true }" 
     now-button-label="Agora"
@@ -9,13 +10,21 @@
     cancel-text="Fechar"
     position="right"
     placeholder="Selecione uma data"
-    
+    month-name-format="long"   
     />
 </template>
   
   <script setup>  
   import { ref } from 'vue';
   import { ptBR } from 'date-fns/locale';
+
+  const format = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
 
   // Definindo os rótulos em português
   const ariaLabelsPtBr = ref({

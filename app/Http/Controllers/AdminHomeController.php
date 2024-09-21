@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class HomeController extends Controller
+class AdminHomeController extends Controller
 {
     /**
      * Display a listing of the resource.

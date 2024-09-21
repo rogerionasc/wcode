@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminHomeController;
+use App\Http\Controllers\MemberHomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -25,8 +26,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Rotas Admin
     Route::prefix('admin')->group(function () {
-        Route::get('/', [HomeController::class, 'Index'])->name('admin.home');
-        Route::get('dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+        Route::get('/', [AdminHomeController::class, 'Index'])->name('admin.home');
+        Route::get('dashboard', [AdminHomeController::class, 'index'])->name('admin.dashboard');
         
         // Rotas de Usuários
         Route::prefix('user')->group(function () {
@@ -43,8 +44,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    // Rotas Member
+    Route::prefix('/')->group(function () {
+        Route::get('/home', [MemberHomeController::class, 'index'])->name('member.home');
+
+    });
+
     // Rotas Gerais
-    Route::get('/', [HomeController::class, 'Index']);
+    Route::get('/', [AdminHomeController::class, 'Index']);
 
 });
 

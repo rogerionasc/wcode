@@ -288,7 +288,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits, defineProps, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
 import axios from 'axios';
 import Datepicker from '@/Components/Datepicker.vue';
