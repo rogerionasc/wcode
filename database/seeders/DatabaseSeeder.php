@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'document' => '380.417.150-87',
             'email' => 'rogerio@example.com',
             'birth_date' => '1993-02-06',
-            'role' => 'admin',
+            'role' => 'Administrador',
             'password' => \Illuminate\Support\Facades\Hash::make('roger@2014'),
         ]);
 
@@ -51,14 +51,14 @@ class DatabaseSeeder extends Seeder
                 'status' => 'active',
             ]);
             Address::factory()->create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
         });
 
-        
+        $this->call(RolesAndPermissionsSeeder::class);
 
         // Chama outros seeders, se necessário
-        $this->call(RolesTableSeeder::class);
-        $this->call(PermissionSeeder::class);
+        // $this->call(RolesTableSeeder::class);
+        // $this->call(PermissionSeeder::class);
     }
 }

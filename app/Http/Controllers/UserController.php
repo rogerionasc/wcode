@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Address;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Rules\ValidatorDocument;
 use Illuminate\Http\RedirectResponse;
@@ -44,69 +46,85 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            if ($request->has('birth_date') && !empty($request->birth_date)) {
-                $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
-                $request->merge(['birth_date' => $birthDate]);
+            $user = Auth::user();
+
+            // Certifique-se de que o usuário possui a permissão antes de atribuí-la
+            if ($user->hasAnyRole(['Administrador',]) || $user->hasDirectPermission('create user')) {
+
+                if ($request->has('birth_date') && !empty($request->birth_date)) {
+                    $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
+                    $request->merge(['birth_date' => $birthDate]);
+                }
+
+                $validator = Validator::make($request->all(), [
+                    'first_name' => 'required|alpha|max:255',
+                    'last_name' => 'required|string|max:255',
+                    'document' => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users'],
+                    'email' => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
+                    'password' => 'required|string|min:6',
+                    'confirmPassword' => 'required|same:password',
+                    'birth_date' => 'required|date_format:Y-m-d',
+                    'status' => 'required|alpha'
+                ], $this->customMessages(), $this->fieldAliases());
+
+                if ($validator->fails()) {
+                    session()->forget('update');
+                    return Redirect::back()
+                        ->withErrors($validator, 'created')
+                        ->withInput();
+                }
+
+                // Criação de um novo usuário
+                $user = User::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'document' => $request->document,
+                    'birth_date' => $birthDate,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                $user->syncRoles('Membro');
+
+                $role = $user->getRoleNames()->first();;
+                $user->role = $role;
+                
+                $user->save();
+
+                if (!$user) {
+                    throw new \Exception('Erro ao criar usuário. 1');
+                }
+
+                $address = Address::create(['user_id' => $user->id]);
+
+                $account = Account::create([
+                    'user_id' => $user->id,
+                    'status' => $request->status,
+                ]);
+
+                if (!$account) {
+                    throw new \Exception('Erro ao criar conta.');
+                }
+
+                return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
             }
 
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|alpha|max:255',
-                'last_name' => 'required|string|max:255',
-                'document' => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users'],
-                'email' => ['required', 'max:255', new ValidatorEmail, 'unique:users'],
-                'password' => 'required|string|min:6',
-                'confirmPassword' => 'required|same:password',
-                'birth_date' => 'required|date_format:Y-m-d',
-                'status' => 'required|alpha'
-            ], $this->customMessages(), $this->fieldAliases());
+            return Redirect::route('home')->with('error', 'Você não tem permissão para criar um usuário.');
 
-            if ($validator->fails()) {
-                session()->forget('update');
-                return Redirect::back()
-                    ->withErrors($validator, 'created')
-                    ->withInput();
-            }
-
-            // Criação de um novo usuário
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'document' => $request->document,
-                'birth_date' => $birthDate,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-
-            if (!$user) {
-                throw new \Exception('Erro ao criar usuário.');
-            }
-
-            $address = Address::create(['user_id' => $user->id]);
-
-            $account = Account::create([
-                'user_id' => $user->id,
-                'status' => $request->status,
-            ]);
-
-            if (!$account) {
-                throw new \Exception('Erro ao criar conta.');
-            }
-
-            return Redirect::route('admin.user')->with('success', 'Usuário criado com sucesso!');
         } catch (ValidationException $e) {
             return Redirect::route('admin.user')->with('error', 'Não foi possível cadastrar o usuário!');
         } catch (\Exception $e) {
-            return Redirect::route('admin.user')->with('error', 'Erro ao criar o usuário.');
+            return Redirect::route('admin.user')->with('error', 'Erro ao criar o usuário.' . $e->getMessage());
         }
     }
 
     public function getRole(Request $request)
     {
-        $user = $request->user();
-        $role = Role::where('tag_permission', $user->role)->first();
-        $user->setAttribute('title_role', $role ? $role->title : 'N/A');
+        // $user = $request->user();
+        // $role = Role::where('tag_permission', $user->role)->first();
+        // $user->setAttribute('title_role', $role ? $role->title : 'N/A');
 
-        return $user->title_role;
+        // return $user->title_role;
     }
 
     public function getAllUsers()
@@ -118,14 +136,12 @@ class UserController extends Controller
             ->get();
 
         foreach ($users as $user) {
-            $role = Role::where('tag_permission', $user->role)->first();
             unset($user->password);
             unset($user->remember_token);
             if (!empty($request->birth_date)) {
                 $birthDate = Carbon::createFromFormat('Y-m-d', $user->birth_date)->format('d/m/Y');
                 $user->merge(['birth_date' => $birthDate]);
             }
-            $user->title_role = $role ? $role->title : 'N/A';
             $address = DB::table('addresses')->where('user_id', $user->id)->first();
             $user->address = $address ? (array) $address : [];
         }
@@ -161,57 +177,64 @@ class UserController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         try {
-            if ($request->has('birth_date') && !empty($request->birth_date)) {
-                $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
-                $request->merge(['birth_date' => $birthDate]);
-            }
+            $user = Auth::user();
+            
+            if ($user->hasAnyRole(['Administrador',])) {
+                
+                if ($request->has('birth_date') && !empty($request->birth_date)) {
+                    $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
+                    $request->merge(['birth_date' => $birthDate]);
+                }
 
-            $user = User::find($id);
-            if (!$user) {
-                return Redirect::back()->with('error', 'Usuário não existe.');
-            }
+                $user = User::find($id);
+                if (!$user) {
+                    return Redirect::back()->with('error', 'Usuário não existe.');
+                }
 
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|alpha|max:255',
-                'last_name' => 'required|string|max:255',
-                'document' => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,' . strval($user->id)],
-                'email' => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,' . strval($user->id)],
-                'password' => 'string|min:6',
-                'birth_date' => 'required|date_format:Y-m-d',
-                'status' => 'required|alpha'
-            ], $this->customMessages(), $this->fieldAliases());
+                $validator = Validator::make($request->all(), [
+                    'first_name' => 'required|alpha|max:255',
+                    'last_name' => 'required|string|max:255',
+                    'document' => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,' . strval($user->id)],
+                    'email' => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,' . strval($user->id)],
+                    'password' => 'string|min:6',
+                    'birth_date' => 'required|date_format:Y-m-d',
+                    'status' => 'required|alpha'
+                ], $this->customMessages(), $this->fieldAliases());
 
-            if ($validator->fails()) {
-                return Redirect::back()
-                    ->withErrors($validator, 'update')
-                    ->withInput()
-                    ->with('userUpdate_id', $user->id);
-            }
+                if ($validator->fails()) {
+                    return Redirect::back()
+                        ->withErrors($validator, 'update')
+                        ->withInput()
+                        ->with('userUpdate_id', $user->id);
+                }
 
-            // Atualiza o usuário
-            $updateData = [
-                'first_name' => $request->input('first_name'),
-                'last_name' => $request->input('last_name'),
-                'email' => $request->input('email'),
-                'document' => $request->input('document'),
-                'birth_date' => $birthDate,
-                'role' => $request->input('role'),
-            ];
+                // Atualiza o usuário
+                $updateData = [
+                    'first_name' => $request->input('first_name'),
+                    'last_name' => $request->input('last_name'),
+                    'email' => $request->input('email'),
+                    'document' => $request->input('document'),
+                    'birth_date' => $birthDate,
+                    'role' => $request->input('role'),
+                ];
 
-            if (!empty($request->input('password'))) {
-                $updateData['password'] = Hash::make($request->input('password'));
-            }
+                $user->syncRoles($request->input('role'));
 
-            $user->update($updateData);
+                if (!empty($request->input('password'))) {
+                    $updateData['password'] = Hash::make($request->input('password'));
+                }
 
-            $account = Account::find($id);
-            if ($account) {
-                $account->update([
-                    'status' => $request->status,
-                ]);
-            }
+                $user->update($updateData);
 
-            return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
+                $account = Account::find($id);
+                if ($account) {
+                    $account->update([
+                        'status' => $request->status,
+                    ]);
+                }
+                return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
+        }
+        return Redirect::route('home')->with('error', 'Você não tem permissão para atualizar usuário.');
         } catch (\Exception $e) {
             return Redirect::route('admin.user')->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
         }
@@ -246,25 +269,26 @@ class UserController extends Controller
         return [
             'alpha' => 'É permitido apenas letras',
             'required' => 'O campo é obrigatório.',
-            'string' => 'O campo deve ser palavras!',
-            'max' => 'O campo não pode ter mais de :max caracteres.',
-            'unique' => 'Este :attribute já está em uso.',
-            'min' => 'O campo deve ter :min caracteres.',
-            'date_format' => 'O formato da data deve ser :format.',
-            'same' => 'As senhas informadas devem coincidir.',
+            'unique' => 'Este campo já está em uso.',
+            'min' => 'O campo deve ter pelo menos :min caracteres.',
+            'max' => 'O campo deve ter no máximo :max caracteres.',
+            'same' => 'Os campos devem ser iguais.',
+            'date_format' => 'Formato de data inválido. O formato esperado é Y-m-d.',
+            'email' => 'O campo deve ser um endereço de e-mail válido.',
         ];
     }
 
-    // Método para retornar aliases (nomes amigáveis) dos campos
     protected function fieldAliases()
     {
         return [
-            'first_name' => 'nome',
-            'last_name' => 'sobrenome',
-            'email' => 'e-mail',
-            'password' => 'senha',
-            'document' => 'documento',
-            'confirmPassword' => 'confirmação de senha',
+            'first_name' => 'Nome',
+            'last_name' => 'Sobrenome',
+            'document' => 'Documento',
+            'email' => 'E-mail',
+            'birth_date' => 'Data de nascimento',
+            'password' => 'Senha',
+            'confirmPassword' => 'Confirmação de senha',
+            'status' => 'Status',
         ];
     }
 }

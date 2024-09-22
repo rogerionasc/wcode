@@ -72,13 +72,11 @@ class LoginController extends Controller
                     Session::put('status', $status);
 
                     // Verifica o papel do usuário
-                    if (Auth::user()->role === 'admin') {
-                        return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
-                    } else {
-                        return Redirect::route('member.home')->with('success', 'Login realizado com sucesso!');
+                    if (Auth::user()->role !== 'Administrador') {
+                        return Redirect::route('home')->with('success', 'Login realizado com sucesso!');
                     }
 
-                    // return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
+                    return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
                 } else {
                     $this->logout(); // Desconectar usuário se a conta estiver inativa
                     Session::invalidate();

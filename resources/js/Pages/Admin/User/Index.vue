@@ -79,7 +79,7 @@ const initializeDataTable = () => {
             { data: 'id', className: 'text-muted'},
             { data: 'first_name', className: 'text-muted', render: (data, type, row) => `${data} ${row.last_name}` },
             { data: 'email', className: 'text-muted'},
-            { data: 'title_role', className: 'text-muted' },
+            { data: 'role', className: 'text-muted' },
             { data: 'status', className: 'text-center', render: (data) => data === 'active' ? '<span class="badge bg-green-lt">Ativo</span>' : '<span class="badge bg-red-lt">Inativo</span>' },
             {
                 data: null, className: 'text-center pe-0', render: (data) => `

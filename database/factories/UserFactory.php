@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'last_name' => $this->faker->lastName,
             'document' => $this->faker->unique()->numerify('###.###.###-##'),
             'email' => $this->faker->unique()->safeEmail(),
-            'role' => 'visitant',
+            'role' => 'Membro',
             'birth_date' => $this->faker->date('Y-m-d'), // 'Y-m-d' é o formato padrão para data no Faker
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

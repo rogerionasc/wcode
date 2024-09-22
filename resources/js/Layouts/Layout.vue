@@ -16,7 +16,7 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-              <a class="content-logo" href="/">
+              <a class="content-logo" href="{{ $page.props.auth.user.path  }}">
                 <img alt="WCode" class="navbar-brand-image" src="../../img/Logo250x250.svg">
                 <img alt="WCode" class="navbar-brand-name" src="../../img/LogoName210x500.svg">
               </a>
@@ -31,7 +31,7 @@
                 >
                   <div class="m-2 d-none d-xl-block ps-2">
                     <div>{{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</div>
-                    <div class="mt-1 small text-muted">{{ $page.props.auth.user.title_role }}</div>
+                    <div class="mt-1 small text-muted">{{ $page.props.auth.user.role }}</div>
                   </div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@
               <div class="container-xl">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <Link class="nav-link" href="/admin">
+                    <Link class="nav-link" :href="`${$page.props.auth.user.path}`">
                       <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +125,7 @@
                     <div class="dropdown-menu">
                       <div class="dropdown-menu-columns">
                         <div class="dropdown-menu-column">
-                          <a class="dropdown-item" href="/admin/user">Usuário</a>
+                          <a class="dropdown-item" :href="`${fullPath}user`">Usuário</a>
                           <Link class="dropdown-item" href="/register/medic">Médico</Link>
                           <a class="dropdown-item" href="/register/patient">Paciente
                             <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
@@ -256,11 +256,10 @@
   import PageTitle from "@/Components/PageTitle.vue";
   import ButtonCreate from "@/Components/ButtonCreate.vue";
   import { Link } from '@inertiajs/inertia-vue3';
-
+  
   export default {
     name: 'layout',
     components: {
-
       PageTitle,
       ButtonCreate,
       Link,
@@ -268,9 +267,12 @@
     props: {
       titleLayout: String,
     },
-    
+    computed: {
+      fullPath() {
+        return `${window.location.origin}${this.$page.props.auth.user.path}`;
+      },
+    },
   };
-  
   </script>
   <style>
 </style>

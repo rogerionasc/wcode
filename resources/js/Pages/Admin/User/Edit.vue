@@ -46,10 +46,10 @@
               <div class="col-lg-4">
                 <div class="mb-4">
                   <label class="form-label">Cargo/Função</label>
-                  <select v-model="formUpdate.title_role" class="form-select">
-                    <option v-for="role in roles" :key="role.tag_permission" :value="role.title">
-                      {{ role.title }}
-                    </option>
+                    <select v-model="formUpdate.role" class="form-select">
+                      <option v-for="role in roles" :key="role.id" :value="role.name">
+                        {{ role.name }}
+                      </option>
                   </select>
                 </div>
               </div>
@@ -313,7 +313,7 @@ const formUpdate = useForm({
   document: '',
   birth_date: '',
   role: '',
-  title_role: '',
+  // title_role: '',
   email: '',
   password: '',
   status: '',
@@ -327,23 +327,23 @@ watch(() => props.user, (newUser) => {
   formUpdate.document = newUser.document;
   formUpdate.birth_date = newUser.birth_date;
   formUpdate.role = newUser.role;
-  formUpdate.title_role = newUser.title_role;
   formUpdate.email = newUser.email;
   formUpdate.password = newUser.password;
   formUpdate.status = newUser.status;
 }, { immediate: true });
 
-watch(() => formUpdate.title_role, (newTitleRole) => {
-  const selectedRole = roles.value.find(role => role.title === newTitleRole);
-  if (selectedRole) {
-    formUpdate.role = selectedRole.tag_permission;
-  }
-});
+// watch(() => formUpdate.title_role, (newTitleRole) => {
+//   const selectedRole = roles.value.find(role => role.title === newTitleRole);
+//   if (selectedRole) {
+//     formUpdate.role = selectedRole.tag_permission;
+//   }
+// });
 
 const fetchRoles = async () => {
   try {
     const response = await axios.get('/admin/roles/fetchRoles');
     roles.value = response.data;
+    console.log(roles.value);
   } catch (error) {
     console.error('Erro ao buscar cargos:', error);
   }
