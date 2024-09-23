@@ -46,6 +46,13 @@ class Handler extends ExceptionHandler
                     ->toResponse($request)
                     ->setStatusCode(403);
         }
+
+        // Verifica se a exceção é um erro 404
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return Inertia::render('Errors/404') // Carrega a página Vue para 404
+                ->toResponse($request)
+                ->setStatusCode(404);
+        }
         // Para outras exceções, use o comportamento padrão
         return parent::render($request, $exception);
     }

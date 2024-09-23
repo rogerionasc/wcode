@@ -120,10 +120,9 @@ class UserController extends Controller
 
     public function getRole(Request $request)
     {
-        // $user = $request->user();
-        // $role = Role::where('tag_permission', $user->role)->first();
-        // $user->setAttribute('title_role', $role ? $role->title : 'N/A');
-
+        $user = Auth::user();
+        
+        return response()->json($user->getAllPermissions()->pluck('name'));
         // return $user->title_role;
     }
 

@@ -1,7 +1,25 @@
 @import url('https://rsms.me/inter/inter.css');
-/* :root {
-    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-} */
+
+/* Para navegadores baseados em WebKit (Chrome, Safari, Edge, etc.) */
+::-webkit-scrollbar {
+    width: 3px; /* Largura da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #182433;
+    border-radius: 5px; /* Aumenta o raio para deixar a barra mais arredondada */
+}
+
+/* Opcional: personalizando o plano de fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Cor do fundo da área da barra de rolagem */
+}
+
+/* Para navegadores Firefox */
+* {
+    scrollbar-width: thin; /* Define a espessura como fina */
+    scrollbar-color: #667382 #f1f1f1; /* Cor da barra de rolagem e do fundo */
+}
 
 :root {
     --tblr-font-sans-serif: 'Inter';

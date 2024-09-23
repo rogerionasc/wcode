@@ -49,4 +49,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // Rotas de Teste
-// Route::get('update', [UserController::class, 'update']);
+Route::get('getRole', [UserController::class, 'getRole']);
