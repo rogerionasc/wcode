@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-// import { emit } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps(['user']);

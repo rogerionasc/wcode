@@ -2,7 +2,6 @@
     <div>
         <!-- Exibe o PageLoader se 'isLoading' for verdadeiro -->
         <PageLoader v-if="isLoading" />
-
         <!-- Exibe o formulário de login se 'isLoading' for falso -->
         <div v-else class="page page-center d-flex align-items-center justify-content-center min-vh-100">
             <div class="container container-normal py-6">

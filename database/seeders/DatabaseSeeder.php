@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RolesAndPermissionsSeeder::class);
+
         // Cria um usuário específico com informações fornecidas
         $user = User::factory()->create([
             'first_name' => 'Rogério',
@@ -21,9 +23,12 @@ class DatabaseSeeder extends Seeder
             'document' => '380.417.150-87',
             'email' => 'rogerio@example.com',
             'birth_date' => '1993-02-06',
-            'role' => 'admin',
+            'role' => 'Administrador',
             'password' => \Illuminate\Support\Facades\Hash::make('roger@2014'),
         ]);
+
+        // Atribui o papel "Administrador" ao usuário
+        $user->syncRoles('Administrador');
 
         // Cria uma conta associada ao usuário específico
         Account::factory()->create([
@@ -32,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
 
+        // Cria um endereço associado ao usuário específico
         Address::factory()->create([
             'user_id' => $user->id,
             'post_code' => '59149110',
@@ -43,22 +49,21 @@ class DatabaseSeeder extends Seeder
             'complement' => 'Club CPSERN'
         ]);
 
-        // Cria 9 usuários adicionais aleatórios e suas contas
         User::factory(5)->create()->each(function ($user) {
+            // Atribui um papel padrão aos usuários (se necessário)
+            $user->syncRoles('Membro');
+
+            // Cria uma conta associada a cada usuário
             Account::factory()->create([
                 'user_id' => $user->id,
-                'owner' => false, // Defina o valor conforme necessário
+                'owner' => false,
                 'status' => 'active',
             ]);
+
+            // Cria um endereço para cada usuário
             Address::factory()->create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
         });
-
-        
-
-        // Chama outros seeders, se necessário
-        $this->call(RolesTableSeeder::class);
-        $this->call(PermissionSeeder::class);
     }
 }

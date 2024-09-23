@@ -6,11 +6,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-
 
 class LoginController extends Controller
 {
@@ -24,7 +22,6 @@ class LoginController extends Controller
 
     public function auth(Request $request): RedirectResponse
     {
-//        dd($request);
         $messageEmailPwd = [];
         if (empty($request->email)) {
             $messageEmailPwd['msgemail'] = 'seu e-mail';
@@ -35,15 +32,15 @@ class LoginController extends Controller
         }
 
         if (empty($request->email) && empty($request->password)) {
-            return Redirect::route('login')->with('error', 'Por favor informe '.$messageEmailPwd['msgemail'].' e '.$messageEmailPwd['password']);
+            return Redirect::route('login')->with('error', 'Por favor informe ' . $messageEmailPwd['msgemail'] . ' e ' . $messageEmailPwd['password']);
         }
 
         if (empty($request->email)) {
-            return Redirect::route('login')->with('error', 'Por favor informe '.$messageEmailPwd['msgemail']);
+            return Redirect::route('login')->with('error', 'Por favor informe ' . $messageEmailPwd['msgemail']);
         }
 
         if (empty($request->password)) {
-            return Redirect::route('login')->with('error', 'Por favor informe '.$messageEmailPwd['password']);
+            return Redirect::route('login')->with('error', 'Por favor informe ' . $messageEmailPwd['password']);
         }
 
         try {
@@ -62,13 +59,11 @@ class LoginController extends Controller
                 }
             }
 
-
             if (Auth::attempt([
                 'email' => $request->email,
                 'password' => $request->password,
             ])) {
                 if (Auth::user()->account->status === 'active') {
-
                     $status = Auth::user()->account->status;
 
                     Session::regenerate();
@@ -76,10 +71,12 @@ class LoginController extends Controller
                     // Atualiza o status na nova sessão
                     Session::put('status', $status);
 
-//                    dd(Session::all());
+                    // Verifica o papel do usuário
+                    if (Auth::user()->role !== 'Administrador') {
+                        return Redirect::route('home')->with('success', 'Login realizado com sucesso!');
+                    }
 
                     return Redirect::route('admin.dashboard')->with('success', 'Login realizado com sucesso!');
-                    
                 } else {
                     $this->logout(); // Desconectar usuário se a conta estiver inativa
                     Session::invalidate();
@@ -94,10 +91,8 @@ class LoginController extends Controller
         }
     }
 
-
     public function logout(): RedirectResponse
     {
-//        Auth::logout(); --> Não funciona, com o uso do middleware sanctum na rota não é possivel
         Auth::guard('web')->logout();
         Session::invalidate();
         Session::regenerateToken();

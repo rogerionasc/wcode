@@ -44,10 +44,9 @@ class HandleInertiaRequests extends Middleware
                         'password' => $request->user()->password,
                         'owner' => $request->user()->account->owner,
                         'role' => $request->user()->role,
-                        'title_role' => app(UserController::class)->getRole($request),
-
-//                        'permission_gerenciar_usuario' => Auth::user()->hasPermissionTo('gerenciar_usuario'),
-//                        'account' => ['id' => $request->user()->account->id, 'name' => $request->user()->account->name, ],
+                        'path' => $request->user()->role === 'Administrador' ? '/admin/' : '/',
+                        'permissions' => $request->user()->getAllPermissions()->pluck('name'),
+                        // 'title_role' => app(UserController::class)->getRole($request),
                     ] : null,
                 ];
             },
