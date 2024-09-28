@@ -2,8 +2,10 @@
 use App\Http\Controllers\AdminHomeController;
 use App\Http\Controllers\MemberHomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas de Login
@@ -35,6 +37,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::prefix('roles')->group(function () {
                 Route::get('fetchRoles', [RoleController::class, 'index'])->name('admin.roles.fetch');
             });
+
+            // Rotas de Configuração
+            Route::prefix('settings')->group(function () {
+                Route::get('/', [SettingsController::class, 'index'])->name('admin.settings');
+            });
         });
     });
 
@@ -44,9 +51,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/user', [MemberHomeController::class, 'index'])->name('user');
     });
 
+    // Rotas de Configuração
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [SettingsController::class, 'index'])->name('settings');
+    });
+
     // Rotas Gerais
     Route::get('/', [AdminHomeController::class, 'index']);
 });
 
 // Rotas de Teste
-Route::get('getRole', [UserController::class, 'getRole']);
+Route::get('getRole', [PermissionController::class, 'getPermissionsByCategory']);

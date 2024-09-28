@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Address;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Rules\ValidatorDocument;
@@ -28,6 +27,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $permissions = Permission::all()->groupBy('category');
+        // $subperm = $permissions['users']->first()->category;
+        // dd($subperm);
         $users = $this->getAllUsers();
         return Inertia::render('Admin/User/Index', ['users' => $users]);
     }
@@ -143,6 +145,7 @@ class UserController extends Controller
             }
             $address = DB::table('addresses')->where('user_id', $user->id)->first();
             $user->address = $address ? (array) $address : [];
+            $user->permissions = PermissionController::getPermissionsByCategoryForUser($user->id);
         }
 
         return $users;

@@ -82,12 +82,26 @@ const auth = () => {
     // Faz o post do formulário para a rota de login
     form.post('login', {
         onFinish: () => {
-            setTimeout(() => {
-                isLoading.value = false; // Para de exibir o PageLoader
-            }, 0); // Tempo de exibição do PageLoader antes do redirecionamento
+            isLoading.value = false; // Para de exibir o PageLoader após finalizar
+        },
+        onError: () => {
+            isLoading.value = false; // Para de exibir o PageLoader se houver erro
         },
     });
 };
+
+// const auth = () => {
+//     isLoading.value = true; // Inicia o PageLoader
+
+//     // Faz o post do formulário para a rota de login
+//     form.post('login', {
+//         onFinish: () => {
+//             setTimeout(() => {
+//                 isLoading.value = false; // Para de exibir o PageLoader
+//             }, 0); // Tempo de exibição do PageLoader antes do redirecionamento
+//         },
+//     });
+// };
 </script>
 
 <style scoped>

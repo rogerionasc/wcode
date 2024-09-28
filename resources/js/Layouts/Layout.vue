@@ -56,8 +56,8 @@
                   <a href="./profile.html" class="dropdown-item">Profile</a>
                   <a href="#" class="dropdown-item">Feedback</a>
                   <div class="dropdown-divider"></div>
-                  <a href="./settings.html" class="dropdown-item">Settings</a>
-                  <a href="/logout" class="dropdown-item">Logout</a>
+                  <Link href="./settings" class="dropdown-item">Configuração</Link>
+                  <a href="/logout" class="dropdown-item">Sair</a>
                 </div>
               </div>
             </div>
@@ -126,10 +126,7 @@
                       <div class="dropdown-menu-columns">
                         <div class="dropdown-menu-column">
                           <a class="dropdown-item" :href="`${fullPath}user`">Usuário</a>
-                          <Link class="dropdown-item" href="/register/medic">Médico</Link>
-                          <a class="dropdown-item" href="/register/patient">Paciente
-                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                          </a>
+                          <a class="dropdown-item" href="/register/medic">Médico</a>
                           <a class="dropdown-item" href="./buttons.html">Buttons</a>
                           <div class="dropend">
                             <a
@@ -211,7 +208,7 @@
           <div class="page-body">
             <div class="container-xl">
               <div class="row row-cards">
-                <div class="col-auto g-2 mt-0 d-flex">
+                <div class="col-auto g-2 mt-1 d-flex">
                   <!-- Page pre-title -->
                   <PageTitle :pageTitle="titleLayout"/>
                 </div>
@@ -229,7 +226,7 @@
                       <a href="" target="_blank" class="link-secondary">Documentação</a>
                     </li>
                     <li class="list-inline-item">
-                      <a href="./license.html" class="link-secondary">Licença</a>
+                      <a href="./license" class="link-secondary">Licença</a>
                     </li>
                   </ul>
                 </div>

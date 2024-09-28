@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -31,11 +32,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $permissionController = new PermissionController();
         return array_merge(parent::share($request), [
             'auth' => function () use ($request) {
                 return [
                     'user' => $request->user() ? [
-//                        'logo' => Auth::user()->photo_path ? URL::route('image', ['path' => Auth::user()->photo_path]) : asset('assets/images/default_user.png'),
+//                      'logo' => Auth::user()->photo_path ? URL::route('image', ['path' => Auth::user()->photo_path]) : asset('assets/images/default_user.png'),
                         'id' => $request->user()->id,
                         'first_name' => $request->user()->first_name,
                         'last_name' => $request->user()->last_name,
@@ -45,8 +47,8 @@ class HandleInertiaRequests extends Middleware
                         'owner' => $request->user()->account->owner,
                         'role' => $request->user()->role,
                         'path' => $request->user()->role === 'Administrador' ? '/admin/' : '/',
-                        'permissions' => $request->user()->getAllPermissions()->pluck('name'),
-                        // 'title_role' => app(UserController::class)->getRole($request),
+                        'permissions' => PermissionController::getPermissionsByCategory(),
+
                     ] : null,
                 ];
             },
