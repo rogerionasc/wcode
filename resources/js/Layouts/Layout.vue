@@ -22,34 +22,15 @@
               </a>
             </h1>
             <div class="navbar-nav flex-row order-md-last">
+
               <div class="nav-item dropdown">
-                <a
-                  href="#"
-                  class="nav-link d-flex lh-1 text-reset p-0"
-                  data-bs-toggle="dropdown"
-                  aria-label="Open user menu"
-                >
-                  <div class="m-2 d-none d-xl-block ps-2">
-                    <div>{{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</div>
-                    <div class="mt-1 small text-muted">{{ $page.props.auth.user.role }}</div>
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu" aria-expanded="false">
+                  <span class="avatar avatar-sm rounded">{{ getInitials($page.props.auth.user.first_name, $page.props.auth.user.last_name) }}</span>
+                              <!-- <span class="avatar avatar-xl mb-3 mb-md-0 rounded">{{ getInitials(props.auth.user.first_name, props.auth.user.last_name) }}</span> -->
+                  <div class="d-none d-xl-block ps-2">
+                      <div>{{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</div>
+                      <div class="mt-1 small text-muted">{{ $page.props.auth.user.role }}</div>
                   </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="icon icon-tabler icon-tabler-logout"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 22 22"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"/>
-                    <path d="M9 12h12l-3 -3"/>
-                    <path d="M18 15l3 -3"/>
-                  </svg>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                   <a href="#" class="dropdown-item">Status</a>
@@ -249,28 +230,37 @@
     </div>
   </template>
   
-  <script>
+  <script setup>
   import PageTitle from "@/Components/PageTitle.vue";
-  import ButtonCreate from "@/Components/ButtonCreate.vue";
+  import { computed } from "vue";
+  import { usePage } from '@inertiajs/inertia-vue3';
   import { Link } from '@inertiajs/inertia-vue3';
   
-  export default {
-    name: 'layout',
-    components: {
-      PageTitle,
-      ButtonCreate,
-      Link,
-    },
-    props: {
-      titleLayout: String,
-    },
-    computed: {
-      fullPath() {
-        return `${window.location.origin}${this.$page.props.auth.user.path}`;
-      },
-    },
-  };
+  const page = usePage();
+  const user = page.props.value.auth.user;
+  
+  const props = defineProps({
+    titleLayout: String,
+  });
+  
+  const fullPath = computed(() => {
+    return `${window.location.origin}${user.path}`;
+  });
+
+  function getInitials(firstName, lastName) {
+    // Obtém a primeira letra do primeiro nome e do sobrenome
+    const firstInitial = firstName.charAt(0).toUpperCase();
+    const lastInitial = lastName.charAt(0).toUpperCase();
+
+    // Junta as iniciais
+    return firstInitial + lastInitial;
+}
   </script>
-  <style>
-</style>
+  
+  <style scoped>
+  .dropdown-menu {
+    right: 0em !important;
+  }
+  </style>
+  
   

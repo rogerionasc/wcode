@@ -34,7 +34,7 @@
                     :is="activeTabComponent"
                     :auth="auth"
                     ref="childComponent" 
-                  /> <!-- FECHAMENTO CORRIGIDO AQUI -->
+                  />
                 </div>
                 <div class="card-footer bg-transparent mt-auto">
                   <div class="btn-list justify-content-end">

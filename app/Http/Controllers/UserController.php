@@ -256,6 +256,9 @@ class UserController extends Controller
         }
         return Redirect::route('home')->with('error', 'Você não tem permissão para atualizar usuário.');
         } catch (\Exception $e) {
+            if (!$userAuth->hasAnyRole(['Administrador', 'Gerente'])) {
+                return Redirect::route('home')->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
+            }
             return Redirect::route('admin.user')->with('error', 'Ocorreu um erro ao atualizar o usuário. Tente novamente.' . $e->getMessage());
         }
     }
