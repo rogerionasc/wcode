@@ -3,8 +3,13 @@
   <!-- <div v-if="showLoader" :class="['page-loader-container', { 'fade-out': isFading }]"> -->
     <div class="container container-slim py-4">
       <div class="text-center">
-        <!-- <div class="mb-3"></div> -->
-        <div class="text-secondary mb-3">Estamos preparando</div>
+        <div class="mb-3">
+          <a class="navbar-brand navbar-brand-autodark" href="{{ $page.props.auth.user.path  }}">
+            <img alt="WCode" height="62" class="navbar-brand-image" src="../../../img/Logo250x250.svg">
+            <img alt="WCode" height="62" class="navbar-brand-name" src="../../../img/LogoName210x500.svg">
+          </a>
+        </div>
+        <!-- <div class="text-secondary mb-3">Estamos preparando</div> -->
         <div class="progress progress-sm">
           <div class="progress-bar progress-bar-indeterminate"></div>
         </div>
