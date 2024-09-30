@@ -32,6 +32,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        // dd($request->user()->document);
         $permissionController = new PermissionController();
         return array_merge(parent::share($request), [
             'auth' => function () use ($request) {
@@ -43,10 +44,12 @@ class HandleInertiaRequests extends Middleware
                         'last_name' => $request->user()->last_name,
                         'status' => $request->user()->account->status,
                         'email' => $request->user()->email,
-                        'password' => $request->user()->password,
+                        'document' => $request->user()->document,
+                        'birth_date' => $request->user()->birth_date,
                         'owner' => $request->user()->account->owner,
                         'role' => $request->user()->role,
-                        'path' => $request->user()->role === 'Administrador' ? '/admin/' : '/',
+                        // 'path' => $request->user()->role === 'Administrador' ? '/admin/' : '/',
+                        'path' => in_array($request->user()->role, ['Administrador', 'Gerente']) ? '/admin/' : '/',
                         'permissions' => PermissionController::getPermissionsByCategory(),
 
                     ] : null,

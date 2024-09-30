@@ -2,7 +2,6 @@
 use App\Http\Controllers\AdminHomeController;
 use App\Http\Controllers\MemberHomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
@@ -19,7 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Rotas Admin
-    Route::middleware(['role:Administrador'])->group(function () {
+    Route::middleware(['role:Administrador|Gerente'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminHomeController::class, 'index'])->name('admin.home');
             Route::get('dashboard', [AdminHomeController::class, 'index'])->name('admin.dashboard');
@@ -38,10 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::get('fetchRoles', [RoleController::class, 'index'])->name('admin.roles.fetch');
             });
 
-            // Rotas de Configuração
-            Route::prefix('settings')->group(function () {
-                Route::get('/', [SettingsController::class, 'index'])->name('admin.settings');
-            });
+            Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
         });
     });
 
@@ -49,11 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('/')->group(function () {
         Route::get('/home', [MemberHomeController::class, 'index'])->name('home');
         Route::get('/user', [MemberHomeController::class, 'index'])->name('user');
-    });
-
-    // Rotas de Configuração
-    Route::prefix('settings')->group(function () {
-        Route::get('/', [SettingsController::class, 'index'])->name('settings');
+        Route::middleware(['permission:update user|role:Administrador|Gerente'])->put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+        Route::get('/settings', [SettingsController::class, 'index'])->name('user.settings');
     });
 
     // Rotas Gerais
@@ -61,4 +54,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // Rotas de Teste
-Route::get('getRole', [PermissionController::class, 'getPermissionsByCategory']);
+Route::get('getRole', [UserController::class, 'getRole']);

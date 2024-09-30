@@ -11,13 +11,13 @@
                 <div class="card-body">
                   <h4 class="subheader">Configuração Geral</h4>
                   <div class="list-group list-group-transparent">
-                    <a href="#" 
+                    <a href="#"
                        class="list-group-item list-group-item-action d-flex align-items-center"
                        :class="{ 'active': activeTab === 'MyAccount' }" 
                        @click="changeTab('MyAccount')">
                       Minha conta
                     </a>
-                    <a href="#" 
+                    <a href="#"
                        class="list-group-item list-group-item-action d-flex align-items-center"
                        :class="{ 'active': activeTab === 'Permissions' }" 
                        @click="changeTab('Permissions')">
@@ -29,8 +29,12 @@
   
               <!-- Corpo do card -->
               <div class="col d-flex flex-column">
-                <div class="card-body">
-                  <component :is="activeTabComponent" />
+                <div class="card-body pb-5">
+                  <component
+                    :is="activeTabComponent"
+                    :auth="auth"
+                    ref="childComponent" 
+                  /> <!-- FECHAMENTO CORRIGIDO AQUI -->
                 </div>
                 <div class="card-footer bg-transparent mt-auto">
                   <div class="btn-list justify-content-end">
@@ -46,16 +50,27 @@
     </div>
   </template>
   
+  
   <script setup>
-  import { ref, computed } from "vue";
+  import { ref, computed, onMounted } from "vue";
   import { Head } from "@inertiajs/vue3";
   import Layout from "@/Layouts/Layout.vue";
   import MyAccount from "@/Pages/Admin/Settings/Account.vue";
   import Permissions from "@/Pages/Admin/Settings/Permissions/Index.vue";
   
   const activeTab = ref('MyAccount');
+  const childComponent = ref(null);
   
-
+  defineOptions({
+    name: 'IndexSettings'
+  });
+  
+  const props = defineProps({
+    auth: {
+      type: Object,
+    }
+  });
+  
   const activeTabComponent = computed(() => {
     switch (activeTab.value) {
       case 'Permissions':
@@ -69,29 +84,30 @@
   const changeTab = (tab) => {
     activeTab.value = tab;
   };
-
-  const updateMyAccount = () => {
-    console.log("Atualizando Minha Conta");
-  };
   
-  const updatePermissions = () => {
-    console.log("Atualizando Minhas Permissões");
-  };
-
+  // Função para chamar métodos do componente filho usando switch-case
   const updateActiveTab = () => {
     switch (activeTab.value) {
       case 'Permissions':
-        updatePermissions();
+        if (childComponent.value && typeof childComponent.value.updatePermissions === 'function') {
+          childComponent.value.updatePermissions();
+        } else {
+          console.error('Método updatePermissions não encontrado no componente Permissions.');
+        }
         break;
-      case 'updateMyAccount':
-        updateMyAccount();
+      case 'MyAccount':
+        if (childComponent.value && typeof childComponent.value.updateAccount === 'function') {
+          childComponent.value.updateAccount();
+        } else {
+          console.error('Método updateAccount não encontrado no componente MyAccount.');
+        }
         break;
-      
       default:
-        updateMyAccount();
+        console.warn('Aba desconhecida.');
         break;
     }
   };
+  
   </script>
   
   <style scoped>

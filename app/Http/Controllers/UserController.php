@@ -51,7 +51,7 @@ class UserController extends Controller
             $user = Auth::user();
 
             // Certifique-se de que o usuário possui a permissão antes de atribuí-la
-            if ($user->hasAnyRole(['Administrador',]) || $user->hasDirectPermission('create user')) {
+            if ($user->hasAnyRole(['Administrador', 'Gerente']) || $user->hasDirectPermission('create user')) {
 
                 if ($request->has('birth_date') && !empty($request->birth_date)) {
                     $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
@@ -76,7 +76,6 @@ class UserController extends Controller
                         ->withInput();
                 }
 
-                // Criação de um novo usuário
                 $user = User::create([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
@@ -86,15 +85,19 @@ class UserController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
 
-                $user->syncRoles('Membro');
+                $role = Role::findByName('Membro');
+                $role->givePermissionTo('update user');
+                $user->assignRole('Membro');
 
-                $role = $user->getRoleNames()->first();;
+                // $user->syncRoles('Membro');
+
+                $role = $user->getRoleNames()->first();
                 $user->role = $role;
                 
                 $user->save();
 
                 if (!$user) {
-                    throw new \Exception('Erro ao criar usuário. 1');
+                    throw new \Exception('Erro ao criar usuário.');
                 }
 
                 $address = Address::create(['user_id' => $user->id]);
@@ -179,9 +182,11 @@ class UserController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         try {
-            $user = Auth::user();
-            
-            if ($user->hasAnyRole(['Administrador',])) {
+            $userAuth = Auth::user();
+
+            // dd($user->getPermissionsViaRoles()->first());
+
+            if ($userAuth->hasAnyRole(['Administrador', 'Gerente']) || $userAuth->hasPermissionTo('update user')) {
                 
                 if ($request->has('birth_date') && !empty($request->birth_date)) {
                     $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');
@@ -198,19 +203,13 @@ class UserController extends Controller
                     'last_name' => 'required|string|max:255',
                     'document' => ['required', 'min:11', 'max:14', new ValidatorDocument, 'unique:users,document,' . strval($user->id)],
                     'email' => ['required', 'max:255', new ValidatorEmail, 'unique:users,email,' . strval($user->id)],
-                    'password' => 'string|min:6',
+                    // 'password' => 'string|min:6',
                     'birth_date' => 'required|date_format:Y-m-d',
                     'status' => 'required|alpha'
                 ], $this->customMessages(), $this->fieldAliases());
 
-                if ($validator->fails()) {
-                    return Redirect::back()
-                        ->withErrors($validator, 'update')
-                        ->withInput()
-                        ->with('userUpdate_id', $user->id);
-                }
+                $password = $request->input('password');
 
-                // Atualiza o usuário
                 $updateData = [
                     'first_name' => $request->input('first_name'),
                     'last_name' => $request->input('last_name'),
@@ -222,8 +221,26 @@ class UserController extends Controller
 
                 $user->syncRoles($request->input('role'));
 
-                if (!empty($request->input('password'))) {
-                    $updateData['password'] = Hash::make($request->input('password'));
+                if (!$userAuth->hasAnyRole(['Administrador', 'Gerente'])) {
+                    // dd($userAuth->hasAnyRole(['Administrador',]));
+                    unset($updateData['document'], $updateData['email'], $updateData['role']);
+                }
+                
+                if (!is_null($password) || !empty($password)) {
+ 
+                    $validator = Validator::make($request->all(), [
+                        'password' => 'string|min:6',
+                    ], $this->customMessages(), $this->fieldAliases());
+
+                    $updateData['password'] = Hash::make($password);
+                }
+                
+                if ($validator->fails()) {
+
+                    return Redirect::back()
+                        ->withErrors($validator, 'update')
+                        ->withInput()
+                        ->with('userUpdate_id', $user->id);
                 }
 
                 $user->update($updateData);
@@ -234,6 +251,7 @@ class UserController extends Controller
                         'status' => $request->status,
                     ]);
                 }
+
                 return Redirect::back()->with('success', 'Cadastro de usuário atualizado.');
         }
         return Redirect::route('home')->with('error', 'Você não tem permissão para atualizar usuário.');

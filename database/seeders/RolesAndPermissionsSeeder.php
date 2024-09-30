@@ -41,10 +41,10 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminRole->givePermissionTo(['read user', 'create user', 'update user', 'delete user']);
 
         $manegeRole = Role::create(['name' => 'Gerente', 'guard_name' => 'sanctum']);
-        $manegeRole->givePermissionTo(['view dashboard', 'read user', 'create user', 'update user', 'delete user']);
+        // $manegeRole->givePermissionTo(['view dashboard', 'read user', 'create user', 'update user', 'delete user']);
 
         $memberRole = Role::create(['name' => 'Membro', 'guard_name' => 'sanctum']);
-        $memberRole->givePermissionTo(['view dashboard']);
+        // $memberRole->givePermissionTo(['view dashboard', 'update user']);
     
     }
 }

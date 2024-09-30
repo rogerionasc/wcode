@@ -207,9 +207,11 @@
                           <label class="form-label">Alterar senha</label>
                           <div class="input-group">
                             <input
-                            v-model="formUpdate.password"
-                            :type="showPassword ? 'text' : 'password'" type="password" class="form-control">
-                            <button @click="togglePassword" type="button" class="btn">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
+                            :class="{ 'is-invalid': formUpdate.errors.update && formUpdate.errors.update.password }"
+                            v-model="formUpdate.password" :type="showPassword ? 'text' : 'password'" class="form-control">
+                            <button type="button" @click="togglePassword" class="btn">{{ showPassword ? "Ocultar" : "Mostrar" }}</button>
+                            <small v-if="formUpdate.errors.update && formUpdate.errors.update.password"
+                            class="invalid-feedback">{{formUpdate.errors.update.password}}</small>
                           </div>
                         </div>
                       </div>
@@ -313,7 +315,6 @@ const formUpdate = useForm({
   document: '',
   birth_date: '',
   role: '',
-  // title_role: '',
   email: '',
   password: '',
   status: '',
@@ -331,13 +332,6 @@ watch(() => props.user, (newUser) => {
   formUpdate.password = newUser.password;
   formUpdate.status = newUser.status;
 }, { immediate: true });
-
-// watch(() => formUpdate.title_role, (newTitleRole) => {
-//   const selectedRole = roles.value.find(role => role.title === newTitleRole);
-//   if (selectedRole) {
-//     formUpdate.role = selectedRole.tag_permission;
-//   }
-// });
 
 const fetchRoles = async () => {
   try {

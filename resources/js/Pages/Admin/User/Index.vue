@@ -61,10 +61,14 @@ let dataTableInstance = null;
 let userToDelete = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
 let userToEdit = ref({}); // Inicializado como um objeto vazio para evitar erros nulos
 
+defineOptions({
+  name: 'IndexUser'
+});
+
 onMounted(() => {
     initializeDataTable();
     setupEventListeners();
-    // console.log(props.users.error);
+    // console.log(props.auth.user);
 });
 
 // Inicializar o DataTable

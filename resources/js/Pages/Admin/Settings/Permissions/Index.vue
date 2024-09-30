@@ -66,6 +66,12 @@
              
     </div>
 </template>
+<script setup>
+defineOptions({
+  name: 'IndexPermissions'
+});
+
+</script>
 
 <style scoped>
 </style>
