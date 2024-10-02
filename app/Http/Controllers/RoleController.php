@@ -9,7 +9,10 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::with(['permissions' => function ($query) {
+            $query->orderBy('category'); // Ordenar permissões por 'category'
+        }])->get();
+
         return response()->json($roles);
     }
 

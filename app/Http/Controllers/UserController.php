@@ -51,7 +51,7 @@ class UserController extends Controller
             $user = Auth::user();
 
             // Certifique-se de que o usuário possui a permissão antes de atribuí-la
-            if ($user->hasAnyRole(['Administrador', 'Gerente']) || $user->hasDirectPermission('create user')) {
+            if ($user->hasAnyRole(['Administrador', 'Gerente']) || $user->hasDirectPermission('write user')) {
 
                 if ($request->has('birth_date') && !empty($request->birth_date)) {
                     $birthDate = Carbon::parse($request->birth_date)->format('Y-m-d');

@@ -66,10 +66,8 @@
   });
   
   const props = defineProps({
-    auth: {
-      type: Object,
-    }
-  });
+  auth: Object
+});
   
   const activeTabComponent = computed(() => {
     switch (activeTab.value) {

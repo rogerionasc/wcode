@@ -19,11 +19,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Criar permissões
         $permissions = [
-            ['name' => 'create user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
+            ['name' => 'write user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'read user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'update user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'delete user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
-            ['name' => 'view dashboard', 'guard_name' => 'sanctum', 'category' => 'Dashboard'],
+            ['name' => 'write finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
+            ['name' => 'read finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
+            ['name' => 'update finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
+            ['name' => 'delete finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
         ];
         
         foreach ($permissions as $permission) {
@@ -38,10 +41,25 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Criar roles e atribuir permissões
         $adminRole = Role::create(['name' => 'Administrador', 'guard_name' => 'sanctum']);
-        $adminRole->givePermissionTo(['read user', 'create user', 'update user', 'delete user']);
+        $adminRole->givePermissionTo([
+            'read user',
+            'write user',
+            'update user',
+            'delete user',
+            'read finance',
+            'write finance',
+            'update finance',
+            'delete finance',
+        ]);
 
         $manegeRole = Role::create(['name' => 'Gerente', 'guard_name' => 'sanctum']);
-        // $manegeRole->givePermissionTo(['view dashboard', 'read user', 'create user', 'update user', 'delete user']);
+        $manegeRole->givePermissionTo([
+            'read user',
+            'write user',
+            'update user',
+            'update finance',
+            'delete finance',
+        ]);
 
         $memberRole = Role::create(['name' => 'Membro', 'guard_name' => 'sanctum']);
         // $memberRole->givePermissionTo(['view dashboard', 'update user']);

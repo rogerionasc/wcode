@@ -235,14 +235,14 @@
   import { computed } from "vue";
   import { usePage } from '@inertiajs/inertia-vue3';
   import { Link } from '@inertiajs/inertia-vue3';
-  
-  const page = usePage();
-  const user = page.props.value.auth.user;
-  
+
   const props = defineProps({
     titleLayout: String,
   });
   
+  const page = usePage();
+  const user = page.props.value.auth.user;
+    
   const fullPath = computed(() => {
     return `${window.location.origin}${user.path}`;
   });

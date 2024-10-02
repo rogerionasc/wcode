@@ -83,7 +83,7 @@ import Datepicker from '@/Components/Datepicker.vue';
 const showPassword = ref(false);
 
 const props = defineProps({
-    auth: Object,
+  auth: Object
 });
 
 const permissions = props.auth.user.permissions.original;
