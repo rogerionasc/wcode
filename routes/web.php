@@ -4,6 +4,7 @@ use App\Http\Controllers\MemberHomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
             // Rotas de Cargo/Função
             Route::prefix('roles')->group(function () {
                 Route::get('fetchRoles', [RoleController::class, 'index'])->name('admin.roles.fetch');
+                // Route::put('update/{id}', [UserController::class, 'update'])->name('admin.user.update');
+            });
+
+            // Rotas de Permissões
+            Route::prefix('permission')->group(function () {
+                Route::put('update/{id}', [PermissionController::class, 'update'])->name('admin.permmissions.edit');
             });
 
             Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');

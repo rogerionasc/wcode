@@ -19,10 +19,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Criar permissões
         $permissions = [
+            //Usuário
             ['name' => 'write user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'read user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'update user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
             ['name' => 'delete user', 'guard_name' => 'sanctum', 'category' => 'Usuário'],
+            //Financeiro
             ['name' => 'write finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
             ['name' => 'read finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
             ['name' => 'update finance', 'guard_name' => 'sanctum', 'category' => 'Financeiro'],
@@ -32,12 +34,6 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($permissions as $permission) {
             Permission::create($permission);
         }
-        // Permission::create(['name' => 'view dashboard', 'guard_name' => 'sanctum']);
-        // Permission::create(['name' => 'manage users', 'guard_name' => 'sanctum']);
-        // Permission::create(['name' => 'edit user', 'guard_name' => 'sanctum']);
-        // Permission::create(['name' => 'delete user', 'guard_name' => 'sanctum']);
-        // Permission::create(['name' => 'create user', 'guard_name' => 'sanctum']);
-        // Permission::create(['name' => 'view reports']);
 
         // Criar roles e atribuir permissões
         $adminRole = Role::create(['name' => 'Administrador', 'guard_name' => 'sanctum']);

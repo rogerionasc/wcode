@@ -100,8 +100,6 @@ const hasRole = (roles) => {
     return roles.includes(props.auth.user.role);
 };
 
-console.log(permissions);
-
 const formUpdate = useForm ({
     first_name: props.auth.user.first_name,
     last_name: props.auth.user.last_name,
@@ -150,6 +148,5 @@ defineExpose({ updateAccount });
 
 function togglePassword() {
     showPassword.value = !showPassword.value;
-    console.log(props.auth.user);
 }
 </script>

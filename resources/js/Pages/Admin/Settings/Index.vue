@@ -56,7 +56,7 @@
   import { Head } from "@inertiajs/vue3";
   import Layout from "@/Layouts/Layout.vue";
   import MyAccount from "@/Pages/Admin/Settings/Account.vue";
-  import Permissions from "@/Pages/Admin/Settings/Permissions/Index.vue";
+  import Permissions from "@/Pages/Admin/Settings/Permissions.vue";
   
   const activeTab = ref('MyAccount');
   const childComponent = ref(null);
@@ -87,10 +87,10 @@
   const updateActiveTab = () => {
     switch (activeTab.value) {
       case 'Permissions':
-        if (childComponent.value && typeof childComponent.value.updatePermissions === 'function') {
-          childComponent.value.updatePermissions();
+        if (childComponent.value && typeof childComponent.value.submitPermissions === 'function') {
+          childComponent.value.submitPermissions();
         } else {
-          console.error('Método updatePermissions não encontrado no componente Permissions.');
+          console.error('Método submitPermissions não encontrado no componente Permissions.');
         }
         break;
       case 'MyAccount':

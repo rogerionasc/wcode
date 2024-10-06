@@ -21,7 +21,6 @@ class PermissionController extends Controller
         
         $user = Auth::user();
 
-        // Pegar apenas as permissões do usuário autenticado e agrupar por categoria
         $categoryPermission = $user->getAllPermissions();
 
         return response()->json($categoryPermission);
@@ -30,10 +29,14 @@ class PermissionController extends Controller
     public static function getPermissionsByCategoryForUser($userId) {
 
         $user = User::findOrFail($userId);
-    
-        // Pegar apenas as permissões do usuário e agrupar por categoria
+
         $categoryPermission = $user->getAllPermissions();
     
         return response()->json($categoryPermission);
+    }
+
+    public function update(Request $request) {
+
+        dd($request);
     }
 }
