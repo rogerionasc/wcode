@@ -36,12 +36,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
             // Rotas de Cargo/Função
             Route::prefix('roles')->group(function () {
                 Route::get('fetchRoles', [RoleController::class, 'index'])->name('admin.roles.fetch');
-                // Route::put('update/{id}', [UserController::class, 'update'])->name('admin.user.update');
-            });
+                });
 
             // Rotas de Permissões
             Route::prefix('permission')->group(function () {
                 Route::put('update/{id}', [PermissionController::class, 'update'])->name('admin.permmissions.edit');
+                Route::get('fetchAllPermissions', [PermissionController::class, 'fetchAllCategoryPermissions'])->name('admin.permmissions.fetchAllPermissions');
             });
 
             Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
