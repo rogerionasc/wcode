@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 
 class PermissionController extends Controller
@@ -36,7 +37,7 @@ class PermissionController extends Controller
     }
 
     public function update(Request $request) {
-
-        dd($request);
+        $role = Role::find($request->role_id);
+        dd($role->getAllPermissions());
     }
 }
