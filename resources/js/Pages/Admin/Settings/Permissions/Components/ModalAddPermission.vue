@@ -112,15 +112,16 @@ onMounted(() => {
   const modalElement = document.getElementById('modal-team');
   modalElement.addEventListener('hidden.bs.modal', handleModalClose);
 
-  // Manipulação jQuery para as seleções de permissão
   $('.form-selectgroup-input').on('change', function() {
-    const label = $(this).next('.form-selectgroup-label');
-    if ($(this).is(':checked')) {
-      label.addClass('selected');
-    } else {
-      label.removeClass('selected');
-    }
-  });
+  const label = $(this).next('.form-selectgroup-label');
+  if ($(this).is(':checked')) {
+    label.addClass('selected');
+  } else {
+    label.removeClass('selected');
+  }
+  $(this).blur(); // Força a perda de foco no checkbox
+});
+
 });
 
 onBeforeUnmount(() => {
@@ -137,10 +138,29 @@ const emitAddPermission = () => {
 </script>
 
 <style scoped>
-/* .form-selectgroup-input:checked+.form-selectgroup-label {
+.form-selectgroup-input:checked + .form-selectgroup-label {
     z-index: 1;
     color: var(--tblr-primary);
     background: rgba(var(--tblr-primary-rgb), .04);
     border-color: var(--tblr-primary);
+
+    
+}
+
+.form-selectgroup-input:not(:checked) + .form-selectgroup-label {
+    color: inherit;
+    background: none;
+    border-color: #ddd; /* ou o valor que você deseja quando desmarcado */
+    box-shadow: none;
+}
+
+/* .form-selectgroup-input:focus + .form-selectgroup-label {
+  z-index: 2;
+  color: var(--tblr-primary);
+  border-color: var(--tblr-primary);
+  box-shadow: 0 0 0 .25rem rgba(32, 107, 196, .25);
 } */
+
+
+
 </style>

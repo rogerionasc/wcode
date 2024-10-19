@@ -25,7 +25,7 @@
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu" aria-expanded="false">
-                  <span class="avatar avatar-sm rounded">{{ getInitials($page.props.auth.user.first_name, $page.props.auth.user.last_name) }}</span>
+                  <span class="avatar avatar-sm rounded" translate="no">{{ getInitials($page.props.auth.user.first_name, $page.props.auth.user.last_name) }}</span>
                               <!-- <span class="avatar avatar-xl mb-3 mb-md-0 rounded">{{ getInitials(props.auth.user.first_name, props.auth.user.last_name) }}</span> -->
                   <div class="d-none d-xl-block ps-2">
                       <div>{{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}</div>

@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted} from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import ModalAddPermissions from '@/Pages/Admin/Settings/Permissions/Components/ModalAddPermission.vue';
@@ -80,6 +80,8 @@ const userPermissions = ref({});
 const allPermissions = ref({}); // Estrutura para armazenar permissões agrupadas
 const selectedRoleName = ref('');
 
+const emit = defineEmits(['toggleLoading']);
+
 const props = defineProps({
   auth: Object
 });
@@ -90,11 +92,17 @@ const form = useForm({
   permissions: {}
 });
 
-// Hook onMounted
-onMounted(() => {
-  fetchRoles();
+onMounted(async () => {
+  await fetchRoles();  // Certifique-se de esperar a função fetchRoles ser concluída
   fetchAllPermissions();
+  
+  // Se houver cargos disponíveis, selecione o primeiro
+  if (roles.value.length > 0) {
+    selectedRoleId.value = roles.value[0].id; // Definindo o ID do primeiro cargo como selecionado
+    updatePermissions(); // Chame a função para atualizar as permissões com o novo cargo selecionado
+  }
 });
+
 
 const fetchRoles = async () => {
   try {
@@ -146,8 +154,6 @@ const fetchAllPermissions = async () => {
     const response = await axios.get('/admin/permission/fetchAllPermissions');
     const permissionsData = response.data[0]; // Acessa o primeiro objeto dentro do array
 
-    console.log('Dados da API:', permissionsData); // Verifique se as permissões de "Usuário" estão aqui
-
     if (!permissionsData || typeof permissionsData !== 'object') {
       console.error('A resposta da API não contém o formato esperado');
       return;
@@ -160,14 +166,10 @@ const fetchAllPermissions = async () => {
     for (const category in permissionsData) {
       if (permissionsData.hasOwnProperty(category)) {
         const categoryPermissions = permissionsData[category];
-        console.log(`Processando categoria: ${category}`, categoryPermissions);
-
         // Agrupa permissões
         Object.assign(allPermissions.value, groupPermissionsByCategory(categoryPermissions));
       }
     }
-
-    console.log('Permissões agrupadas:', JSON.stringify(allPermissions.value, null, 1));
   } catch (error) {
     console.error('Erro ao buscar permissões:', error);
   }
@@ -209,12 +211,19 @@ const submitPermissions = () => {
   const preparedPermissions = ungroupPermissions(userPermissions.value);
   form.permissions = preparedPermissions;
 
+  // Emitindo o evento para iniciar o carregamento
+  emit('toggleLoading', true);
+
   form.put(`./permission/update/${selectedRoleId.value}`, {
     onSuccess: () => {
       console.log('Permissões atualizadas com sucesso!');
+      // Emitindo o evento para finalizar o carregamento
+      emit('toggleLoading', false);
     },
     onError: (errors) => {
       console.error('Erro ao atualizar permissões:', errors);
+      // Emitindo o evento para finalizar o carregamento mesmo em caso de erro
+      emit('toggleLoading', false);
     }
   });
 };

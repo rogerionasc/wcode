@@ -337,7 +337,6 @@ const fetchRoles = async () => {
   try {
     const response = await axios.get('/admin/roles/fetchRoles');
     roles.value = response.data;
-    console.log(roles.value);
   } catch (error) {
     console.error('Erro ao buscar cargos:', error);
   }

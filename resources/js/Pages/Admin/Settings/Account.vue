@@ -5,7 +5,7 @@
     <div class="row d-flex align-items-center">
         <!-- Avatar -->
         <div class="col-12 col-md-3 col-lg-2 text-md-start text-center mt-md-5">
-            <span class="avatar avatar-xl mb-3 mb-md-0 rounded">{{ getInitials(props.auth.user.first_name, props.auth.user.last_name) }}</span>
+            <span class="avatar avatar-xl mb-3 mb-md-0 rounded" translate="no">{{ getInitials(props.auth.user.first_name, props.auth.user.last_name) }}</span>
         </div>
 
         <div class="col-12 col-md-9 col-lg-10">
@@ -75,12 +75,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch} from 'vue';
 import { useForm } from "@inertiajs/inertia-vue3";
 import Datepicker from '@/Components/Datepicker.vue';
 // import { password } from 'pg/lib/defaults';
 
 const showPassword = ref(false);
+const emit = defineEmits(['toggleLoading']);
 
 const props = defineProps({
   auth: Object
@@ -126,7 +127,18 @@ watch(() => props.auth.user, (newValue) => {
 
 async function updateAccount() {
     try {
+        emit('toggleLoading', true);
         formUpdate.put(`./user/update/${props.auth.user.id}`, {
+            onSuccess: () => {
+        console.log('informações atualizadas com sucesso!');
+        // Emitindo o evento para finalizar o carregamento
+        emit('toggleLoading', false);
+        },
+        onError: (errors) => {
+        console.error('Erro ao atualizar as informações:', errors);
+        // Emitindo o evento para finalizar o carregamento mesmo em caso de erro
+        emit('toggleLoading', false);
+        }
 
         });
         
