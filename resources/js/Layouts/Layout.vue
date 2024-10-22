@@ -233,18 +233,20 @@
   <script setup>
   import PageTitle from "@/Components/PageTitle.vue";
   import { computed } from "vue";
-  import { usePage } from '@inertiajs/inertia-vue3';
-  import { Link } from '@inertiajs/inertia-vue3';
+  // import { usePage } from '@inertiajs/inertia-vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
 
   const props = defineProps({
     titleLayout: String,
   });
   
   const page = usePage();
-  const user = page.props.value.auth.user;
+  // const user = page.props.value.auth.user;
+  const user = props.auth ? props.auth.user : null;
     
   const fullPath = computed(() => {
-    return `${window.location.origin}${user.path}`;
+    // return `${window.location.origin}${user.path}`;
+        return user && user.path ? `${window.location.origin}${user.path}` : '';
   });
 
   function getInitials(firstName, lastName) {

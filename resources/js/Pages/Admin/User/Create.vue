@@ -156,7 +156,8 @@
 
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import { useForm } from "@inertiajs/inertia-vue3";
+// import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from '@inertiajs/vue3';
 import Datepicker from '@/Components/Datepicker.vue';
 import mix from "@/mix.js";
 

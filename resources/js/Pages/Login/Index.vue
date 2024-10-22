@@ -59,7 +59,8 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
+// import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import FlashMessage from "@/Components/FlashMessage.vue";
 import PageLoader from "@/Pages/Loader/PageLoader.vue"; // Certifique-se de que o caminho está correto
@@ -77,31 +78,18 @@ const togglePasswordVisibility = () => {
 };
 
 const auth = () => {
-    isLoading.value = true; // Inicia o PageLoader
+  isLoading.value = true; // Inicia o PageLoader
 
-    // Faz o post do formulário para a rota de login
-    form.post('login', {
-        onFinish: () => {
-            isLoading.value = false; // Para de exibir o PageLoader após finalizar
-        },
-        onError: () => {
-            isLoading.value = false; // Para de exibir o PageLoader se houver erro
-        },
-    });
+  form.post('login', {
+    onFinish: () => {
+      isLoading.value = false; // Para de exibir o PageLoader após finalizar
+    },
+    onError: () => {
+      isLoading.value = false; // Para de exibir o PageLoader se houver erro
+    },
+  });
 };
 
-// const auth = () => {
-//     isLoading.value = true; // Inicia o PageLoader
-
-//     // Faz o post do formulário para a rota de login
-//     form.post('login', {
-//         onFinish: () => {
-//             setTimeout(() => {
-//                 isLoading.value = false; // Para de exibir o PageLoader
-//             }, 0); // Tempo de exibição do PageLoader antes do redirecionamento
-//         },
-//     });
-// };
 </script>
 
 <style scoped>

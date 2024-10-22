@@ -37,10 +37,12 @@
               <div class="card-footer bg-transparent mt-auto">
                 <div class="btn-list justify-content-end">
                   <a href="#" class="btn">Cancelar</a>
-                  <button class="btn btn-primary" @click.prevent="updateActiveTab" :disabled="isLoading">
-                    <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span v-if="isLoading">Aguarde</span>
-                    <span v-else>Salvar</span>
+                  <!-- <button class="btn btn-primary" @click.prevent="updateActiveTab" :disabled="isLoading"> -->
+                  <button class="btn btn-primary" @click.prevent="updateActiveTab">
+                    <!-- <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
+                    <!-- <span v-if="isLoading">Aguarde</span> -->
+                    <!-- <span v-else>Salvar</span> -->
+                    <span >Salvar</span>
                   </button>
                 </div>
               </div>
@@ -80,7 +82,12 @@ onMounted(() => {
 });
 
 const activeTabComponent = computed(() => {
-  return activeTab.value === 'Permissions' ? Permissions : MyAccount;
+  if (activeTab.value === 'Permissions') {
+    return Permissions;
+  } else if (activeTab.value === 'MyAccount') {
+    return MyAccount;
+  }
+  return null;
 });
 
 const changeTab = (tab) => {
@@ -97,6 +104,7 @@ const updateActiveTab = () => {
   }
 
   if (activeTab.value === 'Permissions' && typeof child.submitPermissions === 'function') {
+    
     child.submitPermissions();
   } else if (activeTab.value === 'MyAccount' && typeof child.updateAccount === 'function') {
     child.updateAccount();

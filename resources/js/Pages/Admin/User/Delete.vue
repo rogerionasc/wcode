@@ -32,14 +32,19 @@
 </template>
 
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
+// import { Inertia } from '@inertiajs/inertia';
+import { useForm } from '@inertiajs/vue3';
+
+const form = useForm({
+
+});
 
 const props = defineProps(['user']);
 const emit = defineEmits(['updateTable']);
 
 const confirmDelete = () => {
   if (props.user && props.user.id) {
-    Inertia.delete(`user/delete/${props.user.id}`, {
+    form.delete(`user/delete/${props.user.id}`, {
       onSuccess: () => {
         emit('updateTable');
       },
