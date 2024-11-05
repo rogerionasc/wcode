@@ -207,10 +207,10 @@ const ungroupPermissions = (allPermissions) => {
 // Função para enviar as permissões atualizadas para o backend usando useForm
 const submitPermissions = () => {
   if (!selectedRoleId.value) return;
-
+  
   const preparedPermissions = ungroupPermissions(userPermissions.value);
   form.permissions = preparedPermissions;
-
+  
   // Emitindo o evento para iniciar o carregamento
   emit('toggleLoading', true);
 
@@ -221,6 +221,7 @@ const submitPermissions = () => {
       emit('toggleLoading', false);
     },
     onError: (errors) => {
+      console.log("Aqui");
       console.error('Erro ao atualizar permissões:', errors);
       // Emitindo o evento para finalizar o carregamento mesmo em caso de erro
       emit('toggleLoading', false);

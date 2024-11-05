@@ -4,7 +4,8 @@ import '../css/dist/js/tabler.esm.min.js';
 import '../css/dist/custom.css';
 
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
+// import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import FlashMessage from '../js/Components/FlashMessage.vue';

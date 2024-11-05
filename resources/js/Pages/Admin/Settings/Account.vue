@@ -76,7 +76,8 @@
 
 <script setup>
 import { ref, watch} from 'vue';
-import { useForm } from "@inertiajs/inertia-vue3";
+// import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from '@inertiajs/vue3';
 import Datepicker from '@/Components/Datepicker.vue';
 // import { password } from 'pg/lib/defaults';
 
