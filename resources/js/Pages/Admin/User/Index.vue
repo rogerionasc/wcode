@@ -15,11 +15,11 @@
                     <table id="tableUser"
                             class="table w-100 card-table table-vcenter text-nowrap datatable dataTables_scrollBody">
                         <thead>
-                            <tr>
-                                <th><h4>ID</h4></th>
-                                <th><h4>Nome</h4></th>
-                                <th><h4>E-mail</h4></th>
-                                <th><h4>Cargo</h4></th>
+                            <tr class="bg-primary">
+                                <th ><h4>ID</h4></th>
+                                <th ><h4>Nome</h4></th>
+                                <th ><h4>E-mail</h4></th>
+                                <th ><h4>Cargo</h4></th>
                                 <th class="text-center"><h4>Status</h4></th>
                                 <th class="text-center pe-0"><h4>Ação</h4></th>
                             </tr>
@@ -153,4 +153,26 @@ const handleUpdateTable = async () => {
     margin: 0;
     margin-top: 1em;
 }
+
+#tableUser thead tr.bg-primary th {
+  background-color: rgb(230 241 250) !important;
+  color: rgb(6 111 209) !important;
+}
+
+#tableUser tbody tr:hover {
+    background-color: rgba(230, 241, 250, 0.4) !important; 
+    color: rgb(24 36 51) !important;
+    font-weight: 600 !important;
+}
+
+#tableUser {
+    table-layout: fixed;
+}
+
+
+
+
+
+
+
 </style>

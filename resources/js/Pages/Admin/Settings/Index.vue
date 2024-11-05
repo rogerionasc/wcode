@@ -10,14 +10,20 @@
                 <h4 class="subheader">Configuração Geral</h4>
                 <div class="list-group list-group-transparent">
                   <a href="#"
-                     class="list-group-item list-group-item-action d-flex align-items-center"
-                     :class="{ 'active': activeTab === 'MyAccount' }" 
-                     @click="changeTab('MyAccount')">
+                    class="list-group-item list-group-item-action d-flex align-items-center"
+                    :class="{ 
+                      'active color-custom': activeTab === 'MyAccount'
+                    }" 
+                    @click="changeTab('MyAccount')">
                     Minha conta
                   </a>
+
                   <a href="#"
                      class="list-group-item list-group-item-action d-flex align-items-center"
-                     :class="{ 'active': activeTab === 'Permissions' }" 
+                     :class="{
+                      'active': activeTab === 'Permissions',
+                      'color-custom': activeTab === 'Permissions'
+                     }" 
                      @click="changeTab('Permissions')">
                     Permissões
                   </a>
@@ -102,7 +108,6 @@ const updateActiveTab = () => {
   }
 
   if (activeTab.value === 'Permissions' && typeof child.submitPermissions === 'function') {
-    
     child.submitPermissions();
   } else if (activeTab.value === 'MyAccount' && typeof child.updateAccount === 'function') {
     child.updateAccount();
@@ -116,7 +121,21 @@ const toggleLoading = (loading) => {
 };
 </script>
 
-
 <style scoped>
-/* Adicione o estilo necessário aqui */
+.color-custom {
+  background: #d7e8f7 !important;
+}
+
+/* Efeito de hover */
+.list-group-item {
+  transition: background-color 0.3s; /* Transição suave */
+}
+
+.list-group-item:hover {
+  background-color: rgba(230, 241, 250, 0.4) !important; 
+}
+
+.list-group-item.active:hover {
+  background-color: #d7e8f7 !important;
+}
 </style>
