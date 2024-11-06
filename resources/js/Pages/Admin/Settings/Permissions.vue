@@ -10,9 +10,9 @@
       </div>
       <div v-if="selectedRoleId !== null" class="row form-fieldset">
         <div class="col d-flex justify-content-center align-items-center">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#modal-team" class="btn btn-ghost-success btn-circle" style="width: 19px; height: 19px; border-radius: 50%; padding: 0;">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#modal-team" class="btn btn-ghost-success btn-circle" style="border-radius: 50%; padding: 0;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin: 0; padding: 0;" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-circle-plus m-0">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="0.5" fill="none"/>
               <path d="M4.929 4.929a10 10 0 1 1 14.141 14.141a10 10 0 0 1 -14.14 -14.14zm8.071 4.071a1 1 0 1 0 -2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0 -2h-2v-2z" />
             </svg>
           </a>
@@ -41,12 +41,8 @@
               </div>
             </div>
             <div class="col-auto">
-              <a @click.prevent="removePermission(category)" class="btn btn-ghost-danger btn-circle" style="width: 19px; height: 19px; border-radius: 50%; padding: 0;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin: 0; padding: 0;" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-minus">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                  <path d="M9 12l6 0" />
-                </svg>
+              <a @click.prevent="removePermission(category)" class="btn btn-ghost-danger btn-circle" style="border-radius: 50%; padding: 1px;">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
               </a>
             </div>
           </div>
@@ -265,4 +261,9 @@ defineExpose({ submitPermissions });
   border: 1px solid #ddd;
   border-radius: 0.25rem;
 }
+
+.icon {
+    margin: 0 !important;
+  }
+
 </style>
