@@ -7,12 +7,21 @@
 
 <div align="center">
     <p>
-         <a href="#">
-            <img src="https://img.shields.io/github/repo-size/rogerionasc/wcode_clinic?style=flat-square" alt="Repo Size" />
-         </a>
-           <a href="https://hub.docker.com/r/rogerionasc/gesoft/tags">
-            <img src="https://img.shields.io/docker/v/rogerionasc/gesoft?arch=amd64&sort=date&style=flat-square alt="Version docker " />
-         </a>
+        <a href="#">
+            <img src="https://img.shields.io/github/repo-size/rogerionasc/wcode?style=flat-square" alt="Repo Size" />
+        </a>
+        <a href="https://hub.docker.com/r/rogerionasc/gesoft/tags">
+            <img src="https://img.shields.io/github/issues/rogerionasc/wcode?arch=amd64&sort=date&style=flat-square" alt="Issues" />
+        </a>
+        <a href="https://hub.docker.com/r/rogerionasc/gesoft/tags">
+            <img src="https://img.shields.io/github/contributors/rogerionasc/wcode?arch=amd64&sort=date&style=flat-square" alt="Contributors" />
+        </a>
+        <a href="https://hub.docker.com/r/rogerionasc/gesoft/tags">
+            <img src="https://img.shields.io/github/commit-activity/t/rogerionasc/wcode?arch=amd64&sort=date&style=flat-square" alt="Commits" />
+        </a>
+        <a href="https://hub.docker.com/r/rogerionasc/gesoft/tags">
+            <img src="https://img.shields.io/github/last-commit/rogerionasc/wcode?arch=amd64&sort=date&style=flat-square" alt="Last Commit" />
+        </a>
     </p>
 </div>
 
