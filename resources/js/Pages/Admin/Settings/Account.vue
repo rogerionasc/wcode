@@ -99,6 +99,7 @@ const hasPermission = (permissionName) => {
 // };
 
 const hasRole = (roles) => {
+    console.log(roles);
     return roles.includes(props.auth.user.role);
 };
 

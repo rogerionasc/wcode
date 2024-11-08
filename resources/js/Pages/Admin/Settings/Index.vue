@@ -23,7 +23,8 @@
                      :class="{
                       'active': activeTab === 'Permissions',
                       'color-custom': activeTab === 'Permissions'
-                     }" 
+                     }"
+                     v-if="hasRole(['Administrador', 'Gerente'])"
                      @click="changeTab('Permissions')">
                     Permissões
                   </a>
@@ -76,6 +77,10 @@ defineOptions({
 const props = defineProps({
   auth: Object
 });
+
+const hasRole = (roles) => {
+  return props.auth && props.auth.user && roles.includes(props.auth.user.role);
+};
 
 // Recuperar a aba do localStorage ao montar o componente
 onMounted(() => {
