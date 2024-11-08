@@ -38,7 +38,7 @@
                   <a href="#" class="dropdown-item">Feedback</a>
                   <div class="dropdown-divider"></div>
                   <Link href="./settings" class="dropdown-item">Configuração</Link>
-                  <a href="/logout" class="dropdown-item">Sair</a>
+                  <a href="/logout" @click="clearUserData" class="dropdown-item">Sair</a>
                 </div>
               </div>
             </div>
@@ -106,7 +106,7 @@
                     <div class="dropdown-menu">
                       <div class="dropdown-menu-columns">
                         <div class="dropdown-menu-column">
-                          <a class="dropdown-item" :href="`${fullPath}user`">Usuário</a>
+                          <a  v-if="hasRole(['Administrador','Gerente'])" class="dropdown-item" :href="`${fullPath}user`">Usuário</a>
                           <a class="dropdown-item" href="/register/medic">Médico</a>
                           <a class="dropdown-item" href="./buttons.html">Buttons</a>
                           <div class="dropend">
@@ -233,7 +233,6 @@
   <script setup>
   import PageTitle from "@/Components/PageTitle.vue";
   import { computed } from "vue";
-  // import { usePage } from '@inertiajs/inertia-vue3';
   import { Link, usePage } from '@inertiajs/vue3';
 
   const props = defineProps({
@@ -241,11 +240,14 @@
   });
   
   const page = usePage();
-  // const user = page.props.value.auth.user;
   const user = props.auth ? props.auth.user : null;
+
+  const hasRole = (roles) => {
+  const userRole = page.props.auth?.user?.role;
+  return userRole ? roles.includes(userRole) : false;
+};
     
   const fullPath = computed(() => {
-    // return `${window.location.origin}${user.path}`;
         return user && user.path ? `${window.location.origin}${user.path}` : '';
   });
 
@@ -254,8 +256,12 @@
     const firstInitial = firstName.charAt(0).toUpperCase();
     const lastInitial = lastName.charAt(0).toUpperCase();
 
-    // Junta as iniciais
     return firstInitial + lastInitial;
+}
+
+function clearUserData() {
+  sessionStorage.clear();
+  localStorage.clear();
 }
   </script>
   
