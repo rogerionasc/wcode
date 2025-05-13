@@ -206,6 +206,127 @@ Usuário padrão:
    
     
 </table>
+
+# Estrutura do Banco de dados
+
+## 💾 Modelo do Banco de Dados
+
+```dbml
+Table contas {
+  id integer [primary key]
+  nome varchar(50)
+  cnpj varchar(50)
+}
+
+Table usuarios {
+  id integer [primary key]
+  nome varchar(50)
+  email text
+  senha varchar(255)
+  conta_id integer [note: '1 Usuário pode ter apenas 1 conta']
+}
+
+Table estado_civil {
+  id integer [primary key]
+  descricao varchar(20)
+}
+
+Table responsaveis {
+  id integer [primary key]
+  nome varchar(50)
+  email varchar(50)
+  cpf varchar(11)
+  rg varchar(9)
+  data_nascimento datetime
+  endereco_id integer
+  telefone integer
+  sexo varchar(1)
+  estado_civil_id integer [ref: > estado_civil.id]
+}
+
+Table pacientes {
+  id integer [primary key]
+  nome varchar(50)
+  email varchar(50)
+  cpf varchar(11)
+  rg varchar(9)
+  profissao varchar(50)
+  data_nascimento datetime
+  endereco_id integer
+  telefone integer
+  sexo varchar(1)
+  estado_civil_id integer [ref: > estado_civil.id]
+  responsavel_id integer [ref: > responsaveis.id]
+}
+
+Table especialidades {
+  id integer [primary key]
+  nome varchar(50)
+}
+
+Table conselho_profissional {
+  id integer [primary key]
+  sigla varchar(50)
+  nome varchar(100)
+}
+
+Table proficionais_saude {
+  id integer [primary key]
+  nome varchar(50)
+  email varchar(50)
+  cpf varchar(11)
+  conselho_id integer [ref: > conselho_profissional.id]
+  especialidade_id integer [ref: > especialidades.id]
+  data_nascimento datetime
+  endereco_id integer
+  telefone integer
+  sexo varchar(1)
+  estado_civil_id integer [ref: > estado_civil.id]
+}
+
+Table agenda_medica {
+  id integer [primary key]
+  proficional_saude_id integer [ref: > proficionais_saude.id]
+  data_hora datetime
+  disponivel boolean
+}
+
+Table agendamentos {
+  id integer [primary key]
+  agenda_medica_id integer [ref: > agenda_medica.id]
+  paciente_id integer [ref: > pacientes.id]
+  procedimento_id integer [ref: > procedimentos.id]
+  retorno_de_agendamento_id integer
+  status varchar(50)
+  valor_cobrado float
+  observacoes varchar(100)
+}
+
+Table consultas {
+  id integer [primary key]
+  agendamento_id integer [ref: > agendamentos.id] 
+  data datetime                            
+  pressao_arterial varchar(10)                
+  temperatura float                          
+  peso float                                  
+  altura float                                
+  sintomas text                              
+  diagnostico text                           
+  prescricao text                             
+  observacoes text                            
+  compareceu boolean           
+  retorno_necessario boolean
+}
+
+Table procedimentos {
+  id integer [primary key]
+  nome varchar(100)
+  descricao varchar(100)
+  valor float
+}
+
+Ref: contas.id < usuarios.conta_id
+dbml```
         
 
 # Licença
