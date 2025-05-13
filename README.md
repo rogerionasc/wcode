@@ -211,123 +211,140 @@ Usuário padrão:
 
 ## 💾 Modelo do Banco de Dados
 
-```dbml
-Table contas {
-  id integer [primary key]
-  nome varchar(50)
-  cnpj varchar(50)
-}
+```mermaid
+erDiagram
 
-Table usuarios {
-  id integer [primary key]
-  nome varchar(50)
-  email text
-  senha varchar(255)
-  conta_id integer [note: '1 Usuário pode ter apenas 1 conta']
-}
+    CONTAS {
+        INT id PK
+        VARCHAR nome
+        VARCHAR cnpj
+    }
 
-Table estado_civil {
-  id integer [primary key]
-  descricao varchar(20)
-}
+    USUARIOS {
+        INT id PK
+        VARCHAR nome
+        VARCHAR email
+        VARCHAR senha
+        INT conta_id FK
+    }
 
-Table responsaveis {
-  id integer [primary key]
-  nome varchar(50)
-  email varchar(50)
-  cpf varchar(11)
-  rg varchar(9)
-  data_nascimento datetime
-  endereco_id integer
-  telefone integer
-  sexo varchar(1)
-  estado_civil_id integer [ref: > estado_civil.id]
-}
+    ESTADO_CIVIL {
+        INT id PK
+        VARCHAR descricao
+    }
 
-Table pacientes {
-  id integer [primary key]
-  nome varchar(50)
-  email varchar(50)
-  cpf varchar(11)
-  rg varchar(9)
-  profissao varchar(50)
-  data_nascimento datetime
-  endereco_id integer
-  telefone integer
-  sexo varchar(1)
-  estado_civil_id integer [ref: > estado_civil.id]
-  responsavel_id integer [ref: > responsaveis.id]
-}
+    RESPONSAVEIS {
+        INT id PK
+        VARCHAR nome
+        VARCHAR email
+        VARCHAR cpf
+        VARCHAR rg
+        DATETIME data_nascimento
+        INT endereco_id
+        VARCHAR telefone
+        VARCHAR sexo
+        INT estado_civil_id FK
+    }
 
-Table especialidades {
-  id integer [primary key]
-  nome varchar(50)
-}
+    PACIENTES {
+        INT id PK
+        VARCHAR nome
+        VARCHAR email
+        VARCHAR cpf
+        VARCHAR rg
+        VARCHAR profissao
+        DATETIME data_nascimento
+        INT endereco_id
+        VARCHAR telefone
+        VARCHAR sexo
+        INT estado_civil_id FK
+        INT responsavel_id FK
+    }
 
-Table conselho_profissional {
-  id integer [primary key]
-  sigla varchar(50)
-  nome varchar(100)
-}
+    ESPECIALIDADES {
+        INT id PK
+        VARCHAR nome
+    }
 
-Table proficionais_saude {
-  id integer [primary key]
-  nome varchar(50)
-  email varchar(50)
-  cpf varchar(11)
-  conselho_id integer [ref: > conselho_profissional.id]
-  especialidade_id integer [ref: > especialidades.id]
-  data_nascimento datetime
-  endereco_id integer
-  telefone integer
-  sexo varchar(1)
-  estado_civil_id integer [ref: > estado_civil.id]
-}
+    CONSELHO_PROFISSIONAL {
+        INT id PK
+        VARCHAR sigla
+        VARCHAR nome
+    }
 
-Table agenda_medica {
-  id integer [primary key]
-  proficional_saude_id integer [ref: > proficionais_saude.id]
-  data_hora datetime
-  disponivel boolean
-}
+    PROFISSIONAIS_SAUDE {
+        INT id PK
+        VARCHAR nome
+        VARCHAR email
+        VARCHAR cpf
+        INT conselho_id FK
+        INT especialidade_id FK
+        DATETIME data_nascimento
+        INT endereco_id
+        VARCHAR telefone
+        VARCHAR sexo
+        INT estado_civil_id FK
+    }
 
-Table agendamentos {
-  id integer [primary key]
-  agenda_medica_id integer [ref: > agenda_medica.id]
-  paciente_id integer [ref: > pacientes.id]
-  procedimento_id integer [ref: > procedimentos.id]
-  retorno_de_agendamento_id integer
-  status varchar(50)
-  valor_cobrado float
-  observacoes varchar(100)
-}
+    AGENDA_MEDICA {
+        INT id PK
+        INT profissional_saude_id FK
+        DATETIME data_hora
+        BOOLEAN disponivel
+    }
 
-Table consultas {
-  id integer [primary key]
-  agendamento_id integer [ref: > agendamentos.id] 
-  data datetime                            
-  pressao_arterial varchar(10)                
-  temperatura float                          
-  peso float                                  
-  altura float                                
-  sintomas text                              
-  diagnostico text                           
-  prescricao text                             
-  observacoes text                            
-  compareceu boolean           
-  retorno_necessario boolean
-}
+    PROCEDIMENTOS {
+        INT id PK
+        VARCHAR nome
+        VARCHAR descricao
+        FLOAT valor
+    }
 
-Table procedimentos {
-  id integer [primary key]
-  nome varchar(100)
-  descricao varchar(100)
-  valor float
-}
+    AGENDAMENTOS {
+        INT id PK
+        INT agenda_medica_id FK
+        INT paciente_id FK
+        INT procedimento_id FK
+        INT retorno_de_agendamento_id
+        VARCHAR status
+        FLOAT valor_cobrado
+        VARCHAR observacoes
+    }
 
-Ref: contas.id < usuarios.conta_id
-dbml```
-        
+    CONSULTAS {
+        INT id PK
+        INT agendamento_id FK
+        DATETIME data
+        VARCHAR pressao_arterial
+        FLOAT temperatura
+        FLOAT peso
+        FLOAT altura
+        TEXT sintomas
+        TEXT diagnostico
+        TEXT prescricao
+        TEXT observacoes
+        BOOLEAN compareceu
+        BOOLEAN retorno_necessario
+    }
+
+    %% Relacionamentos
+    CONTAS ||--o{ USUARIOS : possui
+    ESTADO_CIVIL ||--o{ RESPONSAVEIS : possui
+    ESTADO_CIVIL ||--o{ PACIENTES : possui
+    ESTADO_CIVIL ||--o{ PROFISSIONAIS_SAUDE : possui
+    RESPONSAVEIS ||--o{ PACIENTES : responsavel_por
+    CONSELHO_PROFISSIONAL ||--o{ PROFISSIONAIS_SAUDE : regula
+    ESPECIALIDADES ||--o{ PROFISSIONAIS_SAUDE : possui
+    PROFISSIONAIS_SAUDE ||--o{ AGENDA_MEDICA : agenda
+    AGENDA_MEDICA ||--o{ AGENDAMENTOS : agendamento
+    PACIENTES ||--o{ AGENDAMENTOS : participa
+    PROCEDIMENTOS ||--o{ AGENDAMENTOS : contem
+    AGENDAMENTOS ||--o{ CONSULTAS : gera
+
+
+
+```
+
 
 # Licença
 
